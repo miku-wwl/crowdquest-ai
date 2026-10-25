@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "scope": "Phase 0 installed dependency, public API and document provenance only",
+  "python": "3.13.9",
+  "aig_version": "0.3.0",
+  "aig_commit": "bb8e8fb1234128613a750bee17967b225072bb14",
+  "module_relative_to_venv": "Lib/site-packages/agentic_intent_gate/runtime.py",
+  "upstream_source_commit": "7f635adf13f105cf4ed8408766c47e612048773c",
+  "upstream_blob_sha": "f14307dcc124a0eaefc24dbc3cb64643f35b1fa9",
+  "upstream_preserved_bytes": 12127,
+  "required_files": 17,
+  "public_api_signatures": {
+    "ToolBinding": "(tool_name: str, tool_version: str, adapter_id: str, binding_revision: str, target: str, execution_scope: str) -> None",
+    "ToolCapability": "(binding: agentic_intent_gate.application.action_compiler.ToolBinding, description: str, input_schema: collections.abc.Mapping, target_argument: str | None = None, semantic_rule: collections.abc.Callable | None = None) -> None",
+    "ExecutableRegistry": "(executor=None, *, binding=None)",
+    "CapabilityVerifier": "(token=None, *, subject_id=None, binding=None, operations=())",
+    "BoundCapabilityAuthorization": "(verifier: agentic_intent_gate.infrastructure.security.local_capability.CapabilityVerifier, *, policy_revision: str)",
+    "execution_budget_binding": "(binding, execution_timeout_seconds)",
+    "open_runtime": "(*, gate_path, provider, capability, registry, verifier, policy, predecessor_stopped=False, execution_timeout_seconds=5)",
+    "AdmissionCommand": "(run_id: str, expected_run_version: int, subject_id: str, idempotency_key: str) -> None",
+    "ActionCommand": "(action_id: str, expected_action_version: int, idempotency_key: str) -> None",
+    "ApprovalDecisionRequest": "(decision: 'ApprovalChoice', expected_version: 'int', reason: 'str | None' = None) -> None",
+    "ToolOutcome": "(category: agentic_intent_gate.ports.tool_executor.Outcome, effect_key: str | None = None, execution_scope: str | None = None, target: str | None = None, payload_digest: str | None = None, receipt_reference: str | None = None, no_effect_reason: str | None = None) -> None",
+    "ModelProvider": "(*args, **kwargs)",
+    "ToolExecutor": "(*args, **kwargs)"
+  },
+  "not_run": [
+    "runtime workflow",
+    "human approval",
+    "Twitch",
+    "AI inference",
+    "OBS",
+    "browser E2E"
+  ]
+}

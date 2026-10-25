@@ -1,0 +1,12 @@
+{
+  "source_repository": "https://github.com/miku-wwl/agentic-intent-gate",
+  "source_path": "docs/AGENTS-dependence.md",
+  "source_commit": "7f635adf13f105cf4ed8408766c47e612048773c",
+  "source_blob_sha": "f14307dcc124a0eaefc24dbc3cb64643f35b1fa9",
+  "source_bytes": 12127,
+  "source_sha256": "499f7c64b551dbfd48d640606da0b4ebb9e67c39e9544ed7eb120f08d732d10e",
+  "release_tag": "v0.3.0",
+  "release_tag_object": "28af5eccf287f70b63f20386010e5747e1511e9b",
+  "release_commit": "bb8e8fb1234128613a750bee17967b225072bb14",
+  "verified_date": "2026-10-26"
+}

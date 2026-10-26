@@ -1,0 +1,86 @@
+{
+  "checked_at_utc": "2026-10-26T06:52:22.067393+00:00",
+  "result": "PASS",
+  "classification": "REAL_LOCAL_OLLAMA_WITH_TEMPORARY_INSTALLED_AIG_PROFILE",
+  "ollama_version": "0.35.1",
+  "model": "phi4-mini:latest",
+  "model_digest": "78fad5d182a7c33065e153a5f8ba210754207ba9d91973f57dffa7f487363753",
+  "probes": [
+    {
+      "input_sha256": "ce3cecae8317da6565cf5707b571a342e3838bec902559be4bc7c6dc246075df",
+      "run_id_hash": "329f2131dfc3",
+      "run_state": "AwaitingApproval",
+      "seconds": 5.214,
+      "provenance": {
+        "attempts": 1,
+        "elapsed_ms": 5006,
+        "model": "phi4-mini:latest",
+        "provider": "ollama_local",
+        "reason": "MODEL_VALIDATED",
+        "response_bytes": 492,
+        "source": "REAL_MODEL"
+      },
+      "bounded_challenge": {
+        "description": "Survive 60 seconds without healing.",
+        "difficulty": "Medium",
+        "duration_seconds": 60,
+        "title": "Survive Challenge"
+      },
+      "action_count": 0,
+      "tool_target_risk_fixed_by_host": true
+    },
+    {
+      "input_sha256": "099de9a8d0330fc47fc78f12cb7dfa050924060916cf31659cca28b487ba5b73",
+      "run_id_hash": "a922e6d439ea",
+      "run_state": "AwaitingApproval",
+      "seconds": 3.36,
+      "provenance": {
+        "attempts": 1,
+        "elapsed_ms": 3198,
+        "model": "phi4-mini:latest",
+        "provider": "ollama_local",
+        "reason": "MODEL_VALIDATED",
+        "response_bytes": 512,
+        "source": "REAL_MODEL"
+      },
+      "bounded_challenge": {
+        "description": "Complete a game challenge with starter equipment only.",
+        "difficulty": "Medium",
+        "duration_seconds": 60,
+        "title": "Starter Challenge"
+      },
+      "action_count": 0,
+      "tool_target_risk_fixed_by_host": true
+    },
+    {
+      "input_sha256": "d0c2731315216cada64c59aab42bfdd2c6c3ca3fcd3b7e5d907b9b7cac35fd05",
+      "run_id_hash": "97291a88aeb3",
+      "run_state": "AwaitingApproval",
+      "seconds": 3.5,
+      "provenance": {
+        "attempts": 1,
+        "elapsed_ms": 3352,
+        "model": "phi4-mini:latest",
+        "provider": "ollama_local",
+        "reason": "MODEL_VALIDATED",
+        "response_bytes": 502,
+        "source": "REAL_MODEL"
+      },
+      "bounded_challenge": {
+        "description": "Complete a puzzle to unlock a secret code.",
+        "difficulty": "Medium",
+        "duration_seconds": 60,
+        "title": "Safe Game Challenge"
+      },
+      "action_count": 0,
+      "tool_target_risk_fixed_by_host": true
+    }
+  ],
+  "consumer_effect_count": 0,
+  "render_count": 0,
+  "real_twitch": "NOT_RUN",
+  "real_human_action_approval": "NOT_RUN",
+  "actual_obs": "NOT_RUN",
+  "paid_requests": 0,
+  "limitation": "Three bounded probes are not a general model-safety/reliability guarantee. Injection can influence wording; human review remains required."
+}

@@ -5,6 +5,12 @@ Phase 1 engineering acceptance passed; original screenshot bytes remain separate
 PARTIAL. Phase 2 live activation, actual human Action approval, real AI and worker/OBS
 delivery are NOT_RUN. The working Phase 1 service was not restarted a second time.
 
+Delivery reconciliation: commit `edcefa7c6d286e6f4dde98d01700dd2d636020cb` is on remote
+main. [CI 40278101916](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40278101916)
+was rechecked against that exact SHA: SUCCESS, 125 backend tests, 9 frontend tests,
+lint/build/provenance and actual Chromium synthetic E2E passed. Remote push and
+commit-specific CI are PASS; live activation and real human Action approval stay NOT_RUN.
+
 The delivered vertical slice follows the existing roadmap: a fixed
 enqueue_overlay_challenge/1 binding, default five-second installed AIG runtime,
 strict flat challenge arguments, persistent Run and exact version-bound Approval,
@@ -118,5 +124,7 @@ hashes, commands, results and evidence classes. No real database, token or capab
 is archived. Phase 2 GitHub delivery/CI and live activation are reported separately
 from local qualification; a previous Phase 1 CI run is not Phase 2 code evidence.
 
-No Phase 3 work, paid inference, Twitch writes, OBS control, deployment, release or
-competition submission was performed. Competition eligibility remains UNVERIFIED.
+At Phase 2 qualification no Phase 3 work, paid inference, Twitch writes, OBS control,
+deployment, release or submission was performed. Subsequent separately authorized
+Phase 3 work is recorded in [PHASE3-IMPLEMENTATION.md](PHASE3-IMPLEMENTATION.md).
+Competition eligibility remains UNVERIFIED.

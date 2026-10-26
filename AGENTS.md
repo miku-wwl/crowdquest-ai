@@ -262,3 +262,16 @@ conditional Phase 2 authorization now applies to the documented local single-act
 AIG integration and its tests. Preserve the working Phase 1 process; do not infer
 another live restart, a real Action's Approval/Authorization, paid calls, Phase 3,
 deployment or submission authority from test consent.
+
+## Phase 3A–3D authorization update — 2026-10-26
+
+The latest user attachment explicitly authorizes Phase 2 delivery reconciliation,
+Phase 3A local real-model planning, 3B authenticated review UI, 3C fenced worker and
+production overlay, and 3D local/browser/fault qualification. Normal scoped main
+commits, non-force pushes and commit-specific CI verification are authorized after
+local gates pass. Preserve the installed AIG pin, complete upstream prefix, fixed
+tool/binding and default five-second execution budget. Use existing local Ollama
+without paid requests or large downloads. Preserve real candidates and the healthy
+Phase 1 process. Live restart, new OAuth/pairing, real Action consent, paid providers,
+organizer contact, publication/submission and Phase 4 still need separate approval.
+Complete independent local work before asking for that live activation approval.

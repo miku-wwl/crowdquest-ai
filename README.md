@@ -16,14 +16,22 @@ Phase 2 local single-action integration is implemented and tested with installed
 and real temporary SQLite stores. It is opt-in and has not replaced the running Phase 1
 service. See [Phase 2 implementation](docs/PHASE2-IMPLEMENTATION.md) for exact scope,
 API/provisioning, tests and the separate live/human-approval boundaries.
+Its remote delivery and exact-commit CI have now been rechecked as PASS.
 See the [final acceptance report](docs/PHASE1-FINAL-ACCEPTANCE.md) for exact evidence classes.
-No AI Plans, AIG Runtime execution or production Approval/Authorization are implemented.
+
+Phase 3A–3D local implementation adds bounded real Ollama planning, explicit owner
+review/admission/authorization/execution, a separately authenticated worker, durable
+rendering acknowledgements and countdowns. [Implementation/evidence](docs/PHASE3-IMPLEMENTATION.md)
+distinguishes genuine local inference from synthetic browser consent. **Live Phase 3
+activation and the complete genuine Twitch → model → human → AIG → OBS chain remain
+NOT_RUN.** The existing healthy instance remains Phase 1. Follow the separately gated
+[operator runbook](docs/PHASE3-RUNBOOK.md); do not restart it without owner approval.
 
 The public repository already existed with one README-only initial commit
 (`639eabc8b6947a44048b220faea5fea4990587d1`, created 2026-10-25 UTC).
 Phase 0 preserves that history; it does not fork or import another project's source.
 
-Planned flow: Twitch `!quest` → validated candidate → AI Plan → streamer preview and
+Product flow: Twitch `!quest` → validated candidate → AI Plan → streamer preview and
 explicit approval → independent AIG Authorization → durable overlay-job admission →
 separate worker → OBS Browser Source. Admission and rendering have separate outcomes.
 

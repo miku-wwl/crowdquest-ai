@@ -8,9 +8,14 @@ Reviewed 2026-10-26. Overall status: **PARTIAL; own pre-existing runtime eligibi
 | --- | --- |
 | Pre-existing runtime | Agentic Intent Gate v0.3.0, MIT, commit `bb8e8fb1234128613a750bee17967b225072bb14`; released before CrowdQuest. Installed dependency only; never claimed as new competition work. |
 | Consumer instructions | Complete upstream `docs/AGENTS-dependence.md` preserved in root AGENTS; source commit/blob and digests in [aig-upstream.json](aig-upstream.json). |
-| New CrowdQuest work | Phase 0 requirements/docs/baseline plus newly developed Phase 1 OAuth, EventSub intake, SQLite deduplication, authenticated dashboard, separate development overlay and tests. No pre-existing Twitch application code was imported. AI planning and AIG execution integration remain future work. |
+| New CrowdQuest work | Phase 0 requirements/baseline; Phase 1 OAuth/EventSub/intake/development preview; Phase 2 thin installed-AIG integration and consumer admission store; Phase 3 domain ModelProvider, review UI, fenced worker, rendering ledger/acknowledgement and tests. No pre-existing Twitch application code or core execution state machine was imported. Genuine Phase 3 live acceptance remains NOT_RUN. |
 | Standard dependencies | Python, uv, FastAPI, Uvicorn, Pydantic, HTTPX, websockets, keyring, filelock, React, TypeScript, Vite and locked test/transitive dependencies. Respect each license; no third-party game/media assets have been added. Synthetic screenshots depict only the new app. |
 | Codex assistance | This phase was authored and verified with Codex under the entrant's product direction. Session ID and commands are recorded in [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md). |
+
+The existing local Ollama/phi4-mini model is a pre-existing third-party inference
+dependency, not entrant-authored model training. Model weights were not downloaded,
+modified or committed in this work. Its bounded local inference evidence is separate
+from CrowdQuest originality and competition eligibility.
 
 The remote was created on `2026-10-25T11:22:47Z`, after submissions opened. At inspection
 it contained only the initial README commit `639eabc8b6947a44048b220faea5fea4990587d1`.

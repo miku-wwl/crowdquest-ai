@@ -101,8 +101,8 @@
   "real_human_action_approval": "NOT_RUN",
   "real_model": "NOT_RUN",
   "worker_or_obs_rendering": "NOT_RUN",
-  "phase2_remote_ci": "NOT_RUN",
-  "phase2_remote_push": "NOT_RUN",
+  "phase2_remote_ci": "PASS",
+  "phase2_remote_push": "PASS",
   "source_sha256": {
     "crowdquest/admission.py": "dd820a6b1f21be59242e61a73c698be1e4425ebd879279694115dc9d29562297",
     "crowdquest/challenges.py": "7ced495b7494bf74ec72b0661ad324d2b1ea8b54664c41148f66b78fb124719f",
@@ -115,5 +115,16 @@
     "tests/phase2_crash.py": "80124db50315447feacd9d85c138260e68274a77158062884784124cb590ea09"
   },
   "secrets_exported": false,
-  "real_database_modified_by_qualification": false
+  "real_database_modified_by_qualification": false,
+  "delivery_reconciliation": {
+    "commit": "edcefa7c6d286e6f4dde98d01700dd2d636020cb",
+    "workflow_run": 40278101916,
+    "url": "https://github.com/miku-wwl/crowdquest-ai/actions/runs/40278101916",
+    "conclusion": "success",
+    "backend_passed": 125,
+    "frontend_passed": 9,
+    "chromium_synthetic_e2e": "PASS",
+    "live_activation": "NOT_RUN",
+    "real_human_action_approval": "NOT_RUN"
+  }
 }

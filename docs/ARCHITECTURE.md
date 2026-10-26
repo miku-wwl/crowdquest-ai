@@ -6,7 +6,10 @@ Initial deployment is one local host, one streamer/channel and one active runtim
 Phase 1 OAuth, intake and a separate manual preview are implemented and accepted.
 Phase 2 adds opt-in installed AIG composition, exact review/Authorization routes and
 transactional queue/receipts, qualified with temporary stores and synthetic consent.
-Real AI, the full review UI and overlay worker/acknowledgements remain Phase 3 design.
+Phase 3 local implementation adds the reviewed local ModelProvider, exact review UI,
+fenced separate worker, rendering ledger and bounded overlay acknowledgements. Real
+local inference is verified separately from fixture OAuth/browser consent. Genuine
+end-to-end human/OBS activation remains NOT_RUN; see PHASE3-IMPLEMENTATION.md.
 The running live instance is still Phase 1. Phase 1 uses HTTP
 polling, in-memory owner/overlay sessions, Windows Credential Manager and private
 SQLite intake state. Default startup creates no gate, Plan, Action or grant; only
@@ -75,6 +78,12 @@ does not match, retain it on restart, and keep one process as runtime owner.
   admission receipt, job, worker ownership and rendering acknowledgements.
 - Credential store: Twitch secrets, runtime capability, session and overlay credentials
   have separate purposes/identities. Worker and model receive no approval credentials.
+
+Phase 3 uses additional private product.sqlite3 for current candidate/Run/provenance
+and render.sqlite3 for worker leases, dispatch markers and observations. They never
+replace or query AIG's private tables. A separate worker-token authenticates only the
+fixed worker endpoints; overlay acknowledgements are narrowly bound telemetry and
+confer no approval, authorization, execution or queue-admission rights.
 
 The admission executor uses one short transaction to bind an AIG effect key to the
 full payload and a unique job/receipt. Same key/payload returns the original receipt;

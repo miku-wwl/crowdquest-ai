@@ -32,6 +32,12 @@ class PairCode(BaseModel):
     code: str = Field(pattern=r"^[A-F0-9]{16}$")
 
 
+class RenderAck(BaseModel):
+    model_config = ConfigDict(strict=True, extra="forbid")
+    render_id: str = Field(min_length=36, max_length=36)
+    delivery_id: str = Field(min_length=36, max_length=36)
+
+
 @dataclass
 class Session:
     generation: int
@@ -48,7 +54,10 @@ def create_app(
     clock=time.time,
     monotonic=time.monotonic,
     phase2_factory=None,
+    phase3_factory=None,
 ):
+    if phase2_factory is not None and phase3_factory is not None:
+        raise ValueError("SELECT_ONE_WORKFLOW")
     settings = settings or Settings.load()
     settings.state_dir.mkdir(parents=True, exist_ok=True)
     store = store or Store(settings.state_dir / "intake.sqlite3")
@@ -68,6 +77,9 @@ def create_app(
                 app.state.phase2_service = (
                     contexts.enter_context(phase2_factory()) if phase2_factory else None
                 )
+                app.state.phase3_service = (
+                    contexts.enter_context(phase3_factory()) if phase3_factory else None
+                )
                 task = asyncio.create_task(eventsub.run())
                 yield
             finally:
@@ -76,12 +88,14 @@ def create_app(
                     with suppress(asyncio.CancelledError):
                         await task
                 app.state.phase2_service = None
+                app.state.phase3_service = None
                 await auth.close()
                 lock.release()
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.auth, app.state.store, app.state.eventsub = auth, store, eventsub
     app.state.phase2_service = None
+    app.state.phase3_service = None
 
     @app.middleware("http")
     async def security(request: Request, call_next):
@@ -144,6 +158,7 @@ def create_app(
                 if auth.reason == "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE"
                 else "unauthenticated",
                 "reason": auth.reason,
+                "workflow": "production" if phase3_factory else "development",
             }
         return {
             "authenticated": True,
@@ -154,6 +169,7 @@ def create_app(
             "last_event_at": eventsub.last_event_at,
             "eventsub": eventsub.snapshot() if hasattr(eventsub, "snapshot") else None,
             "warning": WARNING,
+            "workflow": "production" if phase3_factory else "development",
         }
 
     @app.get("/auth/twitch/start")
@@ -202,6 +218,9 @@ def create_app(
     @app.post("/api/logout")
     async def logout(request: Request):
         await owner(request, True)
+        if app.state.phase3_service is not None:
+            renderer = app.state.phase3_service.renderer
+            renderer.store.recover(renderer.boot)
         auth.invalidate("SIGNED_OUT")
         sessions.clear()
         overlays.clear()
@@ -221,6 +240,8 @@ def create_app(
     @app.post("/api/preview")
     async def select(request: Request, value: Selection):
         identity, _ = await owner(request, True)
+        if phase3_factory is not None:
+            raise HTTPException(403, "DEVELOPMENT_PREVIEW_DISABLED")
         try:
             UUID(value.candidate_id)
         except ValueError:
@@ -240,6 +261,8 @@ def create_app(
     @app.post("/api/preview/clear")
     async def clear(request: Request):
         await owner(request, True)
+        if phase3_factory is not None:
+            raise HTTPException(403, "DEVELOPMENT_PREVIEW_DISABLED")
         preview["expires"] = 0
         preview["deadline"] = 0
         return {"ok": True}
@@ -331,6 +354,13 @@ def create_app(
                 raise ValueError
         except ValueError:
             raise HTTPException(422, "VIEW_ID") from None
+        if phase3_factory is not None:
+            try:
+                result = app.state.phase3_service.renderer.store.current(overlay_key, view)
+            except Exception:  # noqa: BLE001 -- fixed code, no raw SQLite/credential errors
+                raise HTTPException(503, "RENDER_STATE_UNAVAILABLE") from None
+            pairing["ready"] = monotonic()
+            return result
         key = (overlay_key, view)
         if key not in views:
             if sum(k[0] == overlay_key for k in views) >= 8:
@@ -351,7 +381,32 @@ def create_app(
             "source": preview["source"],
         }
 
-    if phase2_factory is not None:
+    if phase3_factory is not None:
+        from .phase3_routes import register_phase3
+
+        register_phase3(app, owner, store)
+
+        @app.post("/api/overlay/ack")
+        async def render_ack(request: Request, value: RenderAck):
+            prune_overlays()
+            key = digest(request.cookies.get("cq_overlay", ""))
+            pairing = overlays.get(key)
+            if not pairing or not pairing["approved"] or not await auth.ensure():
+                raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
+            view = request.headers.get("x-overlay-view", "")
+            from .admission import uuid4_string
+
+            if not all(uuid4_string(v) for v in (view, value.render_id, value.delivery_id)):
+                raise HTTPException(422, "RENDER_ACK_IDENTITY")
+            try:
+                app.state.phase3_service.renderer.store.acknowledge(
+                    key, view, value.render_id, value.delivery_id
+                )
+            except ValueError:
+                raise HTTPException(409, "RENDER_ACK_UNCONFIRMED") from None
+            return {"ok": True, "evidence": "BROWSER_ACK_ONLY"}
+
+    elif phase2_factory is not None:
         from .phase2_routes import register_phase2
 
         register_phase2(app, owner)

@@ -1,8 +1,11 @@
 # Product requirements
 
-Status: product MVP design with Phase 1 connectivity/preview implemented and synthetic
-tests passing. Real Twitch/OBS acceptance remains PARTIAL; AI/AIG execution and complete
-product behavior below remain future work. Owner: miku-wwl.
+Status: Phase 1 real Twitch/OBS engineering acceptance PASS (user-observed visual
+evidence; original PNG archive PARTIAL). Phase 2 local AIG single-action integration,
+remote delivery and exact-commit CI PASS. Phase 2 live activation/human Action approval
+are NOT_RUN. Phase 3A–3D local engineering implementation/qualification is PASS; complete
+real Twitch → model → human approval → AIG → OBS acceptance is still NOT_RUN.
+Owner: miku-wwl.
 
 ## Problem and users
 

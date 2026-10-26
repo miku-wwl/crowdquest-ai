@@ -1,0 +1,259 @@
+{
+  "checked_at_utc": "2026-10-26T07:50:29.854454+00:00",
+  "baseline_sha": "edcefa7c6d286e6f4dde98d01700dd2d636020cb",
+  "codex_thread_id": "01a172e3-9804-73c2-b597-8c5df928a56c",
+  "phase3_local_status": "PASS",
+  "phase3_final_live_status": "PARTIAL",
+  "phase3a_model_status": "PASS",
+  "phase3b_dashboard_status": "PASS",
+  "phase3c_worker_overlay_status": "PASS",
+  "phase3d_regression_status": "PASS",
+  "phase2_remote_ci": {
+    "status": "PASS",
+    "commit": "edcefa7c6d286e6f4dde98d01700dd2d636020cb",
+    "run_id": 40278101916,
+    "url": "https://github.com/miku-wwl/crowdquest-ai/actions/runs/40278101916",
+    "backend_passed": 125,
+    "frontend_passed": 9
+  },
+  "aig": {
+    "version": "0.3.0",
+    "commit": "bb8e8fb1234128613a750bee17967b225072bb14",
+    "adapter_budget_seconds": 5,
+    "public_imports_only": true,
+    "unchanged_installed_python_source_files": 45
+  },
+  "commands": [
+    {
+      "command": "uv run pytest -q --junitxml \"$cqEvidenceDir\\pytest.xml\"",
+      "exit_code": 0,
+      "passed": 163,
+      "phase3_cases": 38,
+      "warnings": 1,
+      "junit_suite_seconds": 70.004,
+      "reported_seconds": 70.44,
+      "evidence_class": "SYNTHETIC_TEST_WITH_ACTUAL_SQLITE_AND_PROCESSES",
+      "private_report_directory_expression": "$cqEvidenceDir = Join-Path $env:LOCALAPPDATA 'CrowdQuestAI\\engineering\\phase3'"
+    },
+    {
+      "command": "npm --prefix frontend run test",
+      "exit_code": 0,
+      "passed": 16,
+      "evidence_class": "FRONTEND_UNIT_FIXTURES"
+    },
+    {
+      "command": "npm --prefix frontend run build",
+      "exit_code": 0,
+      "checks": [
+        "TypeScript noEmit",
+        "Vite"
+      ]
+    },
+    {
+      "command": "uv run ruff check crowdquest tests",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff format --check crowdquest tests",
+      "exit_code": 0,
+      "python_files": 44
+    },
+    {
+      "command": "uv run --locked python -I scripts/verify_baseline.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv lock --check --offline",
+      "exit_code": 0
+    },
+    {
+      "command": "uv pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "npm --prefix frontend audit",
+      "exit_code": 0,
+      "reported_advisories": 0
+    },
+    {
+      "command": "uv run python -m tests.browser_e2e",
+      "exit_code": 0,
+      "evidence_class": "ACTUAL_CHROMIUM_SYNTHETIC_OAUTH_EVENTSUB"
+    },
+    {
+      "command": "uv run python -m tests.phase3_browser_e2e",
+      "exit_code": 0,
+      "evidence_class": "ACTUAL_CHROMIUM_SEPARATE_HTTP_WORKER_AIG_SQLITE_SYNTHETIC_CONSENT",
+      "expiry_observation": "EXPIRED",
+      "bounded_db_materialization_wait_seconds": 3,
+      "unknown_or_failed_state_is_failure": true
+    },
+    {
+      "command": "uv run python -m tests.real_model_probe --output docs/evidence/phase3/real-local-model.json",
+      "exit_code": 0,
+      "evidence_class": "REAL_LOCAL_OLLAMA_TEMPORARY_AIG_NO_ACTION"
+    }
+  ],
+  "real_provider_evidence": "docs/evidence/phase3/real-local-model.json",
+  "browser_invariants": {
+    "independent_owner_operations": true,
+    "overlays_for_same_first_render": 2,
+    "first_job_effect_count": 1,
+    "two_distinct_separately_approved_fixture_jobs_total": 2,
+    "no_repeat_issued_render_after_reload": true,
+    "actual_first_duration_seconds": 15,
+    "max_title_characters": 80,
+    "max_description_characters": 240,
+    "viewport": [
+      1280,
+      720
+    ],
+    "max_fields_fit_without_vertical_clipping": true,
+    "acknowledgement_class": "BROWSER_ACK_ONLY_NOT_ACTUAL_OBS"
+  },
+  "failure_history": [
+    {
+      "result": "FAIL",
+      "case": "Two newly added fault tests missing imports",
+      "passed": 32,
+      "failed": 2,
+      "correction": "Added asyncio/sqlite3 test imports; corrected targeted and full suites passed"
+    },
+    {
+      "result": "FAIL",
+      "case": "Production Ready heartbeat missing",
+      "evidence_class": "VISUAL_QA",
+      "correction": "Ready updates only after successful render-state reads; positive and 503 negative regressions pass"
+    },
+    {
+      "result": "FAIL",
+      "case": "Exact Description label locator timed out in max-field E2E",
+      "correction": "Textarea/select nested label contents polluted names; explicit htmlFor/id associations and unit/browser regression passed"
+    },
+    {
+      "result": "FAIL",
+      "case": "Direct EXPIRED SQLite assertion immediately after client expiry",
+      "historical_row_state": "NOT_CAPTURED",
+      "correction": "Bounded observe-only materialization wait, immediate failure for Unknown/Failed; subsequent repeated observations EXPIRED. Historical cause remains an inference."
+    }
+  ],
+  "preserved_live_phase1": {
+    "pid": 19880,
+    "eventsub_ready": true,
+    "root_http_status": 200,
+    "phase3_status_http": 404,
+    "sqlite_integrity": "ok",
+    "counts": {
+      "deliveries": 2,
+      "messages": 2,
+      "candidates": 2
+    },
+    "original_candidate_metadata_preserved": true,
+    "token_validation_http_status": 200,
+    "owner_client_match": true,
+    "scopes": [
+      "user:read:chat"
+    ],
+    "agent_restarted_service": false,
+    "agent_mutated_real_candidate_rows": false,
+    "agent_changed_credentials": false
+  },
+  "local_model_residency": {
+    "name": "phi4-mini:latest",
+    "cpu_only": true,
+    "new_model_downloads": 0
+  },
+  "images": [
+    {
+      "path": "docs/evidence/phase3/synthetic-dashboard.png",
+      "sha256": "00d16e328cb50e24858372176a1bc50e85720ad8ed91ce1c517b93161e1f7ad9",
+      "classification": "SYNTHETIC_TEST_ACTUAL_CHROMIUM_NOT_OBS",
+      "original_image_bytes_exist": true
+    },
+    {
+      "path": "docs/evidence/phase3/synthetic-overlay.png",
+      "sha256": "a47e0f33720daae035406172aca6ff457c6cdfebafa2c9ebcf8fb8c5fc87f50f",
+      "classification": "SYNTHETIC_TEST_ACTUAL_CHROMIUM_NOT_OBS",
+      "original_image_bytes_exist": true
+    },
+    {
+      "path": "docs/evidence/phase3/synthetic-overlay-max-fields.png",
+      "sha256": "27293048faba0633b02bc815359554cc8bf1f063e5292ca5cd4a3f44064352ca",
+      "classification": "SYNTHETIC_TEST_ACTUAL_CHROMIUM_NOT_OBS",
+      "original_image_bytes_exist": true
+    }
+  ],
+  "source_sha256_lf": {
+    ".github/workflows/phase0.yml": "1dc094fe45926440e1a54eabd62452236b3cb1d5a7348fa5647ee1e84a553280",
+    "crowdquest/__init__.py": "166103b8382d8dd7d600d1d8e72d5820daa7365bd105152f1893811f16312cd3",
+    "crowdquest/__main__.py": "327fb9d436c8f4c22897f616e0ad05fe9776ddfc9b87d8877852fbb33cbabf3a",
+    "crowdquest/admission.py": "dd820a6b1f21be59242e61a73c698be1e4425ebd879279694115dc9d29562297",
+    "crowdquest/app.py": "a950b5b7a35ee592f51fb79fc7468d653763c8df9a5969720f4c0fe2448ecf07",
+    "crowdquest/auth.py": "316f6b9c701f809903ad750f291bbe3a463bf4e6290ac6449b642710f1ca26ec",
+    "crowdquest/challenges.py": "7ced495b7494bf74ec72b0661ad324d2b1ea8b54664c41148f66b78fb124719f",
+    "crowdquest/config.py": "4e7166aeacad2c6017c9553db3c7a640d26866b95fd97b85b1255b9d979d5fb5",
+    "crowdquest/eventsub.py": "39d64e5d1142d01663df9f7d21e4198a1c99fc2b674581590e655dcaa27af73b",
+    "crowdquest/evidence.py": "97e06583385d015533d7bcef45fad14d94ccdcec9918d17a484e8736e5f9e0d3",
+    "crowdquest/intake.py": "87f39fb3ac47cf008879b73232908d37248e09f62a46274f2c651bd8cbf59f6f",
+    "crowdquest/phase2.py": "aeff8e9a7fcabb7a62a09c19956b9afee06fcb2cff5ad218b6375f0c31cf5f4c",
+    "crowdquest/phase2_routes.py": "33a0f177592d2d5038c885b8df91e57b1c8e7ba28af3f774675296f58980433f",
+    "crowdquest/phase3.py": "502a56c21075e0c38f1dd90cc5cd38e3f25c24ecbb1357d027ac4c2ff5685ddb",
+    "crowdquest/phase3_routes.py": "48176649000cf9ec36425f492cdc0a781d7cf52f6acdd4af20c0ebbe61a3ed19",
+    "crowdquest/product.py": "936bfafd3501c541137d2d2de5995907ded4ef1e6c5e200af6eb760cc0477852",
+    "crowdquest/providers.py": "b2ac5cfac324816c94b1048440e91267d6ef08ed243014cf3f9f50901e46508a",
+    "crowdquest/rendering.py": "373884f50b89f9b8b9399fc3ed2250a1961cf873b174f224f4757a6d41c410b6",
+    "crowdquest/secrets.py": "39c0a13008405ded9204694d5de95c448104440d3febe00a1ad27bf4a31f2060",
+    "crowdquest/setup.py": "f7e810ff837beef9e0f73b23594fc78980ea40d79ab4310095b14ceaa8277644",
+    "crowdquest/worker.py": "76d8361123b074d21d02c7394c6ffbb982a8be2d5d8635524a9daa7c499af918",
+    "frontend/src/main.tsx": "7a4307f2675932414488f13ebe1be32853afe19ec171542e7cd3297eb9cc1104",
+    "frontend/src/review.css": "975a67f60874c36b465f64566784e3834cea3f74c65899cd1f838e09a006bc72",
+    "frontend/src/review.test.tsx": "453dd5180e4c196aa933ce04946afbc89084557ff1257fb2242a49ae6625a7e0",
+    "frontend/src/review.tsx": "0f28cf4ed58202e68340d0ef3093d6e8221d765e47484424321e6421a36acb70",
+    "frontend/src/style.css": "ba26d35a81c9ef2c5818530b2114c16de27950735a21347ddfa6566657d5c2ef",
+    "frontend/src/ui.test.tsx": "9e51bafe141afed7df0494a370abc93726927c33b073b446b5a000f9dcb68fe9",
+    "frontend/src/ui.tsx": "c3dcf69ab44f56dae96256cf8a7223adaa0603d23b6904272aea28245207c174",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/browser_e2e.py": "71c8932faca0a724bfba49cb412ff095ca81110d6cabbb593f252a2101d0563f",
+    "tests/browser_server.py": "29eaea63365f13acb82c191d3cad646f014221578053e4c19b3a732e3e62d13e",
+    "tests/conftest.py": "c92c11881fdeaf4efdebdf678fe4a46ab0632cbf3d5e7a74c6929d6d96e9a7fd",
+    "tests/phase2_crash.py": "80124db50315447feacd9d85c138260e68274a77158062884784124cb590ea09",
+    "tests/phase3_browser_e2e.py": "9d8d9ecb6db359db31eb8f88bf7006be4f60800695316e416dfda2141814af25",
+    "tests/phase3_crash.py": "5410c59f4ae0822b0483d392bc1fe816262c0677f0efad6e83908efe31dd1656",
+    "tests/phase3_support.py": "a7c03e2f0f8b3b0e151f5d19090ec80fbae77f289df6f2a7cb980a2fcc82b9fd",
+    "tests/process_helpers.py": "b33a1288fb10294e1ef8b2a119af27b9676d9cde7fe8a435f27b2d918612440a",
+    "tests/real_model_probe.py": "044e96435255ac6e17398ee63d7bae8c19111924bd070a60d58234c0300f0228",
+    "tests/support.py": "c4394e12cf95e55c6a6873d25922d3ab41ccde3372799e811e21115996d2728b",
+    "tests/test_app.py": "7c1b9bff2baf3cb22f19aac781bd88569ea06c048579330ccbc6542f6a418425",
+    "tests/test_auth.py": "8c86e9e6b11e37c351c04478024857b7371270654d1bce1a0813d35677fc124e",
+    "tests/test_eventsub.py": "eff7e0135354f516ee36c8cf8d0f7683a4a7fcd3d4edba9e0b3e95e28a5411bf",
+    "tests/test_eventsub_diagnosis.py": "2410b86a0ee4d8761f6f445ea935f4fea888384a881c6ce812e6abe1bad19921",
+    "tests/test_final_acceptance.py": "93112a352915e553c29f2c333e7601cd5be544c60340b34aa5c1a9e3ed452f8e",
+    "tests/test_intake.py": "6956c1f6e33cc442c9abcab39bc184fac5016dc8e60a8676775c77c5a37f4c39",
+    "tests/test_persistence_process.py": "9bca95f81fd1d576a5433042780576e8fe1f50e7be34097743047bb4e4d612ad",
+    "tests/test_phase2.py": "3c262a502f59a18f66f9f8e5775a7ecb0a3cc558722c21168f6dd50b4e267ca4",
+    "tests/test_phase2_routes.py": "f50ed7000105a9905d54a440937e44db452db03d09aa447ff16db0c9a0b0ab36",
+    "tests/test_phase3.py": "4523ba86e5709b8582b0153850eab9abe4747f54615696d6c0e60f4be6fa601f",
+    "tests/test_phase3_routes.py": "567250447ee066c72b4074aba76ca38524099519b5eba1ec1415f675b82fd8d8",
+    "tests/test_providers.py": "8daf13bd155b13f1682e2993001c1a04fa121cad20feabc72a965c33da7791eb",
+    "tests/test_service_restart.py": "f3a817657c7f7d7fea7dd2ac06a755363258c2f494e8d97eb952c681e8b28504"
+  },
+  "remote_ci": {
+    "status": "NOT_RUN",
+    "note": "To be replaced only after observing the exact pushed implementation commit workflow"
+  },
+  "live_activation": "NOT_RUN",
+  "real_human_action_approval": "NOT_RUN",
+  "real_twitch_to_aig_to_obs": "NOT_RUN",
+  "competition_eligibility": "UNVERIFIED_SUBMISSION_BLOCKED",
+  "secrets_exported": false,
+  "stream_started": false,
+  "paid_requests": 0,
+  "security_review": {
+    "actual_credential_value_scan": "PASS",
+    "source_review": "PASS",
+    "private_store_exclusion": "PASS",
+    "scanned_paths": 101,
+    "text_files": 96,
+    "secret_values_or_fingerprints_printed": false
+  }
+}

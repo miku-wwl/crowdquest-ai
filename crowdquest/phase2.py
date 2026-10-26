@@ -74,6 +74,9 @@ class ChallengeService:
     def run(self, run_id):
         return self.runtime.run_service.get(run_id)
 
+    def actions_for_run(self, run_id):
+        return self.runtime.gateway.list_for_run(run_id, self._principal)
+
     def decide(self, run_id, expected_version, decision, *, reviewer_id):
         if reviewer_id != self.owner_id:
             raise ValueError("OWNER_REQUIRED")

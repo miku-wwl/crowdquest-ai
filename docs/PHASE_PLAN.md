@@ -12,9 +12,11 @@ accepted visual-evidence alternative. Final regression: 79 backend tests, 9 fron
 tests and Chromium synthetic E2E; tested-commit GitHub CI also passed.
 See [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md). The user's latest request
 authorizes automatic Phase 2 only after mandatory quality gates pass; do not bypass them.
-Phase 2 local single-action integration is now implemented and tested; see
+Phase 2 local single-action integration and remote commit-specific CI now pass; see
 [PHASE2-IMPLEMENTATION.md](PHASE2-IMPLEMENTATION.md). Live Phase 2 activation remains
-NOT_RUN. No Phase 3 progression or second live-service restart is inferred.
+NOT_RUN. The later explicit Phase 3A–3D instruction authorizes local implementation,
+normal main delivery and CI; it does not authorize a live-service restart or Action.
+See [Phase 3 evidence](PHASE3-IMPLEMENTATION.md) and [runbook](PHASE3-RUNBOOK.md).
 
 ## Phase 0 — Repository and architecture (2026-10-26)
 
@@ -75,6 +77,22 @@ on Unknown. Gate: inspect real SQLite effects/receipts, demonstrate no second ef
 after interruption. No AIG patch or replacement state machine is permitted.
 
 ## Phase 3 — Complete product (target 2026-10-30 to 31)
+
+Authorized local substages on 2026-10-26:
+
+- 3A: existing local Ollama, one bounded domain proposal, strict host-owned authority,
+  persisted provenance and explicitly labelled manual drafting. Real local probes
+  have passed; this is not a complete real Twitch acceptance.
+- 3B: exact current-Run owner review, Reject/Approve, separate admission, Authorization
+  and execution, plus redacted audit/receipt UI. Synthetic browser consent stays separate.
+- 3C: separate authenticated worker, durable dispatch fence, one active channel job,
+  read-only overlay with bounded acknowledgement telemetry, monotonic countdown,
+  conservative Unknown and no replay. Production denies Phase 1 preview publication.
+- 3D: temporary SQLite/process/race/fault tests, actual Chromium fixtures, static/build/
+  provenance/secret checks and normal scoped main delivery with exact-commit CI.
+
+These local substages do not open the final live gate below. Preserve the currently
+healthy Phase 1 instance until the owner separately approves the runbook's activation.
 
 Dependencies: Phase 2 gate, separately configured provider access, authenticated real
 streamer session, reviewed worker/overlay credential and dispatch fence.

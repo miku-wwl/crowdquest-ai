@@ -45,5 +45,7 @@ jobs:
         run: uv run python -m playwright install --with-deps chromium
       - name: Actual Chromium with synthetic OAuth and chat
         run: uv run python -m tests.browser_e2e
+      - name: Phase 3 Chromium and separate worker with synthetic consent
+        run: uv run python -m tests.phase3_browser_e2e
       - name: Check committed whitespace
         run: git show --format= --check HEAD

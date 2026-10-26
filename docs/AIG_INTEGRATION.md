@@ -1,8 +1,10 @@
 # AIG integration contract
 
-Status: Phase 2 local single-action integration PASS; see
-[implementation and evidence](PHASE2-IMPLEMENTATION.md). Live activation, real model,
-authenticated human Action approval and worker rendering remain NOT_RUN.
+Status: Phase 2 local integration and exact-commit remote CI PASS; see
+[implementation and evidence](PHASE2-IMPLEMENTATION.md). Phase 3 adds real local-model
+Plan probes and controlled worker/browser qualification; see
+[Phase 3 evidence](PHASE3-IMPLEMENTATION.md). Live activation, authenticated real human
+Action approval and the complete genuine Twitch/model/OBS chain remain NOT_RUN.
 
 ## Immutable release and instructions
 

@@ -10,14 +10,15 @@ from urllib.request import urlopen
 from filelock import FileLock
 
 
-def start_fixture(directory):
+def start_fixture(directory, *, phase3=False):
     for name in ("stop", "stopped"):
         (directory / name).unlink(missing_ok=True)
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         port = listener.getsockname()[1]
     process = subprocess.Popen(
-        [sys.executable, "-m", "tests.browser_server", str(directory), str(port)],
+        [sys.executable, "-m", "tests.browser_server", str(directory), str(port)]
+        + (["phase3"] if phase3 else []),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )

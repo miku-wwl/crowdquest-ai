@@ -1,9 +1,10 @@
 # Security and threat model
 
-Status: design review only; controls are required for later implementation and are
-not yet runtime-tested for future AI/AIG phases. Phase 1 OAuth/intake/CSRF/preview
-controls now have synthetic backend and actual Chromium tests; real Twitch and OBS
-remain unverified. Assets: exact consent, execution authority, channel identity,
+Status: Phase 1 engineering acceptance PASS, including user-observed real Twitch/OBS.
+Phase 2/3 controls have actual temporary AIG/SQLite, fault/concurrency and Chromium
+fixture coverage. Three real local-model probes passed; genuine Phase 3 human Action
+approval and full Twitch-to-OBS activation remain NOT_RUN. This is not a penetration
+test or production/multi-user security certification. Assets: exact consent, execution authority, channel identity,
 credentials, effect/receipt integrity, availability, viewer privacy and broadcast content.
 
 Trust boundaries: public chat → intake; model → validator; dashboard → authenticated
@@ -58,3 +59,22 @@ no arbitrary mutations and measured live evidence. Do not claim production harde
 
 Security review in Phase 0 checks design, provenance, staged files and ignore behavior;
 it is not penetration testing, a dependency CVE audit, or validation of implemented controls.
+
+## Implemented Phase 3 boundaries
+
+Only the already-reviewed local phi4-mini:latest is enabled. Model input contains no
+identity/credential/policy authority; schema validation and a host-owned one-step Plan
+scaffold protect those fields. One attempt, bounded response/time and fixed loopback
+transport prevent silent provider escalation. Failed generation requires an explicit
+OFFLINE_MANUAL draft, never a falsely labelled real-model fallback.
+
+Current candidate/Run fencing makes prior review stale after edits. An admitted Action
+blocks replacement drafts for that candidate. The authenticated UI makes Approval,
+admission, Authorization and Execution separate requests. Unknown has no retry control.
+
+Worker credential, server incarnation, worker UUID, monotonic lease and epoch protect
+publication; a unique active-channel index and pre-delivery marker constrain races.
+Public durable AIG success and exact receipt/payload are checked before publication.
+Issued overlay deliveries are not replayed after reload/reconnect. Missing render ack,
+post-dispatch interruption or restart stays rendering Unknown. Browser telemetry cannot
+grant Action authority or prove actual OBS visibility. All stores remain private.

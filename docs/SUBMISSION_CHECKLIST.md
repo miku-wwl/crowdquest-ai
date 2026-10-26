@@ -1,5 +1,10 @@
 # Submission checklist
 
+Current operational checklist: [Phase 5 readiness](PHASE5-SUBMISSION-CHECKLIST.md),
+reviewed 2026-10-27. The original checklist below is retained as the earlier rules
+review; subsequent Phase 3 real acceptance and Phase 4 qualification are recorded
+separately rather than silently changing old evidence.
+
 Checked 2026-10-26 against [official rules](https://twitchcon-codex.devpost.com/rules),
 [overview requirements](https://twitchcon-codex.devpost.com/) and
 [FAQ](https://twitchcon-codex.devpost.com/resources). Recheck amendments before submitting.
@@ -36,7 +41,7 @@ Unchecked items are not completed; this file is not a registration or submission
 
 - [ ] English feature/functionality description explains actual Codex use.
 - [ ] Principal Codex build thread ID selected (Phase 0 ID is recorded in evidence).
-- [ ] YouTube video **under 3 minutes**, viewable publicly or unlisted, linked in form.
+- [ ] YouTube video **under 3 minutes**, publicly visible on YouTube, linked in form.
 - [ ] Video shows actual Twitch functionality and development with Codex.
 - [ ] Permission covers every third-party trademark, game/media clip, music and asset.
 - [ ] Translate all non-English description/video/testing/submission materials.

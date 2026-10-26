@@ -5,6 +5,7 @@ import secrets
 import time
 from contextlib import ExitStack, asynccontextmanager, suppress
 from dataclasses import dataclass
+from pathlib import Path
 from uuid import UUID
 
 from fastapi import FastAPI, HTTPException, Request
@@ -55,6 +56,7 @@ def create_app(
     monotonic=time.monotonic,
     phase2_factory=None,
     phase3_factory=None,
+    frontend_directory=None,
 ):
     if phase2_factory is not None and phase3_factory is not None:
         raise ValueError("SELECT_ONE_WORKFLOW")
@@ -80,6 +82,8 @@ def create_app(
                 app.state.phase3_service = (
                     contexts.enter_context(phase3_factory()) if phase3_factory else None
                 )
+                if app.state.phase3_service is not None:
+                    app.state.phase3_service.voting = store.voting
                 task = asyncio.create_task(eventsub.run())
                 yield
             finally:
@@ -170,6 +174,7 @@ def create_app(
             "eventsub": eventsub.snapshot() if hasattr(eventsub, "snapshot") else None,
             "warning": WARNING,
             "workflow": "production" if phase3_factory else "development",
+            "features": ["crowd_voting", "owner_outcomes"] if phase3_factory else [],
         }
 
     @app.get("/auth/twitch/start")
@@ -357,6 +362,11 @@ def create_app(
         if phase3_factory is not None:
             try:
                 result = app.state.phase3_service.renderer.store.current(overlay_key, view)
+                from .phase4_routes import voting_presentation
+
+                result = voting_presentation(
+                    store, app.state.phase3_service, auth.identity.user_id, result, clock()
+                )
             except Exception:  # noqa: BLE001 -- fixed code, no raw SQLite/credential errors
                 raise HTTPException(503, "RENDER_STATE_UNAVAILABLE") from None
             pairing["ready"] = monotonic()
@@ -385,6 +395,9 @@ def create_app(
         from .phase3_routes import register_phase3
 
         register_phase3(app, owner, store)
+        from .phase4_routes import register_phase4
+
+        register_phase4(app, owner, store, clock)
 
         @app.post("/api/overlay/ack")
         async def render_ack(request: Request, value: RenderAck):
@@ -411,14 +424,15 @@ def create_app(
 
         register_phase2(app, owner)
 
-    assets = ROOT / "frontend/dist/assets"
+    frontend_directory = Path(frontend_directory) if frontend_directory else ROOT / "frontend/dist"
+    assets = frontend_directory / "assets"
     if assets.exists():
         app.mount("/assets", StaticFiles(directory=assets), name="assets")
 
     @app.get("/")
     @app.get("/overlay")
     async def frontend():
-        index = ROOT / "frontend/dist/index.html"
+        index = frontend_directory / "index.html"
         if not index.exists():
             raise HTTPException(503, "FRONTEND_BUILD_REQUIRED")
         return FileResponse(index)

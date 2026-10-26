@@ -18,6 +18,7 @@ node_modules/
 coverage/
 playwright-report/
 test-results/
+.artifacts/
 *.tsbuildinfo
 
 # Secrets, private state, credentials and captures

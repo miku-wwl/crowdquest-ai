@@ -13,6 +13,8 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
+from .voting import VotingStore, parse_vote
+
 ID = r"^[A-Za-z0-9_-]{1,128}$"
 OPAQUE_DELIVERY_ID = r"^[\x21-\x7e]{1,128}$"
 USER_ID = r"^[1-9][0-9]{0,24}$"
@@ -151,6 +153,7 @@ class Store:
                     code TEXT PRIMARY KEY, count INTEGER NOT NULL, last_time REAL NOT NULL
                 ) STRICT;
             """)
+        self.voting = VotingStore(self)
 
     def connect(self):
         db = sqlite3.connect(self.path, timeout=2)
@@ -186,8 +189,12 @@ class Store:
         except InvalidEvent as error:
             return self.reject(str(error), now)
         suggestion, reason = parse_command(stable["text"])
-        if reason == "NOT_QUEST":
+        vote, vote_reason = parse_vote(stable["text"])
+        is_vote = vote_reason != "NOT_VOTE" and stable["text"].startswith("!vote")
+        if reason == "NOT_QUEST" and not is_vote:
             return reason  # Normal chat is neither persisted nor counted as a rejection.
+        if is_vote:
+            suggestion, reason = None, vote_reason
         viewer = canonical({"channel": owner_id, "viewer": stable["viewer"]})
         with closing(self.connect()) as db, db:
             db.execute("BEGIN IMMEDIATE")
@@ -209,6 +216,8 @@ class Store:
                 return self._reason(
                     db, "DUPLICATE" if previous[0] == digest else "CHAT_CONFLICT", now
                 )
+            if is_vote and vote is not None:
+                reason = self.voting.accept(db, owner_id, stable["viewer"], vote, now, event_time)
             if suggestion is not None:
                 if db.execute("SELECT count(*) FROM candidates").fetchone()[0] >= 500:
                     reason = "HISTORY_CAPACITY"

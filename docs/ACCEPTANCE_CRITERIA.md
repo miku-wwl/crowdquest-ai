@@ -24,24 +24,28 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md) and [PHASE1_EVIDENCE.md](PHASE1_EV
 | P2-02 | No approval/Authorization or wrong identity denies effects | Negative tests and zero queue insert count | PASS; controlled core/consumer/HTTP denials |
 | P2-03 | Duplicate/conflicting/concurrent requests stay safe | Real SQLite rows/receipts, race tests | PASS; receipt/conflict tests and eight actual SQLite contender threads |
 | P2-04 | Crash/lost ack/late outcome becomes Unknown without replay | Restart tests; effect count unchanged | PASS; actual disposable process crash, lost ack, shortened deadline |
-| P2-05 | Unknown/unconfirmed admission never releases worker job | Job quarantine and gateway-read tests | PASS; pending ineligible, Unknown quarantined, worker rendering NOT_RUN |
+| P2-05 | Unknown/unconfirmed admission never releases worker job | Job quarantine and gateway-read tests | PASS; pending/Unknown job quarantine and separate worker denial tests |
 | P3-01 | Real provider yields one bounded valid domain Plan | Redacted real-provider trace; strict validation | PASS; three actual local Ollama/AIG probes, no real Twitch/Action |
 | P3-02 | Model injection cannot select identity/authority/extra actions | Adversarial schema/semantic and provider cases | PASS; host-owned scaffold, controlled negatives and real bounded probe; wording safety still needs human review |
-| P3-03 | Real owner review is required, rejection has no effect | Authenticated browser actions; CSRF/owner tests | PARTIAL; local API/Chromium synthetic consent passes, real human Action review NOT_RUN |
-| P3-04 | Durable admission and rendering are separate, accurate states | Correlated AIG receipt/job/render ack | PASS; actual temporary SQLite/worker/browser ack; actual OBS NOT_RUN |
+| P3-03 | Real owner review is required, rejection has no effect | Authenticated browser actions; CSRF/owner tests | PASS; tests plus explicit user approval/authorization of the exact live Action; see PHASE3-REAL-ACCEPTANCE.md |
+| P3-04 | Durable admission and rendering are separate, accurate states | Correlated AIG receipt/job/render ack | PASS; separate receipt/ACK and actual native OBS observation in the real session |
 | P3-05 | Reload/disconnect cannot replay uncertain rendering | Fenced dispatch and browser recovery tests | PASS; controlled worker/process/clock/ack tests and actual Chromium |
-| P3-06 | Complete flow works on genuine Twitch and OBS | Live IDs, human approval, receipt, actual OBS footage | NOT_RUN |
-| P4-01 | Fresh setup and judge access work | Clean-machine run evidence; accessible source | NOT_RUN |
-| P4-02 | Description, principal session ID and video meet requirements | English materials, public/unlisted YouTube <3 min | NOT_RUN |
-| P4-03 | Final Devpost submission received within period | Submitted confirmation and timestamp | NOT_RUN |
+| P3-06 | Complete flow works on genuine Twitch and OBS | Live IDs, human approval, receipt, actual OBS footage | PASS for one authorized Action; session-only image observations, no invented local archive |
+| P4A | Voting is durable, bounded and cannot grant execution authority | Transaction, concurrency, restart and Chromium tests | Local PASS; live Phase 4 NOT_RUN; PHASE4-ACCEPTANCE.md |
+| P4B | One immutable owner outcome displays without redispatch | Receipt/ACK linkage, duplicate/lost-ack/restart tests, Chromium | Local PASS; live Phase 4 NOT_RUN |
+| P4C | Transparent readable broadcast states within 1280x720 | Actual Chromium maximum text, timers, reduced motion and screenshots | Local PASS; actual Phase 4 OBS NOT_RUN |
+| P4D | Full existing regression, dependencies and integrity retained | 203 backend / 25 frontend, three browser suites, static/security checks | Local PASS; exact-commit CI recorded in PHASE4-ACCEPTANCE.md |
+| P5-01 | Fresh setup and judge access work | Clean-machine run evidence; accessible source | NOT_RUN |
+| P5-02 | Description, principal session ID and video meet requirements | English materials, public YouTube <3 min | PARTIAL; English storyboard/checklist prepared, recording/upload NOT_RUN |
+| P5-03 | Final Devpost submission received within period | Submitted confirmation and timestamp | NOT_RUN |
 
 Phase 1 engineering gates pass after the user's explicit post-start manual acceptance
 and final regression. Original PNG archival remains PARTIAL; the user-approved visual
 evidence alternative satisfies the OBS observation criterion without fabricated files.
 Phase 2's conditional prerequisite is satisfied; its own quality gates remain separate.
-Phase 2 remote delivery/CI at edcefa7 is PASS. Phase 3 local engineering qualification
-is distinct from final live acceptance: P3-03 real human evidence and P3-06 remain open.
-See [Phase 3 implementation](PHASE3-IMPLEMENTATION.md). Competition eligibility and
+Phase 2 remote delivery/CI at edcefa7 is PASS. The subsequent genuine Phase 3 session
+passed the scoped human/OBS gates; see [real session record](PHASE3-REAL-ACCEPTANCE.md).
+New Phase 4 live voting/outcome acceptance remains separate and NOT_RUN. Competition eligibility and
 entrant-owned runtime reuse clarification still block submission readiness.
 No acceptance row authorizes future work. Product release
 or submission cannot be called PASS while its mandatory real evidence is missing.

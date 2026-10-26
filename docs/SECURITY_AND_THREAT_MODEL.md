@@ -2,8 +2,9 @@
 
 Status: Phase 1 engineering acceptance PASS, including user-observed real Twitch/OBS.
 Phase 2/3 controls have actual temporary AIG/SQLite, fault/concurrency and Chromium
-fixture coverage. Three real local-model probes passed; genuine Phase 3 human Action
-approval and full Twitch-to-OBS activation remain NOT_RUN. This is not a penetration
+fixture coverage. Three real local-model probes and the subsequent genuine Phase 3 single-Action
+human/Twitch/model/actual OBS session passed; see PHASE3-REAL-ACCEPTANCE.md. Phase 4
+live acceptance remains NOT_RUN. This is not a penetration
 test or production/multi-user security certification. Assets: exact consent, execution authority, channel identity,
 credentials, effect/receipt integrity, availability, viewer privacy and broadcast content.
 
@@ -78,3 +79,28 @@ Public durable AIG success and exact receipt/payload are checked before publicat
 Issued overlay deliveries are not replayed after reload/reconnect. Missing render ack,
 post-dispatch interruption or restart stays rendering Unknown. Browser telemetry cannot
 grant Action authority or prove actual OBS visibility. All stores remain private.
+
+## Phase 4 reviewed controls
+
+Strict !vote parsing and the existing session/channel/subscription/timestamp validation
+precede transactional EventSub dedup and keyed per-round viewer uniqueness. Server-only
+totals/deadlines, CAS commands, one-active-round uniqueness, per-second vote limits and
+finite history caps bound load. Reject votes before opening/after closure, changed
+message IDs, shared-chat sources, unsafe commands and unavailable identity state.
+Missing/replaced HMAC key fails closed; retain it privately with backups. Owner audit
+is scoped to the configured channel; overlay responses omit voter and candidate IDs.
+
+Winner selection is never consent. Explicit winner binding is immutable in consumer
+provenance, while AIG still validates the same exact four arguments and independent
+Approval/Authorization. No new viewer/model-controlled tool registration exists.
+
+Owner outcomes require a confirmed successful Action, exact admission receipt/job/
+payload and acknowledged rendering; missing/Unknown results cannot be relabelled as
+Completed. One terminal owner report and bounded issued display per overlay survive
+restarts without a second effect. Gameplay is not independently verified. Text remains
+React-escaped; native meter values avoid unsafe inline style under the existing CSP.
+
+Voting history is bounded to 500 rounds; original intake dedup capacity remains 10,000
+deliveries and vote history has an additional 20,000-row cap. These are deliberate demo
+limits, not unlimited production capacity. Reaching a cap rejects intake, never prunes
+identity/dedup history silently. No live migration or real store has been touched by tests.

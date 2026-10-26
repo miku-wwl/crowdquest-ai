@@ -275,3 +275,18 @@ without paid requests or large downloads. Preserve real candidates and the healt
 Phase 1 process. Live restart, new OAuth/pairing, real Action consent, paid providers,
 organizer contact, publication/submission and Phase 4 still need separate approval.
 Complete independent local work before asking for that live activation approval.
+
+## Phase 4 championship upgrade authorization — 2026-10-27
+
+The user explicitly authorizes local implementation, isolated synthetic qualification,
+documentation, scoped commits/non-force pushes to the verified CrowdQuest main, and
+exact-commit CI for audience voting, owner-reported outcomes and broadcast design.
+Their prior session completed the genuine Phase 3 single-Action E2E; record it as
+session evidence without rewriting historical test reports or inventing image files.
+Preserve the installed AIG pin, single tool, independent human gates and five-second
+budget. New product state belongs in the consumer. All tests use temporary fixtures;
+build frontend assets separately so the running service's frontend/dist is preserved.
+Do not restart the real service, change real stores/credentials, repeat OAuth/pairing,
+send Twitch messages or execute another real Action. Phase 4 live acceptance needs
+separate permission. Prepare the demo/script and submission checklist, but do not
+record/upload video, contact organizers, deploy, or submit the project.

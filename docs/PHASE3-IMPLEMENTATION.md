@@ -1,5 +1,12 @@
 # Phase 3 implementation and evidence
 
+Current update, 2026-10-27: **genuine Phase 3 single-Action E2E PASS**. See the
+[subsequent real session record](PHASE3-REAL-ACCEPTANCE.md). The dated build report below
+preserves the pre-activation state at the time of its checks; its NOT_RUN statements
+are historical, not the current live status. Phase 4 live acceptance remains NOT_RUN.
+
+## Historical build qualification
+
 Date: 2026-10-26, Pacific/Auckland. Baseline:
 `edcefa7c6d286e6f4dde98d01700dd2d636020cb`.
 **Local Phase 3A–3D engineering qualification: PASS.**

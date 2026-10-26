@@ -1,5 +1,10 @@
 # Implementation phases and gates
 
+Current update 2026-10-27: genuine Phase 3 single-Action E2E PASS
+([record](PHASE3-REAL-ACCEPTANCE.md)). Phase 4 is the authorized competitive product
+upgrade; submission preparation is Phase 5. Earlier target dates and pre-activation
+statements below describe the historical plan, not current live status.
+
 The subsequent user instruction authorizes Phase 1 implementation/tests and normal
 main delivery. The later final-acceptance instruction conditionally authorizes Phase 2
 after all mandatory Phase 1 gates pass; no deployment/submission is authorized.
@@ -108,7 +113,15 @@ reload without countdown restart, and separate admission/rendering statuses.
 Gate: real Twitch → real model → real human approval → AIG durable admission → real
 browser and OBS render evidence with correlated IDs. A synthetic E2E does not pass it.
 
-## Phase 4 — Submission (target 2026-11-01 to 02 NZDT)
+## Phase 4 — Competitive upgrade (authorized 2026-10-27)
+
+Implement consumer voting, immutable winner-to-Run provenance, owner-reported outcomes
+and broadcast UX; preserve every AIG and live-service boundary. Isolated Python, React
+and actual Chromium qualification precedes scoped main push and exact-commit CI.
+Follow PHASE4-COMPETITIVE-UPGRADE.md, PHASE4-ACCEPTANCE.md and PHASE4-LIVE-RUNBOOK.md.
+New real Twitch votes, activation, OBS and another real Action need separate permission.
+
+## Phase 5 — Submission (target 2026-11-01 to 02 NZDT)
 
 Dependencies: real MVP pass, eligibility/reuse clarification, English setup and project
 materials, IP/media permissions, explicit authority for public uploads/final submission.

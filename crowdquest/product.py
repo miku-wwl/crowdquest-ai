@@ -149,6 +149,12 @@ class ProductService:
         self.owner_id = base.owner_id
         self.lock = threading.RLock()
         self.model_active = False
+        self.voting = None
+        renderer.audience_for_action = self.audience_for_action
+
+    def audience_for_action(self, action):
+        _, trace = self.proposals.metadata(action.spec.run_id)
+        return bool(trace.get("voting_round"))
 
     def require_current(self, run_id):
         candidate, _ = self.proposals.metadata(run_id)
@@ -162,6 +168,13 @@ class ProductService:
         context = TRACE.set(trace)
         try:
             run = await self.base.runtime.run_service.create(Intent(json.dumps(envelope)))
+            if self.voting is not None:
+                with closing(self.voting.intake.connect()) as db:
+                    origin = db.execute(
+                        "SELECT round_id FROM voting_origins WHERE candidate_id=?", (candidate_id,)
+                    ).fetchone()
+                    if origin:
+                        trace["voting_round"] = origin[0]
             self.proposals.finish(candidate_id, run, trace)
             self.proposals.record("PLAN_" + run.state.value.upper(), run.run_id)
             return self.view(candidate_id)
@@ -219,6 +232,7 @@ class ProductService:
             "status": current["status"],
             "run": run.to_dict(),
             "provenance": trace,
+            "audience_selected": bool(trace.get("voting_round")),
             "action": self.snapshot(actions[0]) if actions else None,
         }
 
@@ -263,3 +277,12 @@ class ProductService:
             else {"state": job["state"], "receipt_hash": short(job["receipt"])},
             "rendering": self.renderer.summary(action.effect_key),
         }
+
+    def record_outcome(self, action_id, kind, key):
+        with self.lock:
+            action = self.base.refresh(action_id)
+            self.require_current(action.spec.run_id)
+            job = self.base.store.job(action.effect_key)
+            if action.state.value != "Succeeded" or not job or job["state"] != "ELIGIBLE":
+                raise ValueError("OUTCOME_REQUIRES_CONFIRMED_ACTION")
+            return self.renderer.store.record_outcome(action, job, kind, key)

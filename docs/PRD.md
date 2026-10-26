@@ -1,10 +1,9 @@
 # Product requirements
 
-Status: Phase 1 real Twitch/OBS engineering acceptance PASS (user-observed visual
-evidence; original PNG archive PARTIAL). Phase 2 local AIG single-action integration,
-remote delivery and exact-commit CI PASS. Phase 2 live activation/human Action approval
-are NOT_RUN. Phase 3A–3D local engineering implementation/qualification is PASS; complete
-real Twitch → model → human approval → AIG → OBS acceptance is still NOT_RUN.
+Status: Phase 1/2 engineering PASS. Genuine Phase 3 single-Action Twitch/model/human/
+AIG/actual OBS acceptance PASS; see [session evidence](PHASE3-REAL-ACCEPTANCE.md).
+Phase 4 audience voting/outcomes/broadcast upgrades have isolated local qualification;
+new genuine Phase 4 Twitch/voting/OBS acceptance remains NOT_RUN.
 Owner: miku-wwl.
 
 ## Problem and users
@@ -22,9 +21,11 @@ status without becoming an agent-runtime operator.
 
 1. Send `!quest Beat the next boss without healing` in the configured channel.
 2. The application accepts at most one candidate for that chat event, subject to limits.
-3. AI proposes a short display challenge; the streamer may reject it.
-4. An approved, independently authorized challenge appears with a countdown.
-5. The overlay shows its own lifecycle; it does not claim to verify gameplay compliance.
+3. The streamer may shortlist exactly two ideas; viewers send !vote 1 or !vote 2.
+   The server closes the round; an equal result needs an explicit owner choice.
+4. The winning candidate becomes a bounded local-model Plan; the streamer may reject it.
+5. An approved, independently authorized challenge appears with a countdown.
+6. The overlay shows its own lifecycle; it does not claim to verify gameplay compliance.
 
 ## Streamer journey
 
@@ -54,8 +55,8 @@ are executable. A challenge describes gameplay; it never controls the game.
 
 No Twitch Extension, OBS scene control, bans, moderation punishment, game modification,
 money movement, arbitrary execution, multi-agent orchestration, multi-tenant SaaS or
-AIG rewrite. Voting, history UI, preferences, animations, provider UI and analytics
-are stretch work only after a real MVP E2E pass and explicit scope approval.
+AIG rewrite. Voting, bounded outcome presentations and broadcast design are authorized Phase 4 work.
+History/analytics, provider UI and complex achievements remain out of scope.
 
 ## Success criteria
 
@@ -71,3 +72,14 @@ Acceptance requires evidence in [ACCEPTANCE_CRITERIA.md](ACCEPTANCE_CRITERIA.md)
 Latency, viewer enjoyment and model quality remain unmeasured. Proposed demo targets:
 preview within 30 seconds and render acknowledgement within 3 seconds of confirmed
 admission on a healthy local setup; measure them rather than assume them.
+
+## Phase 4 audience direction and outcomes
+
+The owner shortlists exactly two valid unused candidates, creates Draft, then explicitly
+opens one bounded round. EventSub-compatible votes are durably deduplicated and unique
+per keyed viewer/round. Persisted server deadlines and transactional closure determine
+totals; ties never pick a winner. The winning candidate is frozen into Run provenance.
+No vote generates a grant or executes an Action. Four separate human operations remain.
+After an acknowledged successful challenge, the owner can record one immutable Completed,
+Failed or Skipped report. Its brief presentation has separate no-replay state and never
+executes the original Action again. The overlay labels gameplay results as streamer reports.

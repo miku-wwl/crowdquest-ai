@@ -1,0 +1,128 @@
+{
+  "date": "2026-10-27",
+  "classification": "SYNTHETIC_TEST / LOCAL_ENGINEERING_ONLY",
+  "git_baseline": "369ec862465705225f8781dd867ecd23fdf90028",
+  "backend": {
+    "baseline_count": 163,
+    "final_count": 203,
+    "exit_code": 0,
+    "seconds": 98.93,
+    "existing_warning": "Starlette TestClient/httpx deprecation"
+  },
+  "frontend": {
+    "baseline_count": 16,
+    "final_count": 25,
+    "exit_code": 0
+  },
+  "checks": {
+    "python_lint": 0,
+    "python_format": 0,
+    "python_files_formatted": 53,
+    "frontend_typecheck": 0,
+    "frontend_semantic_lint": 0,
+    "frontend_format": 0,
+    "isolated_build": 0,
+    "lock": 0,
+    "dependency_compatibility": 0,
+    "aig_pin_api_source_hash_template": 0,
+    "phase1_actual_chromium": 0,
+    "phase3_actual_chromium_and_worker": 0,
+    "phase4_actual_chromium_and_worker": 0,
+    "npm_advisories": 0,
+    "python_known_vulnerabilities": 0,
+    "python_auditable_distributions": 42,
+    "python_audit_skipped": [
+      "agentic-intent-gate==0.3.0; Git-only; pinned source integrity verified separately"
+    ],
+    "secret_pattern_scan": "PASS",
+    "markdown_local_links": "PASS",
+    "existing_frontend_assertions_preserved": "Prettier-normalized baseline comparison PASS",
+    "git_cached_diff_check": 0
+  },
+  "dependency_fix": {
+    "package": "filelock",
+    "old": "3.32.7",
+    "new": "4.2.4",
+    "advisories": [
+      "CVE-2026-112940",
+      "CVE-2026-112913",
+      "CVE-2026-112907"
+    ],
+    "qualification_environment": "separate isolated environment; original live environment preserved"
+  },
+  "real_operations": {
+    "service_restart": "NOT_RUN",
+    "oauth": "NOT_RUN",
+    "obs_pairing": "NOT_RUN",
+    "twitch_chat_writes": "NOT_RUN",
+    "real_aig_action": "NOT_RUN",
+    "phase4_real_twitch_acceptance": "NOT_RUN",
+    "phase4_actual_obs": "NOT_RUN"
+  },
+  "live_preservation": {
+    "original_backend_still_present": true,
+    "original_frontend_files_hash_match": true,
+    "original_frontend_file_count": 3,
+    "live_worker_process_at_inspection": "NOT_FOUND; no restart/start performed"
+  },
+  "screenshots": {
+    "synthetic-chat-selected-challenge.png": {
+      "sha256": "d96955d0598328cc6bb9345324a7f5c532bb0bb0f12dd7fffc451f34be1f2a69",
+      "evidence": "SYNTHETIC_TEST; actual Chromium; not actual OBS"
+    },
+    "synthetic-director-studio.png": {
+      "sha256": "72507bd6470f1fc90897245ec8af0331e52ef0b351f697166563d95ec800e9f0",
+      "evidence": "SYNTHETIC_TEST; actual Chromium; not actual OBS"
+    },
+    "synthetic-owner-outcome.png": {
+      "sha256": "9a67dfc61977234e64bdd66f16159cea5906aa3812f1938c681fe9a7f8e60924",
+      "evidence": "SYNTHETIC_TEST; actual Chromium; not actual OBS"
+    },
+    "synthetic-voting-max-unicode.png": {
+      "sha256": "f3b76f958368b85764a7f69523489d5640392a61ceb325329cbc9d0373845558",
+      "evidence": "SYNTHETIC_TEST; actual Chromium; not actual OBS"
+    },
+    "synthetic-voting.png": {
+      "sha256": "7015cc87bdefeadd1a495412a2fd1c24fca2c7d694ab67576f6176720aeefcee",
+      "evidence": "SYNTHETIC_TEST; actual Chromium; not actual OBS"
+    }
+  },
+  "source_hashes": {
+    "crowdquest/outcomes.py": "4db87b5bd3c687885b1f28e5d2cef291c3f376f8f8c5553091d2381f917a7026",
+    "crowdquest/phase4_routes.py": "d285463035698693a680eb17d554ee9c1ed09a24b690a3b3fd6f76ded8b28e47",
+    "crowdquest/voting.py": "9fbd4127be3fd981231b1fe84fb98aff4f7dc0ede8291ba93c52d119e9060ca6",
+    "frontend/src/broadcast.tsx": "a2a64d444c57ae75fe3e37686810f0d4f2cc308ddef1128a7429d06642ff3d8a",
+    "frontend/src/championship.css": "6f76379890aeee5f8bb548bb9ec06feb87465c7328a666720be08daafc42c8e1",
+    "frontend/src/voting.test.tsx": "bbbd330133484e08538803dc2571fcdec6d812ec0e40ea59c0abd3d260adb4f2",
+    "frontend/src/voting.tsx": "f2ef0f04bffa0fcf0530df1a2076f62715dab216af981fcbb618f46d95f1a19c",
+    "tests/phase4_browser_e2e.py": "cb623063cfcb4bfadd6df10208692520129bbe5c144928b208ade6c4c6a0dcfb",
+    "tests/test_outcomes.py": "138f8c693f946caf76694da3bd9cc3256c7ccc621900d0447f657462d57a2a1e",
+    "tests/test_phase4_routes.py": "c5d52c7b8bd87524c223cc771ad5cf42de4ee6376eda50244c9a1bb6108cf8e9",
+    "tests/test_voting.py": "c77c8999d4fcaaa44c3343403602b1727e20f3efe6d7dfe702a0aa9a99aa1fd2",
+    "tests/voting_crash.py": "a1275375318ff895a69e2ea4eec9dd252b8247eaedf043d5e95390a39b0b01a3",
+    ".github/workflows/phase0.yml": "42acca26bfa0743e5882bc5756fc1f456da398d6cfd8315f0b4c60fe6d47fead",
+    "crowdquest/app.py": "3a0c17a162dfc0611df0f249a049215d1404ddd5b619e0ac77f5be0262fe01c0",
+    "crowdquest/eventsub.py": "98e713969d3a7a13f50cb17577f69bfb1d16e7720b4e3b407b09b3c3f5cbdc46",
+    "crowdquest/intake.py": "7dded2c2b0666fa5ba7180fdb58bf95a37439553ab9b3be9b1e6095ced39caee",
+    "crowdquest/phase3_routes.py": "bc0bfba78f5e9367e165d85313b77aeb846e06dd2db022e2b1997b3d0eea0629",
+    "crowdquest/product.py": "be6abd414c121bf89972bbc9ccec98dfaf77c241f76e6086abdb7fa121c8b309",
+    "crowdquest/rendering.py": "9f099f45516b80715da01d9edc1cfc59f24d2e55669d20031924b1e1d5ff6946",
+    "frontend/package-lock.json": "c8afbac541329943d2e5c839502d277c8e410575fef9081b0c10ea7823d21702",
+    "frontend/package.json": "6ffc8a0bc2109ad224f186b6e370eb84e1f98a7064efd10ae111147bc524a6cc",
+    "frontend/src/main.tsx": "6c2f77cf8ea5ae3cd96bcc5a6fea03aeddefab17a407cdaa6e046ff3fca03a20",
+    "frontend/src/review.css": "6afe51855b08ee5e19ef55dccfc87788a94d5c06757da8c424aea21bcfc1f9a2",
+    "frontend/src/review.test.tsx": "33ceb535c76a3ea5f177d225914ec23b6eb0afdb492c5ae5cc61a87de40e230a",
+    "frontend/src/review.tsx": "0c235e6dbd8d5299079e9a48cc687f3abe8a6eab6620c7f6a5dda20703448fed",
+    "frontend/src/style.css": "1f7d819afd2ce75c5394b017a6feb453888f7fd297317ed5df1d367305a91d88",
+    "frontend/src/test-setup.ts": "ace51ddf220516380965ca2e146ee99b1024f32578c033689c32f834de4baab0",
+    "frontend/src/ui.test.tsx": "a732775fedf435c24721a9e3d7850891e8d22323089e02828f536ebadf9adc99",
+    "frontend/src/ui.tsx": "f30d1e963f0b356cc8a9afc95dfe40a4b60cb4bfc4a42a3ff97964f31b140fa3",
+    "frontend/vite.config.ts": "8e149eb0913b11f2df7fbdc6c062c003dd25cd4f9f4b852c9b379f0670c3a2d0",
+    "pyproject.toml": "b8c6e42cead116f0958d4e0e001223bc654e4b3a1afc3b93eeb11eca283af513",
+    "scripts/verify_baseline.py": "a06e1dce9fd73c90fd1649c7f4b4b4e7d68052f903072bb6cb7d07f3d1d5d032",
+    "tests/browser_server.py": "24e6d9f65761544d62f49af12250ab3366f4d6c4efae7ff12da09ebd65de9ce9",
+    "tests/process_helpers.py": "e2148e9d5380568225a5a9f3bade612c3cf1090b3dd44f96ac21115e59a8402a",
+    "uv.lock": "a6b754c8674c6ab5b9fce5f7bbee6ee3bb965739d3eb38eec7c363745cabc5bb"
+  },
+  "source_hash_basis": "Canonical Git index bytes, after EOL normalization; report does not hash itself"
+}

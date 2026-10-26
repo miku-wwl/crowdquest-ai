@@ -1,6 +1,7 @@
 """Owned fixture-process startup identity and graceful shutdown acknowledgement."""
 
 import json
+import os
 import socket
 import subprocess
 import sys
@@ -10,7 +11,7 @@ from urllib.request import urlopen
 from filelock import FileLock
 
 
-def start_fixture(directory, *, phase3=False):
+def start_fixture(directory, *, phase3=False, phase4=False):
     for name in ("stop", "stopped"):
         (directory / name).unlink(missing_ok=True)
     with socket.socket() as listener:
@@ -18,9 +19,10 @@ def start_fixture(directory, *, phase3=False):
         port = listener.getsockname()[1]
     process = subprocess.Popen(
         [sys.executable, "-m", "tests.browser_server", str(directory), str(port)]
-        + (["phase3"] if phase3 else []),
+        + (["phase4"] if phase4 else ["phase3"] if phase3 else []),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
+        creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,
     )
     origin = f"http://localhost:{port}"
     deadline = time.monotonic() + 15

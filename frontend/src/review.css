@@ -1,4 +1,178 @@
-.review-panel{padding:26px;background:#19191f;border:1px solid #36303f;border-radius:12px}.review-panel h2{font-size:25px;margin:0 0 22px}.workflow-status{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0}.workflow-status span{padding:5px 8px;border:1px solid #4c4359;border-radius:4px;font-size:10px;color:#c6bed2}.provenance{padding:8px 10px;font-size:11px;letter-spacing:.8px;background:#30273d;color:#d6c4ff;border-radius:4px}.provenance.real{background:#1c332d;color:#9bdfc1}.plan-fields{padding:18px;background:#121217;border:1px solid #4c4359;border-radius:6px;margin:16px 0;overflow-wrap:anywhere}.plan-fields h3{font-size:21px;margin:0 0 12px}.plan-fields p{font-size:14px}.plan-fields dl{display:flex;gap:28px;margin:20px 0}.plan-fields dt,.plan-fields small{font-size:10px;color:#aaa0b8}.plan-fields dd{margin:5px 0;font-size:13px}.workflow-actions{display:grid;gap:10px}.secondary{background:#302839;border:1px solid #746387;border-radius:5px;color:#e5d8f5;padding:11px 16px;font:inherit;font-size:12px}.manual-fields{display:grid;gap:12px;margin:15px 0;padding:16px;border:1px solid #554662;border-radius:6px}.manual-fields label{font-size:11px;color:#c2b9cc;display:grid;gap:6px}.manual-fields input,.manual-fields textarea,.manual-fields select{color:#f0eaf5;background:#121217;border:1px solid #61516e;border-radius:4px;padding:9px;font:inherit}.manual-fields textarea{min-height:80px;resize:vertical}.manual-fields small,.audit-list,.review-panel details{font-size:10px;color:#a69bad}.review-panel details{margin-top:20px;overflow-wrap:anywhere}.review-panel summary{cursor:pointer;color:#c8b1f4}.audit-list{padding-left:18px;line-height:1.9}.countdown{display:block;font-variant-numeric:tabular-nums;font-size:48px;font-weight:750;color:#bba5f9;margin:0 34px 20px}.challenge-description{padding:0 34px;color:#c0b6cb;font-size:18px;overflow-wrap:anywhere}.challenge-details{padding:0 34px 20px;color:#ab9dbb;font-size:12px}
+.review-panel {
+  padding: 26px;
+  background: #19191f;
+  border: 1px solid #36303f;
+  border-radius: 12px;
+}
+.review-panel h2 {
+  font-size: 25px;
+  margin: 0 0 22px;
+}
+.workflow-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 18px 0;
+}
+.workflow-status span {
+  padding: 5px 8px;
+  border: 1px solid #4c4359;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #c6bed2;
+}
+.provenance {
+  padding: 8px 10px;
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  background: #30273d;
+  color: #d6c4ff;
+  border-radius: 4px;
+}
+.provenance.real {
+  background: #1c332d;
+  color: #9bdfc1;
+}
+.plan-fields {
+  padding: 18px;
+  background: #121217;
+  border: 1px solid #4c4359;
+  border-radius: 6px;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.plan-fields h3 {
+  font-size: 21px;
+  margin: 0 0 12px;
+}
+.plan-fields p {
+  font-size: 14px;
+}
+.plan-fields dl {
+  display: flex;
+  gap: 28px;
+  margin: 20px 0;
+}
+.plan-fields dt,
+.plan-fields small {
+  font-size: 10px;
+  color: #aaa0b8;
+}
+.plan-fields dd {
+  margin: 5px 0;
+  font-size: 13px;
+}
+.workflow-actions {
+  display: grid;
+  gap: 10px;
+}
+.secondary {
+  background: #302839;
+  border: 1px solid #746387;
+  border-radius: 5px;
+  color: #e5d8f5;
+  padding: 11px 16px;
+  font: inherit;
+  font-size: 12px;
+}
+.manual-fields {
+  display: grid;
+  gap: 12px;
+  margin: 15px 0;
+  padding: 16px;
+  border: 1px solid #554662;
+  border-radius: 6px;
+}
+.manual-fields label {
+  font-size: 11px;
+  color: #c2b9cc;
+  display: grid;
+  gap: 6px;
+}
+.manual-fields input,
+.manual-fields textarea,
+.manual-fields select {
+  color: #f0eaf5;
+  background: #121217;
+  border: 1px solid #61516e;
+  border-radius: 4px;
+  padding: 9px;
+  font: inherit;
+}
+.manual-fields textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.manual-fields small,
+.audit-list,
+.review-panel details {
+  font-size: 10px;
+  color: #a69bad;
+}
+.review-panel details {
+  margin-top: 20px;
+  overflow-wrap: anywhere;
+}
+.review-panel summary {
+  cursor: pointer;
+  color: #c8b1f4;
+}
+.audit-list {
+  padding-left: 18px;
+  line-height: 1.9;
+}
+.countdown {
+  display: block;
+  font-variant-numeric: tabular-nums;
+  font-size: 48px;
+  font-weight: 750;
+  color: #bba5f9;
+  margin: 0 34px 20px;
+}
+.challenge-description {
+  padding: 0 34px;
+  color: #c0b6cb;
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.challenge-details {
+  padding: 0 34px 20px;
+  color: #ab9dbb;
+  font-size: 12px;
+}
 
-.production-card .overlay-brand{padding:16px 30px}.production-card .warning{margin-bottom:18px}.production-card .overlay-text{font-size:30px;line-height:1.2;padding-bottom:12px}.production-card .challenge-description{font-size:16px;line-height:1.45;margin-top:0;margin-bottom:14px}.production-card .challenge-details{padding-bottom:12px;margin:0;font-size:12px}.production-card .countdown{font-size:40px;line-height:1.4;margin-bottom:14px}.production-card .overlay-footer{padding-top:12px;padding-bottom:12px}
-.manual-field{display:grid;gap:6px}
+.production-card .overlay-brand {
+  padding: 16px 30px;
+}
+.production-card .warning {
+  margin-bottom: 18px;
+}
+.production-card .overlay-text {
+  font-size: 30px;
+  line-height: 1.2;
+  padding-bottom: 12px;
+}
+.production-card .challenge-description {
+  font-size: 16px;
+  line-height: 1.45;
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+.production-card .challenge-details {
+  padding-bottom: 12px;
+  margin: 0;
+  font-size: 12px;
+}
+.production-card .countdown {
+  font-size: 40px;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.production-card .overlay-footer {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.manual-field {
+  display: grid;
+  gap: 6px;
+}

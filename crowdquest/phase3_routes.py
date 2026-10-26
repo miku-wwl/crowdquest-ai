@@ -75,6 +75,7 @@ def register_phase3(app, owner, intake):
         current = await service(request, True)
         value = candidate(current, candidate_id)
         try:
+            intake.voting.require_plannable(current.owner_id, candidate_id)
             return await current.generate(value)
         except GenerationBusy:
             raise HTTPException(429, "GENERATION_BUSY") from None
@@ -86,6 +87,7 @@ def register_phase3(app, owner, intake):
         current = await service(request, True)
         candidate(current, candidate_id)
         try:
+            intake.voting.require_plannable(current.owner_id, candidate_id)
             return await current.manual(
                 candidate_id, value.challenge.model_dump(), value.expected_version
             )

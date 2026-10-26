@@ -10,13 +10,16 @@ from uuid import uuid4
 
 from .admission import canonical, uuid4_string
 from .challenges import Challenge
+from .outcomes import OutcomePresentation
 
 ACTIVE = ("CLAIMED", "SENT", "RENDERED")
 
 
-class RenderStore:
+class RenderStore(OutcomePresentation):
     def __init__(self, path, binding, *, monotonic=time.monotonic, clock=time.time):
         self.path, self.binding, self.monotonic, self.clock = path, binding, monotonic, clock
+        self.boot = ""
+        self.ensure_presentation_schema()
 
     @staticmethod
     def provision(path, binding):
@@ -51,6 +54,7 @@ class RenderStore:
         return db
 
     def recover(self, boot):
+        self.boot = boot
         with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             db.execute(
@@ -59,9 +63,14 @@ class RenderStore:
             )
             db.execute("UPDATE observations SET status='UNKNOWN' WHERE status='ISSUED'")
             db.execute("UPDATE leader SET worker='',epoch=epoch+1,deadline=0,boot=?", (boot,))
+            db.execute("UPDATE challenge_outcomes SET state='ENDED' WHERE state='PRESENTING'")
             db.commit()
 
     def _maintain(self, db, now):
+        db.execute(
+            "UPDATE challenge_outcomes SET state='ENDED' WHERE state='PRESENTING' AND (deadline<=? OR boot!=?)",
+            (now, self.boot),
+        )
         leader = db.execute("SELECT * FROM leader").fetchone()
         if leader["deadline"] <= now:
             db.execute(
@@ -105,7 +114,7 @@ class RenderStore:
             db.commit()
             return epoch
 
-    def claim(self, job, worker, epoch, boot):
+    def claim(self, job, worker, epoch, boot, *, audience_selected=False):
         with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             self._fence(db, worker, epoch, boot)
@@ -130,6 +139,10 @@ class RenderStore:
                     epoch,
                     boot,
                 ),
+            )
+            db.execute(
+                "INSERT INTO render_origins VALUES(?,?)",
+                (job["effect_key"], int(audience_selected)),
             )
             db.commit()
             return render_id
@@ -188,6 +201,7 @@ class RenderStore:
                 "render_id": row["render_id"],
                 "acknowledgements": count,
                 "evidence": "BROWSER_ACK_ONLY" if count else "NO_RENDER_ACK",
+                "outcome": self.outcome(effect_key),
             }
 
     def current(self, overlay_key, view_id):
@@ -197,6 +211,10 @@ class RenderStore:
             self._maintain(db, now)
             row = db.execute("SELECT * FROM renders ORDER BY rowid DESC LIMIT 1").fetchone()
             if not row or row["state"] not in ("SENT", "RENDERED"):
+                result = self.current_outcome(db, overlay_key, view_id, now)
+                if result:
+                    db.commit()
+                    return result
                 state = (
                     "expired"
                     if row and row["state"] == "EXPIRED"
@@ -204,6 +222,8 @@ class RenderStore:
                     if row and row["state"] == "UNKNOWN"
                     else "waiting"
                 )
+                if state == "expired" and row["deadline"] is not None and now > row["deadline"] + 6:
+                    state = "waiting"
                 db.commit()
                 return {"mode": "production", "state": state}
             observation = db.execute(
@@ -233,6 +253,16 @@ class RenderStore:
                 "challenge": json.loads(row["payload"]),
                 "remaining_seconds": max(0, row["deadline"] - now),
                 "expires_at": row["expires_at"],
+                "chosen_by_chat": bool(
+                    db.execute(
+                        "SELECT audience_selected FROM render_origins WHERE effect_key=?",
+                        (row["effect_key"],),
+                    ).fetchone()[0]
+                )
+                if db.execute(
+                    "SELECT 1 FROM render_origins WHERE effect_key=?", (row["effect_key"],)
+                ).fetchone()
+                else False,
             }
 
     def acknowledge(self, overlay_key, view_id, render_id, delivery_id):
@@ -257,6 +287,7 @@ class RenderCoordinator:
     def __init__(self, base, store, token):
         self.base, self.store, self.token = base, store, token
         self.boot = str(uuid4())
+        self.audience_for_action = lambda action: False
         store.recover(self.boot)
 
     def require_worker(self, header):
@@ -283,7 +314,9 @@ class RenderCoordinator:
             job = self.base.store.job(effect_key)
             if action.state.value != "Succeeded" or not job or job["state"] != "ELIGIBLE":
                 continue
-            render_id = self.store.claim(job, worker_id, epoch, boot)
+            render_id = self.store.claim(
+                job, worker_id, epoch, boot, audience_selected=self.audience_for_action(action)
+            )
             if render_id:
                 # A second durable public read closes the claim-to-publish boundary.
                 checked = self.base.refresh(action_id)

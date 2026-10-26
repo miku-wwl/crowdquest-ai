@@ -3,8 +3,8 @@
 Status: Phase 2 local integration and exact-commit remote CI PASS; see
 [implementation and evidence](PHASE2-IMPLEMENTATION.md). Phase 3 adds real local-model
 Plan probes and controlled worker/browser qualification; see
-[Phase 3 evidence](PHASE3-IMPLEMENTATION.md). Live activation, authenticated real human
-Action approval and the complete genuine Twitch/model/OBS chain remain NOT_RUN.
+[Phase 3 evidence](PHASE3-IMPLEMENTATION.md). The subsequent genuine single-Action human/Twitch/model/OBS session passed; see
+[real session evidence](PHASE3-REAL-ACCEPTANCE.md). Phase 4 has a separate pending live gate.
 
 ## Immutable release and instructions
 
@@ -53,7 +53,7 @@ Versions are read from current state; do not hard-code the reference example's v
 numbers into a dashboard. AIG demo prompts and UI are service-demo specific and will
 not be reused as a generic Twitch planner or authentication boundary.
 
-## Frozen trusted composition (implemented; only temporary test profiles provisioned)
+## Frozen trusted composition (qualified locally and in one genuine Phase 3 session)
 
 | Field | Design value |
 | --- | --- |
@@ -109,3 +109,11 @@ denials, duplicate commands, same-effect conflicts, concurrent claims, crash/res
 lost commit acknowledgements, timeouts and quarantined jobs. Synthetic providers and
 scripted approvals must be labeled test consent. They cannot prove human approval,
 real model inference or Twitch/OBS functionality.
+
+## Phase 4 invariant
+
+Voting and owner-reported outcomes are application state, not new AIG tools. Winner
+provenance and the audience badge live outside the unchanged challenge arguments.
+Every new Action still needs its own exact Plan Approval, admission, independent
+Authorization and explicit Execute request. Outcome presentation never calls Execute,
+rewrites a grant/result, extends a deadline or creates a replacement Unknown Action.

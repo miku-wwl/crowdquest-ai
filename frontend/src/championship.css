@@ -1,0 +1,784 @@
+:root {
+  --mint: #9ef5ce;
+  --violet: #c2a3ff;
+  --ink: #0c0e14;
+  --line: #303442;
+  --muted: #a7acbd;
+}
+body {
+  background:
+    radial-gradient(ellipse at 78% 0, #201b35 0, transparent 48%), #0c0e14;
+  color: #f2f3fa;
+}
+.shell {
+  max-width: 1520px;
+}
+header {
+  padding: 0 44px;
+  background: #0d1018b8;
+}
+.brand-mark {
+  background: var(--mint);
+  color: #10161b;
+  border-radius: 11px;
+}
+.brand-ai {
+  color: var(--mint);
+  border-color: #355a4b;
+}
+.phase {
+  color: #c5cae0;
+}
+.hero {
+  margin: 5px 0 28px;
+}
+.hero h1 {
+  font-size: clamp(36px, 4vw, 58px);
+  letter-spacing: -2px;
+  line-height: 1.08;
+}
+.hero .eyebrow {
+  color: var(--mint);
+}
+.hero .lede {
+  font-size: 16px;
+  margin-top: 18px;
+}
+.owner {
+  border-color: #3d394e;
+}
+.owner strong {
+  font-size: 20px;
+}
+.warning {
+  margin-bottom: 18px;
+  background: #242116c9;
+  font-size: 11px;
+}
+.workspace {
+  margin-top: 28px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 1fr);
+}
+.inbox,
+.review-panel,
+.overlay-panel,
+.signin {
+  background: #151922;
+  border-color: var(--line);
+  box-shadow: 0 12px 34px #0002;
+}
+.section-title h2 {
+  font-size: 22px;
+}
+.candidate {
+  background: #191e29;
+  border-color: #343949;
+}
+.candidate.selected {
+  background: #26233b;
+}
+.candidate-top,
+.candidate-bottom {
+  font-size: 12px;
+}
+.candidate-top .source {
+  font-size: 10px;
+}
+.candidate .suggestion {
+  font-size: 17px;
+}
+.primary {
+  background: var(--mint);
+  color: #10291f;
+  min-height: 44px;
+}
+.secondary {
+  min-height: 42px;
+  background: #242939;
+  border-color: #52586b;
+}
+.primary:hover:not(:disabled) {
+  background: #bfffe2;
+}
+.secondary:hover:not(:disabled) {
+  border-color: var(--violet);
+}
+.fine {
+  color: #b1adbf;
+  font-size: 12px;
+}
+.eyebrow {
+  font-size: 11px;
+  color: var(--violet);
+}
+.muted {
+  color: var(--muted);
+}
+.review-panel {
+  padding: 26px;
+}
+.review-panel h2 {
+  font-size: 28px;
+}
+.plan-fields {
+  border-color: #4c485d;
+  background: #0e121b;
+}
+.plan-fields h3 {
+  font-size: 24px;
+}
+.plan-fields p {
+  font-size: 16px;
+}
+.plan-fields dt,
+.plan-fields small {
+  font-size: 12px;
+}
+.plan-fields dd {
+  font-size: 15px;
+}
+.workflow-status span {
+  font-size: 12px;
+  background: #202634;
+}
+.workflow-actions .primary,
+.workflow-actions .secondary {
+  font-size: 15px;
+  min-height: 48px;
+}
+.review-panel details,
+.audit-list {
+  font-size: 12px;
+}
+.provenance {
+  font-size: 12px;
+}
+.chat-badge {
+  display: inline-block;
+  border: 1px solid #36795d;
+  background: #173e30;
+  color: #b0ffdb;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+.action-identity {
+  overflow-wrap: anywhere;
+}
+.outcome-controls {
+  margin: 24px 0 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+.outcome-controls h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.outcome-controls > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+.outcome-recorded {
+  padding: 12px;
+  border: 1px solid #416958;
+  background: #193128;
+  border-radius: 8px;
+  color: var(--mint);
+}
+.voting-panel {
+  border: 1px solid #4c4567;
+  border-radius: 18px;
+  padding: 28px;
+  background: linear-gradient(130deg, #1c2130, #191827);
+  box-shadow: 0 18px 60px #0003;
+}
+.voting-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.voting-heading h2 {
+  font-size: 29px;
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.8px;
+}
+.voting-heading .eyebrow {
+  color: var(--mint);
+  margin-bottom: 9px;
+}
+.round-pill {
+  font-size: 11px;
+  white-space: nowrap;
+  letter-spacing: 1px;
+  font-weight: 700;
+  padding: 7px 12px;
+  background: #343045;
+  border: 1px solid #57506c;
+  border-radius: 24px;
+}
+.round-pill.open {
+  color: var(--mint);
+  background: #183c32;
+  border-color: #4a8b70;
+}
+.voting-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1.3fr);
+  gap: 28px;
+}
+.shortlist {
+  border-right: 1px solid #3b3b51;
+  padding-right: 26px;
+}
+.shortlist h3,
+.round-topline h3 {
+  font-size: 15px;
+  color: #e5def7;
+  margin: 0;
+}
+.shortlist > p {
+  font-size: 13px;
+  margin: 9px 0 16px;
+}
+.shortlist-options {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  display: grid;
+  gap: 9px;
+  max-height: 240px;
+  overflow: auto;
+}
+.shortlist-options label {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid #42475d;
+  border-radius: 9px;
+  background: #151a28;
+  padding: 12px;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.shortlist-options label span {
+  min-width: 0;
+}
+.shortlist-options input {
+  accent-color: var(--mint);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin: 2px 0;
+}
+.shortlist-options .shortlisted {
+  border-color: #82cfac;
+  background: #1a302d;
+}
+.shortlist-options:disabled {
+  opacity: 0.6;
+}
+.shortlist-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  align-items: end;
+}
+.shortlist-footer label {
+  font-size: 12px;
+  color: #bec5d8;
+  display: grid;
+  gap: 7px;
+}
+.shortlist-footer select {
+  background: #101722;
+  color: #fff;
+  font: inherit;
+  border: 1px solid #515a70;
+  border-radius: 6px;
+  padding: 10px;
+}
+.shortlist-footer button {
+  font-size: 12px;
+}
+.round-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 0 16px;
+}
+.round-topline output {
+  color: var(--mint);
+  font-size: 22px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+.vote-choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.vote-choice {
+  border: 1px solid #59516d;
+  background: #1b1d2d;
+  border-radius: 12px;
+  padding: 17px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.vote-choice.choice-2 {
+  border-color: #3f736d;
+  background: #142826;
+}
+.vote-choice-head {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: #cdb7fb;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.choice-2 .vote-choice-head {
+  color: var(--mint);
+}
+.vote-choice-head strong {
+  margin-left: auto;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.vote-number {
+  font-size: 17px;
+  width: 29px;
+  height: 29px;
+  display: grid;
+  place-items: center;
+  background: #3b3152;
+  border-radius: 7px;
+}
+.choice-2 .vote-number {
+  background: #24524b;
+}
+.vote-suggestion {
+  font-size: 16px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+  margin: 15px 0 20px;
+  flex: 1;
+}
+.vote-track {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: 8px;
+  border: 0;
+  background: #090d16;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.vote-track::-webkit-meter-bar {
+  background: #090d16;
+  border: 0;
+  border-radius: 10px;
+}
+.vote-track::-webkit-meter-optimum-value {
+  background: var(--violet);
+  border-radius: 10px;
+  transition: width 0.35s ease;
+}
+.choice-2 .vote-track::-webkit-meter-optimum-value {
+  background: var(--mint);
+}
+.vote-track::-moz-meter-bar {
+  background: var(--violet);
+}
+.choice-2 .vote-track::-moz-meter-bar {
+  background: var(--mint);
+}
+.vote-choice-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 13px;
+  font-size: 13px;
+}
+.vote-choice-foot code {
+  background: #0d111c;
+  padding: 4px 8px;
+  border-radius: 5px;
+  color: #e2d7fa;
+}
+.vote-winner {
+  box-shadow: 0 0 0 2px var(--mint);
+  border-color: var(--mint);
+}
+.voting-instructions {
+  font-size: 13px;
+  color: #b8bed0;
+  margin: 15px 0;
+}
+.voting-instructions code {
+  color: #f5f2ff;
+  font-weight: 700;
+}
+.round-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.round-actions .quiet {
+  width: auto;
+}
+.vote-empty {
+  display: grid;
+  place-content: center;
+  text-align: center;
+  min-height: 260px;
+}
+.vote-empty > span {
+  font-size: 54px;
+  font-weight: 800;
+  color: var(--mint);
+}
+.vote-empty i {
+  font-size: 20px;
+  margin: 0 14px;
+  font-weight: 500;
+  color: var(--violet);
+}
+.vote-empty h3 {
+  font-size: 22px;
+  margin: 10px 0;
+}
+.vote-empty p {
+  font-size: 13px;
+  color: #b8bed0;
+  max-width: 340px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+body.is-overlay {
+  background: transparent;
+}
+.is-overlay #root {
+  min-height: 100vh;
+}
+.overlay-shell {
+  background: transparent;
+  place-items: end center;
+  padding: 26px;
+  min-height: 100vh;
+}
+.overlay-card {
+  width: min(940px, 100%);
+  background: linear-gradient(125deg, #151b28f5, #1c1828f5);
+  border-color: #6e6186;
+  box-shadow: 0 15px 55px #0007;
+}
+.overlay-brand {
+  font-size: 18px;
+}
+.overlay-brand > span:last-child {
+  color: #c3b1db;
+}
+.overlay-card .warning {
+  font-size: 10px;
+  padding: 8px 24px;
+  background: #312b1fe0;
+}
+.production-card .overlay-brand {
+  padding: 13px 25px;
+}
+.production-card .overlay-text {
+  font-size: 32px;
+  padding: 0 28px 12px;
+  margin: 0;
+  line-height: 1.18;
+  letter-spacing: -0.6px;
+}
+.production-card .challenge-description {
+  font-size: 18px;
+  line-height: 1.4;
+  padding: 0 28px;
+  margin-top: 10px;
+  margin-bottom: 14px;
+  color: #e0dfeb;
+}
+.production-card .challenge-details {
+  padding: 0 28px 8px;
+  color: #c4bdd1;
+  font-size: 13px;
+}
+.production-card > .eyebrow {
+  margin: 0 28px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.production-card .countdown {
+  font-size: 48px;
+  margin: 0 28px 15px;
+  color: var(--mint);
+}
+.overlay-footer {
+  font-size: 10px;
+  color: #c4b7d5;
+  background: #0c111bd9;
+}
+.production-card .overlay-footer {
+  padding: 10px 25px;
+}
+.overlay-empty {
+  padding: 12px 28px 30px;
+}
+.overlay-empty h1 {
+  font-size: 32px;
+  letter-spacing: -0.6px;
+}
+.overlay-empty p:not(.eyebrow) {
+  font-size: 15px;
+  color: #c9c1d5;
+}
+.voting-card {
+  width: min(1140px, 100%);
+}
+.broadcast-voting {
+  padding: 6px 25px 8px;
+}
+.broadcast-heading {
+  display: flex;
+  gap: 25px;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.broadcast-heading h1 {
+  font-size: 32px;
+  letter-spacing: -0.8px;
+  margin: 0;
+}
+.broadcast-heading .eyebrow {
+  font-size: 11px;
+  margin-bottom: 8px;
+  color: var(--mint);
+}
+.vote-countdown {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--mint);
+  font-variant-numeric: tabular-nums;
+}
+.vote-countdown small {
+  font-size: 11px;
+  display: block;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-top: 8px;
+}
+.broadcast-voting .vote-choice {
+  padding: 18px;
+}
+.broadcast-voting .vote-suggestion {
+  font-size: 20px;
+  line-height: 1.35;
+  margin: 16px 0 18px;
+}
+.broadcast-voting .vote-choice-head {
+  font-size: 12px;
+}
+.broadcast-voting .vote-choice-head strong,
+.broadcast-voting .vote-choice-foot {
+  font-size: 15px;
+}
+.broadcast-voting .voting-instructions {
+  font-size: 17px;
+  margin: 18px 0 10px;
+}
+.broadcast-voting .voting-instructions span {
+  float: right;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: #cabedb;
+  line-height: 26px;
+}
+.outcome-display {
+  padding: 12px 32px 28px;
+  text-align: center;
+  animation: result-arrive 0.45s ease-out;
+}
+.outcome-display h1 {
+  font-size: 36px;
+  letter-spacing: -0.6px;
+  margin: 10px 0;
+}
+.outcome-display > p:not(.eyebrow) {
+  color: #c7c5d5;
+  font-size: 17px;
+}
+.outcome-symbol {
+  display: block;
+  font-size: 58px;
+  color: var(--mint);
+  line-height: 1.3;
+}
+.outcome-failed .outcome-symbol {
+  color: #ffb3bd;
+}
+.outcome-skipped .outcome-symbol {
+  color: #d7c5ff;
+}
+.outcome-display .eyebrow {
+  margin-top: 10px;
+  color: var(--mint);
+}
+@keyframes result-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 1000px) {
+  .voting-layout {
+    grid-template-columns: 1fr;
+  }
+  .shortlist {
+    border-right: 0;
+    padding-right: 0;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .owner {
+    min-width: 170px;
+  }
+  .voting-heading h2 {
+    font-size: 25px;
+  }
+}
+@media (max-width: 650px) {
+  header {
+    padding: 0 20px;
+  }
+  .hero h1 {
+    font-size: 38px;
+  }
+  .voting-panel {
+    padding: 18px;
+  }
+  .voting-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .vote-choices {
+    grid-template-columns: 1fr;
+  }
+  .shortlist-footer {
+    align-items: stretch;
+  }
+  .broadcast-voting .vote-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .broadcast-heading h1 {
+    font-size: 24px;
+  }
+  .broadcast-voting .vote-suggestion {
+    font-size: 16px;
+  }
+  .broadcast-voting .voting-instructions span {
+    float: none;
+    display: block;
+  }
+  .overlay-shell {
+    padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vote-track::-webkit-meter-optimum-value {
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root.is-overlay {
+  background: transparent;
+}
+.duration-field {
+  display: grid;
+  gap: 7px;
+}
+.voting-card {
+  width: min(1228px, 100%);
+}
+.voting-card .overlay-brand {
+  padding: 10px 25px;
+}
+.voting-card .brand-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+.voting-card .warning {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+.broadcast-voting .synthetic-evidence {
+  color: #f4cf97;
+  font-size: 10px;
+  letter-spacing: 1px;
+  margin: 0 0 8px;
+}
+.broadcast-voting .broadcast-heading {
+  margin-bottom: 12px;
+}
+.broadcast-voting .broadcast-heading h1 {
+  font-size: 28px;
+}
+.broadcast-voting .long-choice .vote-suggestion {
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.voting-card .overlay-brand {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.broadcast-voting .vote-choice {
+  padding: 16px;
+}
+.broadcast-voting .vote-suggestion {
+  margin-top: 12px;
+  margin-bottom: 14px;
+}

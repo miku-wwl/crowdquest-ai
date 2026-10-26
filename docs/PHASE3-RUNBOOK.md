@@ -1,8 +1,10 @@
 # Phase 3 operator runbook
 
-**Live activation is not authorized yet.** This is the prepared procedure for a separate
-owner approval after local checks and exact-commit CI pass. Do not run it as a test of
-the currently healthy Phase 1 instance. All commands run from this checkout.
+The original controlled activation and one genuine Phase 3 Action session completed
+PASS; see [session record](PHASE3-REAL-ACCEPTANCE.md). The procedure below remains the
+reference for a separately authorized future activation. Existing credentials, stores
+and identities must be retained. Do not repeat activation/OAuth/pairing as a development
+test. Phase 4 uses its [new live runbook](PHASE4-LIVE-RUNBOOK.md).
 
 ## Before a controlled activation
 

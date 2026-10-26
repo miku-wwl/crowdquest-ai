@@ -54,6 +54,7 @@ class EventSub:
             "keepalives": 0,
             "notifications": 0,
             "accepted": 0,
+            "votes": 0,
             "failures": 0,
         }
         self._last_failure = None
@@ -299,6 +300,9 @@ class EventSub:
                     self._last_intake_result = result
                     if result == "ACCEPTED":
                         self._counters["accepted"] += 1
+                        self.last_event_at = self.clock()
+                    elif result == "VOTE_ACCEPTED":
+                        self._counters["votes"] += 1
                         self.last_event_at = self.clock()
                     self._record("intake_result", result=result)
                 else:

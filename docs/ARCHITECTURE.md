@@ -6,11 +6,11 @@ Initial deployment is one local host, one streamer/channel and one active runtim
 Phase 1 OAuth, intake and a separate manual preview are implemented and accepted.
 Phase 2 adds opt-in installed AIG composition, exact review/Authorization routes and
 transactional queue/receipts, qualified with temporary stores and synthetic consent.
-Phase 3 local implementation adds the reviewed local ModelProvider, exact review UI,
-fenced separate worker, rendering ledger and bounded overlay acknowledgements. Real
-local inference is verified separately from fixture OAuth/browser consent. Genuine
-end-to-end human/OBS activation remains NOT_RUN; see PHASE3-IMPLEMENTATION.md.
-The running live instance is still Phase 1. Phase 1 uses HTTP
+Phase 3 adds the reviewed local ModelProvider, exact review UI, fenced separate worker,
+render ledger and bounded acknowledgements. Its genuine single-Action session passed;
+see [real acceptance](PHASE3-REAL-ACCEPTANCE.md). The preserved running instance remains
+that accepted Phase 3 source. Phase 4 adds consumer voting/outcome presentation and
+isolated local qualification; its new live gate is NOT_RUN. Phase 1 uses HTTP
 polling, in-memory owner/overlay sessions, Windows Credential Manager and private
 SQLite intake state. Default startup creates no gate, Plan, Action or grant; only
 explicit Phase 2 startup composition enables those APIs and private stores.
@@ -125,3 +125,28 @@ job. That is read-only confirmation, not execution replay or Unknown reconciliat
 No transaction spans AIG and the asynchronous worker. No universal exactly-once
 remote rendering guarantee is asserted. The gate, worker and browser each require
 their own failure evidence. See [security](SECURITY_AND_THREAT_MODEL.md).
+
+## Phase 4 consumer extension
+
+`voting.py` adds rounds, votes, command identities, winner origins and channel-scoped
+audit to intake.sqlite3. HMAC-SHA256 pseudonyms are keyed by a separate private 32-byte
+identity file, scoped to channel and round; no raw voter ID is retained in vote records.
+The same BEGIN IMMEDIATE transaction admits EventSub IDs and one vote. Open rounds
+retain absolute server deadlines plus a process monotonic cap; clock rollback closes
+conservatively. SQL uniqueness enforces one Draft/Open round per channel.
+
+The owner-only Phase 4 router composes the existing ProductService. Completed voting
+binds the exact winner/candidate before one model attempt. Product provenance carries
+the round outside the unchanged four-field AIG schema. The worker copies only the
+trusted audience-selected indicator into presentation metadata; it grants no authority.
+
+`outcomes.py` adds immutable reports and per-overlay presentation issue markers to
+render.sqlite3. Recording requires successful public AIG state, exact receipt/job/
+payload and an acknowledged render. Outcome updates end display only, preserving AIG
+Succeeded. Presentations last eight seconds, and reload/restart cannot rearm them.
+Active challenges take precedence over results/voting. Expired display returns to waiting.
+
+No new Runtime, execution mechanism, tool, privilege or execution budget is introduced.
+The existing overlay credential reads bounded voting/result data; owner/CSRF/Origin
+checks protect every mutation. The test-only frontend directory is a trusted host
+composition input, so isolated builds do not replace assets served by a real process.

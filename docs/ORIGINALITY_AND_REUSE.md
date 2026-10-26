@@ -8,7 +8,7 @@ Reviewed 2026-10-26. Overall status: **PARTIAL; own pre-existing runtime eligibi
 | --- | --- |
 | Pre-existing runtime | Agentic Intent Gate v0.3.0, MIT, commit `bb8e8fb1234128613a750bee17967b225072bb14`; released before CrowdQuest. Installed dependency only; never claimed as new competition work. |
 | Consumer instructions | Complete upstream `docs/AGENTS-dependence.md` preserved in root AGENTS; source commit/blob and digests in [aig-upstream.json](aig-upstream.json). |
-| New CrowdQuest work | Phase 0 requirements/baseline; Phase 1 OAuth/EventSub/intake/development preview; Phase 2 thin installed-AIG integration and consumer admission store; Phase 3 domain ModelProvider, review UI, fenced worker, rendering ledger/acknowledgement and tests. No pre-existing Twitch application code or core execution state machine was imported. Genuine Phase 3 live acceptance remains NOT_RUN. |
+| New CrowdQuest work | Phase 0 requirements/baseline; Phase 1 OAuth/EventSub/intake/development preview; Phase 2 thin installed-AIG integration and consumer admission store; Phase 3 domain ModelProvider, review UI, fenced worker, rendering ledger/acknowledgement and tests. No pre-existing Twitch application code or core execution state machine was imported. Genuine Phase 3 single-Action live acceptance is PASS in the subsequent session record. Phase 4 adds new consumer voting/outcomes/broadcast UI; its live gate remains NOT_RUN. |
 | Standard dependencies | Python, uv, FastAPI, Uvicorn, Pydantic, HTTPX, websockets, keyring, filelock, React, TypeScript, Vite and locked test/transitive dependencies. Respect each license; no third-party game/media assets have been added. Synthetic screenshots depict only the new app. |
 | Codex assistance | This phase was authored and verified with Codex under the entrant's product direction. Session ID and commands are recorded in [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md). |
 
@@ -56,3 +56,12 @@ Keep dated commits and new-versus-reused attribution through later phases. Recor
 principal Codex development thread at submission time if it differs from Phase 0.
 Keep raw session transcripts, tokens, personal data and private stores out of Git.
 Originality, installation and live runtime behavior are separate claims.
+
+## 2026-10-27 disclosure update
+
+ORIGINALITY_DISCLOSURE=PASS for explicit new-versus-reused attribution. This is not an
+eligibility ruling. ORGANIZER_CLARIFICATION=PENDING and PERSONAL_ELIGIBILITY=UNVERIFIED.
+The new audience-voting product, outcome workflow, design and competition demo plan
+are CrowdQuest consumer work; no AIG core source was modified or represented as newly
+built for this event. Prepared clarification wording and submission gates are in
+[Phase 5 checklist](PHASE5-SUBMISSION-CHECKLIST.md); no message has been sent.

@@ -1,6 +1,6 @@
 # CrowdQuest AI
 
-**Crowd-powered challenges. Streamer-approved execution.**
+**Your Chat Becomes the Game Director.**
 
 AI-powered Twitch audience challenges with streamer approval, safe execution, and reliable Agent runtime.
 
@@ -12,20 +12,27 @@ real EventSub/SQLite recovery is verified, and the user confirmed new owner logi
 OBS pairing, rendering and preview expiry. Raw-image archival remains PARTIAL; supplied
 visual evidence and explicit user observation are attributed separately.
 
-Phase 2 local single-action integration is implemented and tested with installed AIG
-and real temporary SQLite stores. It is opt-in and has not replaced the running Phase 1
-service. See [Phase 2 implementation](docs/PHASE2-IMPLEMENTATION.md) for exact scope,
-API/provisioning, tests and the separate live/human-approval boundaries.
-Its remote delivery and exact-commit CI have now been rechecked as PASS.
-See the [final acceptance report](docs/PHASE1-FINAL-ACCEPTANCE.md) for exact evidence classes.
+Phase 2 installed-AIG integration and Phase 3 local engineering/CI are PASS.
+The **genuine Phase 3 Twitch → real local model → explicit human Approval → independent
+Authorization → AIG → actual OBS** single-Action session is now **PASS**, including
+countdown expiry and no replay after OBS refresh. See the dated
+[real session record](docs/PHASE3-REAL-ACCEPTANCE.md); earlier pre-activation reports
+remain historical. Original live screenshot files were not exported to Git.
 
-Phase 3A–3D local implementation adds bounded real Ollama planning, explicit owner
-review/admission/authorization/execution, a separately authenticated worker, durable
-rendering acknowledgements and countdowns. [Implementation/evidence](docs/PHASE3-IMPLEMENTATION.md)
-distinguishes genuine local inference from synthetic browser consent. **Live Phase 3
-activation and the complete genuine Twitch → model → human → AIG → OBS chain remain
-NOT_RUN.** The existing healthy instance remains Phase 1. Follow the separately gated
-[operator runbook](docs/PHASE3-RUNBOOK.md); do not restart it without owner approval.
+Phase 4 adds two-candidate crowd voting (`!vote 1` / `!vote 2`), exact winner-to-Plan
+binding, owner-reported Completed/Failed/Skipped outcomes and a transparent broadcast
+UI. Local qualification uses temporary SQLite and actual Chromium, with synthetic
+chat/model/consent. **Phase 4 real Twitch voting/outcome/OBS acceptance is NOT_RUN.**
+The running accepted Phase 3 instance and its built assets are preserved. Loading the
+upgrade requires separate controlled-activation permission; follow the
+[Phase 4 live runbook](docs/PHASE4-LIVE-RUNBOOK.md).
+
+**Your Chat Becomes the Game Director.** Viewers propose, the community chooses,
+the local model structures the challenge, and the streamer keeps the final say.
+The four operations remain separate: Approve Plan, Admit Action, Authorize Action,
+Execute Action. Voting never grants execution authority.
+
+![Actual Chromium voting screenshot — SYNTHETIC TEST, not real Twitch or OBS evidence](docs/evidence/phase4/synthetic-voting.png)
 
 The public repository already existed with one README-only initial commit
 (`639eabc8b6947a44048b220faea5fea4990587d1`, created 2026-10-25 UTC).
@@ -68,29 +75,52 @@ Every preview says **DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED** and e
 For OBS: add a Browser Source using **http://localhost:8000/overlay**, size 1280×720.
 Pair the code shown **inside OBS**, wait for Ready, then select a fresh preview. The
 URL has no credential. Inspect the actual OBS canvas; a normal browser screenshot is
-not OBS proof. Actual OBS observation is still outstanding on this machine.
+not OBS proof. Actual Phase 3 OBS observation passed in the recorded session; Phase 4 still needs its separate live gate.
 
 Use the exact localhost URL; the server binds 127.0.0.1 and rejects other Host/Origin
 values, LAN aliases and tunnels. No plaintext secret fallback. The consumer does not
 load `.env` automatically. Optional process variable `CROWDQUEST_STATE_DIR` selects a
 private directory outside the checkout. Configuration changes require restart.
 
+## Phase 4 product setup
+
+Use the existing local Ollama `phi4-mini:latest` and the production composition in the
+[operator runbook](docs/PHASE3-RUNBOOK.md). Reuse a provisioned private profile; never
+reset its identities, receipts or Unknown history. The default startup above retains
+Phase 1 development previews for compatibility. A new installation should build the
+frontend normally; an operator preserving a real running instance should use the
+isolated build/test procedure below until controlled activation is authorized.
+
+The [upgrade architecture](docs/PHASE4-COMPETITIVE-UPGRADE.md),
+[acceptance evidence](docs/PHASE4-ACCEPTANCE.md), [live runbook](docs/PHASE4-LIVE-RUNBOOK.md),
+[English 2:45 demo plan](docs/PHASE5-DEMO-STORYBOARD.md) and
+[submission checklist](docs/PHASE5-SUBMISSION-CHECKLIST.md) describe the current scope.
+Outcomes are streamer reports, not automatic gameplay recognition.
+
 ## Verification
 
 Install Python 3.13 and [uv](https://docs.astral.sh/uv/), then from this repository:
 
 ```powershell
+$env:UV_PROJECT_ENVIRONMENT = Join-Path (Get-Location) ".artifacts/phase4/venv"
 uv sync --locked --python 3.13
 uv lock --check --offline
 uv pip check
-uv run --locked python -I scripts/verify_baseline.py
+uv run --locked python -I scripts/verify_baseline.py --environment $env:UV_PROJECT_ENVIRONMENT
 uv run ruff check crowdquest tests
 uv run ruff format --check crowdquest tests
 uv run pytest -q
 npm --prefix frontend run test
-npm --prefix frontend run build
+npm --prefix frontend run typecheck
+npm --prefix frontend run lint
+npm --prefix frontend run format:check
+npm --prefix frontend run build:test
+# Keep real frontend/dist intact; test fixture servers use the isolated build:
+$env:CROWDQUEST_TEST_FRONTEND = Join-Path (Get-Location) ".artifacts/phase4/frontend"
 uv run python -m playwright install chromium
 uv run python -m tests.browser_e2e
+uv run python -m tests.phase3_browser_e2e
+uv run python -m tests.phase4_browser_e2e
 git diff --check
 ```
 
@@ -107,7 +137,7 @@ dependencies are locked in `uv.lock` and `frontend/package-lock.json`.
 
 [Official rules](https://twitchcon-codex.devpost.com/rules) and
 [FAQ/resources](https://twitchcon-codex.devpost.com/resources) were checked on
-2026-10-26. Submissions are open. The rules' Pacific deadline converts to
+2026-10-27. Submissions are open. The rules' Pacific deadline converts to
 **2026-11-03 11:00 NZDT** (2026-11-02 22:00 UTC).
 
 AIG is a pre-existing MIT runtime, transparently reused as a dependency. Its eligibility

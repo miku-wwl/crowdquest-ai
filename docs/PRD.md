@@ -1,6 +1,8 @@
 # Product requirements
 
-Status: proposed product; implementation has not started. Owner: miku-wwl.
+Status: product MVP design with Phase 1 connectivity/preview implemented and synthetic
+tests passing. Real Twitch/OBS acceptance remains PARTIAL; AI/AIG execution and complete
+product behavior below remain future work. Owner: miku-wwl.
 
 ## Problem and users
 

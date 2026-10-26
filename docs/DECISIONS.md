@@ -22,6 +22,8 @@ All decisions dated 2026-10-26. Implementation remains deferred unless stated.
 | D16 | Eligibility PARTIAL; own-runtime reuse UNVERIFIED | Organizer question prepared; no contact authorized. Entrant checks and answer needed before submission. |
 | D17 | Baseline CI checks only what exists | Locked install, provenance/API/document checks and whitespace; no placeholder product tests or live claims. |
 | D18 | Secrets/private state outside source | Separate Twitch/provider/runtime/dashboard/overlay identities; no raw Codex transcripts committed. |
+| D19 | Subsequent user instruction authorizes Phase 1 only | Implement read-only OAuth/EventSub, durable intake and owner-selected development preview; no AI/AIG execution. Live Twitch/OBS gates remain outstanding. |
+| D20 | HTTP polling and owner-paired overlay cookie | Small local Phase 1 transport; no credential in OBS URL, no automatic display/replay, separate read-only role. |
 
 Revisit D05/D07 only with a reviewed hosting change; D09 only through upstream's
 reviewed budget mechanism; D13 only with provider-specific validation and live evidence.

@@ -8,8 +8,8 @@ Reviewed 2026-10-26. Overall status: **PARTIAL; own pre-existing runtime eligibi
 | --- | --- |
 | Pre-existing runtime | Agentic Intent Gate v0.3.0, MIT, commit `bb8e8fb1234128613a750bee17967b225072bb14`; released before CrowdQuest. Installed dependency only; never claimed as new competition work. |
 | Consumer instructions | Complete upstream `docs/AGENTS-dependence.md` preserved in root AGENTS; source commit/blob and digests in [aig-upstream.json](aig-upstream.json). |
-| New CrowdQuest work | Phase 0 requirements, architecture, security, integration/acceptance/phase/submission plans, baseline config and verifier. Future Twitch adapter, dashboard, provider and overlay will be new work. None is implemented yet. |
-| Standard dependencies | Python, uv, FastAPI, Uvicorn and their locked dependencies. React/TypeScript and frontend build dependencies are deferred. Respect each license; no third-party game/media assets have been added. |
+| New CrowdQuest work | Phase 0 requirements/docs/baseline plus newly developed Phase 1 OAuth, EventSub intake, SQLite deduplication, authenticated dashboard, separate development overlay and tests. No pre-existing Twitch application code was imported. AI planning and AIG execution integration remain future work. |
+| Standard dependencies | Python, uv, FastAPI, Uvicorn, Pydantic, HTTPX, websockets, keyring, filelock, React, TypeScript, Vite and locked test/transitive dependencies. Respect each license; no third-party game/media assets have been added. Synthetic screenshots depict only the new app. |
 | Codex assistance | This phase was authored and verified with Codex under the entrant's product direction. Session ID and commands are recorded in [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md). |
 
 The remote was created on `2026-10-25T11:22:47Z`, after submissions opened. At inspection

@@ -13,8 +13,12 @@ own pre-existing AIG reuse remains UNVERIFIED. No organizer contact or submissio
 - Complete upstream 12,127-byte AGENTS prefix preserved; only a separate dated Phase 1
   authorization section appended. AIG v0.3.0 pin unchanged at
   `bb8e8fb1234128613a750bee17967b225072bb14`.
-- Implementation commit and observed CI URL will be recorded in the delivery receipt
-  after the authorized push. No remote CI pass is claimed in this pre-push snapshot.
+- Tested implementation commit: [`3b970b65444277ccdf33cb20d0afd043ba6f3241`](https://github.com/miku-wwl/crowdquest-ai/commit/3b970b65444277ccdf33cb20d0afd043ba6f3241).
+- Observed remote CI: [Actions 40250717934](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40250717934),
+  completed **success** on that exact implementation commit. Linux/Python 3.13/Node 24:
+  65 backend tests, 7 frontend tests, build, baseline and actual Chromium synthetic E2E pass.
+  This normal follow-up documentation receipt records that result; final delivery reports
+  the resulting main SHA and its own observed CI run without changing implementation code.
 - Codex thread: `01a172e3-9804-73c2-b597-8c5df928a56c` (shared Phase 0/1 thread).
 
 ## Implemented boundary
@@ -89,7 +93,7 @@ Reviewed synthetic screenshots contain no credentials or real personal informati
 | P1-02 durable intake | PASS_SYNTHETIC; actual rows and fresh-process restart, live event pending |
 | P1-03 negative controls | PASS_SYNTHETIC; actual backend tests |
 | P1-04 safe development preview | PARTIAL; actual Chromium with synthetic data passes, actual OBS pending |
-| P1-05 regression/CI | Local checks PASS; remote conclusion recorded after push |
+| P1-05 regression/CI | PASS; local checks and actual pushed-commit CI verified above |
 
 Phase status is PARTIAL. Phase 2 readiness is NO_GO until real Phase 1 gates are closed
 and the user separately authorizes Phase 2. AI/AIG execution remains NOT_IMPLEMENTED.

@@ -1,7 +1,12 @@
 # Implementation phases and gates
 
-Current authorization ends with Phase 0. Every later phase needs the user's next-phase
-instruction. This plan is not permission to perform those phases, deploy or submit.
+The subsequent user instruction authorizes Phase 1 implementation/tests and normal
+main delivery. Phase 2 onward still needs new authorization; no deployment/submission.
+Historical Phase 0 scope remains recorded below.
+
+Phase 1 is **PARTIAL**: implementation/synthetic checks complete; owned-channel
+confirmation, real OAuth/chat and actual OBS observation remain outstanding. See
+[PHASE1_EVIDENCE.md](PHASE1_EVIDENCE.md). Stop before Phase 2.
 
 ## Phase 0 — Repository and architecture (2026-10-26)
 

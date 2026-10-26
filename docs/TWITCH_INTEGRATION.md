@@ -1,7 +1,7 @@
 # Twitch integration plan
 
-Status: documentation only; credentials, OAuth, subscriptions and live events `NOT_RUN`.
-Official sources checked 2026-10-26; recheck before implementation.
+Status: implementation and synthetic validation complete. Real OAuth, subscriptions,
+chat events and OBS observation remain `NOT_RUN`. Official sources rechecked 2026-10-26.
 
 ## Authentication and transport
 
@@ -12,7 +12,9 @@ permissions are needed. A future hosted/app-token architecture requires a separa
 review of bot/channel scopes; do not copy that broader permission set into this MVP.
 [Twitch authentication guide](https://dev.twitch.tv/docs/chat/authenticating/).
 
-Register an application and exact localhost redirect in Phase 1 with the user. Use
+Register with exact redirect `http://localhost:8000/auth/twitch/callback`. Run
+`uv run python -m crowdquest.setup` for local owner/client config and hidden Client
+Secret input to Windows Credential Manager. No plaintext fallback. Use
 an OAuth authorization-code flow with validated state; keep exchange/refresh secrets
 on the backend. Validate token client, user, scopes and expiry at startup and hourly;
 terminate affected sessions on revocation. Do not request tokens in chat or print them.
@@ -21,7 +23,7 @@ terminate affected sessions on revocation. Do not request tokens in chat or prin
 Connect to `wss://eventsub.wss.twitch.tv/ws`, receive session welcome, and use its ID
 to create a `channel.chat.message`, version `1`, subscription with the user token.
 WebSocket transport authenticates subscriptions with OAuth; webhook HMAC fields do
-not apply. Browser dashboard/overlay connections are separate application WebSockets.
+not apply. Dashboard/overlay updates use same-origin HTTP polling (2s/1s).
 [Subscription reference](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types/#channel-chat-message).
 
 ## Session management
@@ -46,12 +48,22 @@ Normal chat, malformed/oversized commands and expired messages produce no propos
 Apply per-viewer/channel/global rate limits and a finite candidate queue before any
 model call. Keep limits separate from Twitch API quotas; handle API throttling without
 repeating effects. Log reason codes and correlation IDs, with no OAuth headers or full
-private event history. Proposed numeric product limits are in the threat model.
+private event history. Implemented limits: suggestion 280 characters/1120 UTF-8 bytes;
+command envelope 1120 characters; no control/format/surrogate characters; age 10 minutes
+and future skew 30s. Viewer 1 accepted candidate/30s; channel 10/min; global 20/min;
+pending queue 50; retained candidates 500; delivery identities 10,000. Capacity exhaustion
+fails closed; no automatic dedup expiry/reset. Rejections are bounded reason counters.
+Only required text/IDs and hashed viewer identity are retained; no raw event history.
+
+Owner mutations require an HttpOnly SameSite session, CSRF token and exact Origin/Host.
+Overlay pairing issues a separate read-only HttpOnly cookie, never a URL credential.
+New overlay views start after the current revision; failure/refresh clears old content.
+Previews expire after 60s and are not restored after restart.
 
 ## Phase 1 connectivity probe
 
-Build the smallest authenticated EventSub adapter, durable intake/dedup store and
-development Browser Source. An authenticated streamer manually selects one validated
+The implemented EventSub adapter, durable intake store and development Browser Source
+are independent of AIG. An authenticated streamer manually selects one validated
 candidate for a **DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED** display. Never
 auto-publish arbitrary viewer suggestions. This probe uses no AI or AIG effects and
 must be clearly isolated/removed when the production approval path arrives. It proves
@@ -60,4 +72,5 @@ connectivity and escaped rendering only, not Phase 2 authority or production saf
 Evidence: a genuine chat event's redacted IDs/time, one candidate after duplicate
 delivery, same correlation displayed in a real browser/OBS view, and logs reviewed
 for secrets. A fixture-only EventSub simulation is labeled synthetic and cannot pass
-the live gate. No Twitch registration/login/API mutation was performed in Phase 0.
+the live gate. See [PHASE1_EVIDENCE.md](PHASE1_EVIDENCE.md) for actual results and the
+remaining user-led registration, consent, chat and OBS steps.

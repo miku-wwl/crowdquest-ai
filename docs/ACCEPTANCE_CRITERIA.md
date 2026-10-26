@@ -3,9 +3,9 @@
 PASS means the stated check actually ran and met its condition. PARTIAL means only
 part is evidenced; BLOCKED names a prerequisite failure; NOT_RUN means no execution.
 Dependency checks never prove product or human behavior. Current evidence is linked
-from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md).
+from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md) and [PHASE1_EVIDENCE.md](PHASE1_EVIDENCE.md).
 
-| ID / phase | Acceptance condition | Required evidence | Phase 0 status |
+| ID / phase | Acceptance condition | Required evidence | Current evidence |
 | --- | --- | --- | --- |
 | P0-01 | Existing fresh public target inspected; history preserved; MIT added | GitHub metadata, initial ancestor and final SHA | See Phase 0 evidence |
 | P0-02 | Official rules/FAQ read; period and Pacific→NZ deadline verified | Source links/date, timezone conversion | PASS |
@@ -16,9 +16,10 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md).
 | P0-07 | CI actually completes on pushed commit | Commit-specific workflow URL/conclusion | See remote Actions |
 | P0-08 | Material eligibility questions resolved before submission | Entrant checks and organizer written answer | PARTIAL / reuse UNVERIFIED |
 | P1-01 | Real authenticated channel.chat.message v1 received | Redacted live ID/channel/time and subscription | NOT_RUN |
-| P1-02 | `!quest` validation and duplicate suppression survive restart | Parser tests and persistent unique candidate | NOT_RUN |
-| P1-03 | Invalid channel/replay/overload does not create proposals | Negative intake tests and bounded queue | NOT_RUN |
-| P1-04 | Owner-selected escaped development content renders | Real browser and OBS observation; no AI/AIG claim | NOT_RUN |
+| P1-02 | `!quest` validation and duplicate suppression survive restart | Parser tests and persistent unique candidate | PASS_SYNTHETIC; SQLite rows and fresh process |
+| P1-03 | Invalid channel/replay/overload does not create proposals | Negative intake tests and bounded queue | PASS_SYNTHETIC |
+| P1-04 | Owner-selected escaped development content renders | Real browser and OBS observation; no AI/AIG claim | PARTIAL; Chromium synthetic PASS, OBS NOT_RUN |
+| P1-05 | Phase 0 regression, Phase 1 tests/locks and pushed CI pass | Commit-specific Actions result | See Phase 1 evidence and delivery report |
 | P2-01 | Exact approved Plan produces one separately authorized action | Persistent Run/Approval/Action/claim/receipt | NOT_RUN |
 | P2-02 | No approval/Authorization or wrong identity denies effects | Negative tests and zero queue insert count | NOT_RUN |
 | P2-03 | Duplicate/conflicting/concurrent requests stay safe | Real SQLite rows/receipts, race tests | NOT_RUN |
@@ -34,6 +35,7 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md).
 | P4-02 | Description, principal session ID and video meet requirements | English materials, public/unlisted YouTube <3 min | NOT_RUN |
 | P4-03 | Final Devpost submission received within period | Submitted confirmation and timestamp | NOT_RUN |
 
-Phase 1 readiness is CONDITIONAL while eligibility remains unverified and requires a
-new phase instruction. No acceptance row authorizes that future work. Product release
+Phase 1 is authorized but PARTIAL until real Twitch/OBS evidence is observed.
+Phase 2 readiness is NO_GO until missing live gates and new authorization.
+No acceptance row authorizes future work. Product release
 or submission cannot be called PASS while its mandatory real evidence is missing.

@@ -1,7 +1,9 @@
 # Security and threat model
 
 Status: design review only; controls are required for later implementation and are
-not yet runtime-tested. Assets: exact consent, execution authority, channel identity,
+not yet runtime-tested for future AI/AIG phases. Phase 1 OAuth/intake/CSRF/preview
+controls now have synthetic backend and actual Chromium tests; real Twitch and OBS
+remain unverified. Assets: exact consent, execution authority, channel identity,
 credentials, effect/receipt integrity, availability, viewer privacy and broadcast content.
 
 Trust boundaries: public chat → intake; model → validator; dashboard → authenticated

@@ -3,6 +3,11 @@
 Status: design only. Python 3.13/FastAPI, React/TypeScript, SQLite and OBS Browser Source.
 Initial deployment is one local host, one streamer/channel and one active runtime owner.
 
+Phase 1 update: OAuth, intake and a separate manual preview are now implemented.
+The production AI/AIG/queue diagram below remains future design. Phase 1 uses HTTP
+polling, in-memory owner/overlay sessions, Windows Credential Manager and private
+SQLite intake state. It creates no gate database, executable Plan, Action or grant.
+
 ```mermaid
 flowchart LR
   V[Untrusted viewer chat] --> T[Twitch EventSub WebSocket]

@@ -1,4 +1,4 @@
-name: Phase 0 baseline
+name: CrowdQuest checks
 
 on:
   push:
@@ -27,5 +27,23 @@ jobs:
           uv pip check
       - name: Verify installed public API, instructions and documents
         run: uv run --locked python -I scripts/verify_baseline.py
+      - name: Backend lint and tests (synthetic)
+        run: |
+          uv run ruff check crowdquest tests
+          uv run ruff format --check crowdquest tests
+          uv run pytest -q
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+      - name: Locked frontend install, tests and build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run test
+          npm run build
+      - name: Install Chromium for synthetic browser E2E
+        run: uv run python -m playwright install --with-deps chromium
+      - name: Actual Chromium with synthetic OAuth and chat
+        run: uv run python -m tests.browser_e2e
       - name: Check committed whitespace
         run: git show --format= --check HEAD

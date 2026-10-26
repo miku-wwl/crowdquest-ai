@@ -9,7 +9,23 @@ dependencies = [
   "agentic-intent-gate @ git+https://github.com/miku-wwl/agentic-intent-gate.git@bb8e8fb1234128613a750bee17967b225072bb14",
   "fastapi>=0.115,<1",
   "uvicorn>=0.34,<1",
+  "pydantic>=2.12,<3",
+  "httpx>=0.28,<0.29",
+  "websockets>=17,<18",
+  "keyring>=25,<27",
+  "filelock>=3.18,<4",
 ]
+
+[dependency-groups]
+dev = ["pytest>=9,<10", "pytest-asyncio>=1,<2", "playwright>=1.55,<2", "ruff>=0.14,<1"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
 
 [tool.uv]
 package = false

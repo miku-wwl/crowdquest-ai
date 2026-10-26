@@ -213,3 +213,17 @@ force-push, tag, release, deploy, contact organizers, or submit to Devpost.
 - Do not contact an organizer without separate authorization. A saved Devpost draft
   is not a submission. Future video/upload/submission work requires Phase 4 authority.
 - After Phase 0 verification, commit/push and report, STOP for the user's next phase.
+
+## Phase 1 authorization update — 2026-10-26
+
+The user's subsequent Phase 1 instruction supersedes the historical Phase 0-only
+authorization above. Implement and test OAuth, read-only EventSub chat intake,
+durable deduplication and authenticated manual development previews; commit/push
+normal scoped changes to this repository's main and verify CI. Preserve the entire
+upstream template and the AIG pin. No AI Plans, Runtime construction/execution,
+production Approval/Authorization, SIDE_EFFECT or Phase 2/3 work is authorized.
+Live testing needs user OAuth consent and confirmation of the owned test channel.
+No chat writes, moderation, organizer contact, deployment, video upload or submission.
+All previews visibly say DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED.
+Keep live Twitch, synthetic browser tests and actual OBS evidence distinct. Stop
+after Phase 1; unresolved competition eligibility stays PARTIAL/UNVERIFIED.

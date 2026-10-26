@@ -1,0 +1,77 @@
+{
+  "checked_at_utc": "2026-10-26T04:01:14.507384+00:00",
+  "classification": "REAL_TWITCH_CONTROLLED_SERVICE_START",
+  "prior_process_absent": true,
+  "only_crowdquest_started": true,
+  "backup": {
+    "private_backup_created": true,
+    "integrity": "ok",
+    "logical_content_matches": true,
+    "location_disclosed_only_locally": true
+  },
+  "sqlite": {
+    "integrity": "ok",
+    "counts_before": {
+      "deliveries": 1,
+      "messages": 1,
+      "candidates": 1
+    },
+    "counts_after": {
+      "deliveries": 1,
+      "messages": 1,
+      "candidates": 1
+    },
+    "logical_content_unchanged": true
+  },
+  "runtime": {
+    "tested_commit": "97b023048f695bbee4ca170c1e968eaf4b4c4720",
+    "loaded_source_hashes_match": true,
+    "pair_code_bits": 64,
+    "auth_transient_class_loaded": true,
+    "access_token_value_unchanged": true,
+    "refresh_token_value_unchanged": true,
+    "client_secret_value_unchanged": true
+  },
+  "token_validation": {
+    "http_status": 200,
+    "owner_client_matches": true,
+    "scopes": [
+      "user:read:chat"
+    ]
+  },
+  "subscription_lookup_http_status": 200,
+  "matching_enabled_subscriptions": 1,
+  "eventsub": {
+    "pid": 19880,
+    "updated_at": 1792987268.150342,
+    "status": "connected",
+    "reason": "CONNECTED",
+    "stage": "receive",
+    "ready": true,
+    "socket_open": true,
+    "waiting_for_message": true,
+    "last_frame_at": 1792987268.1467204,
+    "keepalive_timeout": 10,
+    "session_hash": "bbd66c96a524",
+    "subscription_hash": "c7a40b92e159",
+    "owner_hash": "180988ab5012",
+    "counters": {
+      "welcomes": 1,
+      "subscriptions": 1,
+      "keepalives": 7,
+      "notifications": 0,
+      "accepted": 0,
+      "failures": 0
+    },
+    "last_failure": null,
+    "last_intake_result": null
+  },
+  "postrestart_owner_login": "USER_ACTION_REQUIRED",
+  "postrestart_obs_pairing": "USER_ACTION_REQUIRED",
+  "postrestart_real_message": "NOT_RUN",
+  "postrestart_obs_render": "NOT_RUN",
+  "postrestart_preview_expiry": "NOT_RUN",
+  "real_duplicate_redelivery": "NOT_RUN",
+  "synthetic_replay_into_real_database": false,
+  "twitch_stream_started_by_agent": false
+}

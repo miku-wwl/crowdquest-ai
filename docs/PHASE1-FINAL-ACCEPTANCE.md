@@ -3,16 +3,21 @@
 Date: 2026-10-26, Pacific/Auckland. **Final status: PARTIAL; Phase 2 is BLOCKED.**
 
 The real viewer-to-OBS display chain passed user observation and is corroborated by
-live EventSub/SQLite evidence. New security/recovery fixes passed local tests, but
-have not been loaded into the preserved real backend process. Formal raw-image
-archival also remains incomplete. No standard was lowered to announce PASS.
+live EventSub/SQLite evidence. The user subsequently authorized a controlled restart;
+the tested security/recovery fixes are now loaded and EventSub is genuinely listening.
+Post-start owner login, OBS pairing, a fresh real message and OBS expiry observation
+await user actions. Formal raw-image archival remains incomplete and is reported
+separately. No standard was lowered to announce PASS.
 
 ## Git provenance and scope
 
 Git baseline: `77eb57bba4d76d7d884a4d1ab5fbaf207bb7463c`, main, HTTPS origin
 `miku-wwl/crowdquest-ai`. Six existing uncommitted diagnostic paths were inspected
-and preserved. The tested implementation commit and CI receipt are recorded after
-normal delivery; the final response identifies final main without self-referential SHA claims.
+and preserved. Tested implementation commit:
+`97b023048f695bbee4ca170c1e968eaf4b4c4720`.
+[GitHub CI 40260251492](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40260251492)
+completed successfully for that exact commit. The final response identifies final
+main without self-referential SHA claims.
 
 No AIG core, pin, private credentials or real candidate records were modified. The
 complete 12,127-byte upstream consumer instructions remain intact. AIG stays
@@ -26,11 +31,11 @@ complete 12,127-byte upstream consumer instructions remain intact. AIG stays
 | PHASE1_SQLITE_PERSISTENCE | PASS | Real integrity_check=ok, 1 delivery/message/candidate, previewed; actual unique indexes; controlled duplicate/concurrency/process/service-restart tests |
 | PHASE1_DASHBOARD_SELECTION | PASS | USER_OBSERVED_REAL_E2E: supplied dashboard image shows Selected/Previously previewed; agent read-only DB confirms previewed |
 | PHASE1_OBS_RENDER | PASS | USER_PROVIDED_VISUAL_EVIDENCE: actual OBS window/canvas screenshot, not an agent browser screenshot |
-| PHASE1_SECURITY | PARTIAL | Code controls pass controlled tests; the running backend has not loaded final pairing/auth/TTL hardening |
+| PHASE1_SECURITY | PARTIAL | Tested hardening is loaded; old owner/overlay sessions denied; user verification of new real owner login/pairing remains pending |
 | PHASE1_RESILIENCE | PASS | Controlled temporary-service, actual temporary SQLite write-lock/restart, mock API-error and browser offline/reconnect tests; live fault injection is NOT_RUN |
 | PHASE1_REGRESSION | PASS | 79 backend, 9 frontend, lint, type/build, actual Chromium synthetic E2E, dependency and advisory checks; see commands below |
 | PHASE1_EVIDENCE_ARCHIVE | PARTIAL | Redacted real proof and two-image visual index saved; PNG original bytes/local paths/hashes unavailable, raw-image import USER_ACTION_REQUIRED |
-| PHASE1_FINAL_STATUS | PARTIAL | Mandatory security activation and archive limitations remain explicit |
+| PHASE1_FINAL_STATUS | PARTIAL | Post-start real owner/OBS validation is pending; raw-image archival remains explicitly PARTIAL |
 
 Formal Phase 1 Definition of Done is not fully satisfied. The successful OBS display
 does not automatically close security or archival gates.
@@ -116,18 +121,44 @@ explicit repeated Preview, two authorized overlay sessions, refresh/reconnect no
 XSS literal rendering, clock skew, transient 503 recovery, refresh rotation persistence,
 confirmed revocation and actual SQLITE_BUSY diagnosis/recovery.
 
-Live Twitch disconnect/revocation/API-failure injection, actual OBS refresh automation,
-real exact-delivery replay and a restart of the live instance after this acceptance
-hardening are **NOT_RUN**. Controlled fault tests do not establish those live behaviors.
+Live Twitch disconnect/revocation/API-failure injection, actual OBS refresh automation
+and real exact-delivery replay are **NOT_RUN**. The authorized actual service start
+is recorded below. Controlled fault tests do not establish unobserved live behaviors.
 
-## Blocking activation boundary
+## Controlled service start and current manual boundary
 
-The user explicitly prohibited redoing real OAuth/pairing to force tests. Current owner
-and overlay sessions are in memory. Loading final backend changes requires a controlled
-restart, which invalidates them and requires the user's own sign-in/pairing again.
-Therefore the working live instance was intentionally preserved. Source/test success
-is not reported as current-runtime activation success. This is the request's Part B6 /
-Part G4 authorization stop condition; no real credential or data reset was attempted.
+Initially the user's Part B6 / Part G4 constraint prevented a restart requiring real
+login/pairing. The user then chose option 2 and explicitly authorized one controlled
+restart, with private SQLite backup and manual login/pairing. At execution time the
+old PID 47404 was already absent and port 8000 was not listening, so no process was
+terminated. Only CrowdQuest was started; other projects were untouched.
+
+[controlled-restart.json](evidence/phase1/controlled-restart.json) records the checks
+at 2026-10-26 04:01:14 UTC / 17:01:14 NZDT:
+
+- SQLite backup API produced a private backup outside Git. Source and backup both
+  returned integrity_check=ok; complete logical contents matched. After startup the
+  real DB still had exactly 1 delivery, 1 message and 1 candidate, with unchanged
+  logical contents. Original records were not cleared or replayed.
+- New service PID 19880 owns only 127.0.0.1:8000. Imported module hashes match the
+  tested commit; 64-bit pairing code and transient-auth handling are loaded.
+- In-memory comparisons confirmed unchanged Access Token, Refresh Token and Client
+  Secret values. No credential value or credential fingerprint was printed/exported.
+- Real token validation and subscription lookup returned 200; exact scope remains
+  user:read:chat. One enabled channel.chat.message v1 subscription matches the new
+  session and both configured owner IDs. Welcome, fresh keepalives, an open socket
+  and active receive wait establish EVENTSUB_READY=YES.
+- Frontend returns 200. Old/absent owner and overlay sessions return 401; a wrong
+  Host returns 400. New owner authentication and OBS pairing require the user.
+- Targeted rerun: `uv run pytest -q tests/test_auth.py tests/test_service_restart.py
+  tests/test_persistence_process.py` returned 14 passed, one existing deprecation warning.
+  These remain controlled tests, not real duplicate delivery evidence.
+
+The user was asked to sign in, refresh/pair the actual OBS source, send one fresh
+real !quest message, manually Preview it, and observe expiry after approximately
+65 seconds. Those post-start observations are pending. Phase 1 stays PARTIAL and
+Phase 2 remains BLOCKED until the mandatory checks are complete. No Twitch stream
+was started, and the agent sent no chat.
 
 ## Phase 2 gate
 

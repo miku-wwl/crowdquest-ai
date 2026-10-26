@@ -1,12 +1,15 @@
 # Implementation phases and gates
 
 The subsequent user instruction authorizes Phase 1 implementation/tests and normal
-main delivery. Phase 2 onward still needs new authorization; no deployment/submission.
+main delivery. The later final-acceptance instruction conditionally authorizes Phase 2
+after all mandatory Phase 1 gates pass; no deployment/submission is authorized.
 Historical Phase 0 scope remains recorded below.
 
 Phase 1 is **PARTIAL**: real ingestion and user-observed Dashboard/OBS rendering now
-pass, while final security activation and formal raw-image archival remain explicit
-gaps. Current regression: 79 backend tests, 9 frontend tests and Chromium synthetic E2E.
+pass. Tested backend hardening has now been loaded after the authorized service start;
+post-start user login/pairing and real OBS/expiry validation remain pending. Formal
+raw-image archival remains PARTIAL. Current regression: 79 backend tests, 9 frontend
+tests and Chromium synthetic E2E; tested-commit GitHub CI also passed.
 See [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md). The user's latest request
 authorizes automatic Phase 2 only after mandatory quality gates pass; do not bypass them.
 

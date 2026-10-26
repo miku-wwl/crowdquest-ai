@@ -7,9 +7,10 @@ AI-powered Twitch audience challenges with streamer approval, safe execution, an
 ## Current status
 
 **The real Twitch → SQLite → owner-selected Dashboard → OBS display chain is evidenced.**
-Phase 1 final acceptance remains PARTIAL: final backend security hardening is tested but
-not loaded into the preserved live process, and raw screenshot originals are not locally
-archived. Two supplied visual attachments corroborate actual OBS and Dashboard behavior.
+Phase 1 final acceptance remains PARTIAL: tested backend security hardening is loaded
+and real EventSub has recovered, while post-start owner login/pairing and OBS expiry
+validation await the user. Raw screenshot originals are not locally archived. Two
+supplied visual attachments corroborate the earlier actual OBS and Dashboard behavior.
 See the [final acceptance report](docs/PHASE1-FINAL-ACCEPTANCE.md) for exact evidence classes.
 No AI Plans, AIG Runtime execution or production Approval/Authorization are implemented.
 

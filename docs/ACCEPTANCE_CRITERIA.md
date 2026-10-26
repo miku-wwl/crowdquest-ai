@@ -35,7 +35,9 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md) and [PHASE1_EVIDENCE.md](PHASE1_EV
 | P4-02 | Description, principal session ID and video meet requirements | English materials, public/unlisted YouTube <3 min | NOT_RUN |
 | P4-03 | Final Devpost submission received within period | Submitted confirmation and timestamp | NOT_RUN |
 
-Phase 1 remains PARTIAL for final security activation and archival; real display passed.
+Phase 1 remains PARTIAL pending post-start real login/pairing and OBS/expiry validation.
+Tested security hardening is loaded; historical real display passed. Raw-image archival
+is explicitly PARTIAL.
 Phase 2 is conditionally authorized but blocked until mandatory Phase 1 gates pass.
 No acceptance row authorizes future work. Product release
 or submission cannot be called PASS while its mandatory real evidence is missing.

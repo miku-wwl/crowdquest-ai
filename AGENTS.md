@@ -240,3 +240,14 @@ or interrupt the working live instance to force a test pass. Use temporary datab
 and fixture services for destructive/fault tests. Stop on a mandatory unresolved gate
 or any need for new authorization. Existing Phase 1 normal main delivery authority
 continues; no core AIG changes, paid calls, deployment, release or submission.
+
+## Controlled restart authorization update — 2026-10-26
+
+The user explicitly authorized one controlled CrowdQuest local-service restart to
+load the tested backend security fixes. Verify and back up real SQLite first;
+preserve its records and existing credential values. Affect no other project.
+The prior prohibition on this restart/login/pairing is superseded for this operation.
+If owner login or OBS pairing is needed, provide exact steps and wait for the user
+to perform them. Retain only user:read:chat, never send Twitch chat or start a stream.
+Verify real recovery and distinguish controlled deduplication tests from genuine
+Twitch delivery. Phase 2 remains conditional on all mandatory Phase 1 gates passing.

@@ -16,15 +16,15 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md) and [PHASE1_EVIDENCE.md](PHASE1_EV
 | P0-07 | CI actually completes on pushed commit | Commit-specific workflow URL/conclusion | See remote Actions |
 | P0-08 | Material eligibility questions resolved before submission | Entrant checks and organizer written answer | PARTIAL / reuse UNVERIFIED |
 | P1-01 | Real authenticated channel.chat.message v1 received | Redacted live ID/channel/time and subscription | PASS; final-real-chain.json |
-| P1-02 | `!quest` validation and duplicate suppression survive restart | Parser tests and persistent unique candidate | PASS_SYNTHETIC; SQLite rows and fresh process |
-| P1-03 | Invalid channel/replay/overload does not create proposals | Negative intake tests and bounded queue | PASS_SYNTHETIC |
+| P1-02 | `!quest` validation and duplicate suppression survive restart | Parser tests and persistent unique candidate | PASS; controlled SQLite duplicate/process tests plus preserved real rows after authorized start |
+| P1-03 | Invalid channel/replay/overload does not create proposals | Negative intake tests and bounded queue | PASS; SYNTHETIC_TEST |
 | P1-04 | Owner-selected escaped development content renders | Real browser and OBS observation; no AI/AIG claim | PASS; USER_OBSERVED_REAL_E2E and supplied visual evidence |
 | P1-05 | Phase 0 regression, Phase 1 tests/locks and pushed CI pass | Commit-specific Actions result | See Phase 1 evidence and delivery report |
-| P2-01 | Exact approved Plan produces one separately authorized action | Persistent Run/Approval/Action/claim/receipt | NOT_RUN |
-| P2-02 | No approval/Authorization or wrong identity denies effects | Negative tests and zero queue insert count | NOT_RUN |
-| P2-03 | Duplicate/conflicting/concurrent requests stay safe | Real SQLite rows/receipts, race tests | NOT_RUN |
-| P2-04 | Crash/lost ack/late outcome becomes Unknown without replay | Restart tests; effect count unchanged | NOT_RUN |
-| P2-05 | Unknown/unconfirmed admission never releases worker job | Job quarantine and gateway-read tests | NOT_RUN |
+| P2-01 | Exact approved Plan produces one separately authorized action | Persistent Run/Approval/Action/claim/receipt | PASS; installed AIG/actual temporary SQLite, synthetic proposal/consent |
+| P2-02 | No approval/Authorization or wrong identity denies effects | Negative tests and zero queue insert count | PASS; controlled core/consumer/HTTP denials |
+| P2-03 | Duplicate/conflicting/concurrent requests stay safe | Real SQLite rows/receipts, race tests | PASS; receipt/conflict tests and eight actual SQLite contender threads |
+| P2-04 | Crash/lost ack/late outcome becomes Unknown without replay | Restart tests; effect count unchanged | PASS; actual disposable process crash, lost ack, shortened deadline |
+| P2-05 | Unknown/unconfirmed admission never releases worker job | Job quarantine and gateway-read tests | PASS; pending ineligible, Unknown quarantined, worker rendering NOT_RUN |
 | P3-01 | Real provider yields one bounded valid domain Plan | Redacted real-provider trace; strict validation | NOT_RUN |
 | P3-02 | Model injection cannot select identity/authority/extra actions | Adversarial schema/semantic and provider cases | NOT_RUN |
 | P3-03 | Real owner review is required, rejection has no effect | Authenticated browser actions; CSRF/owner tests | NOT_RUN |
@@ -35,9 +35,9 @@ from [PHASE0_EVIDENCE.md](PHASE0_EVIDENCE.md) and [PHASE1_EVIDENCE.md](PHASE1_EV
 | P4-02 | Description, principal session ID and video meet requirements | English materials, public/unlisted YouTube <3 min | NOT_RUN |
 | P4-03 | Final Devpost submission received within period | Submitted confirmation and timestamp | NOT_RUN |
 
-Phase 1 remains PARTIAL pending post-start real login/pairing and OBS/expiry validation.
-Tested security hardening is loaded; historical real display passed. Raw-image archival
-is explicitly PARTIAL.
-Phase 2 is conditionally authorized but blocked until mandatory Phase 1 gates pass.
+Phase 1 engineering gates pass after the user's explicit post-start manual acceptance
+and final regression. Original PNG archival remains PARTIAL; the user-approved visual
+evidence alternative satisfies the OBS observation criterion without fabricated files.
+Phase 2's conditional prerequisite is satisfied; its own quality gates remain separate.
 No acceptance row authorizes future work. Product release
 or submission cannot be called PASS while its mandatory real evidence is missing.

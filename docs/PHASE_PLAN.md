@@ -5,13 +5,16 @@ main delivery. The later final-acceptance instruction conditionally authorizes P
 after all mandatory Phase 1 gates pass; no deployment/submission is authorized.
 Historical Phase 0 scope remains recorded below.
 
-Phase 1 is **PARTIAL**: real ingestion and user-observed Dashboard/OBS rendering now
-pass. Tested backend hardening has now been loaded after the authorized service start;
-post-start user login/pairing and real OBS/expiry validation remain pending. Formal
-raw-image archival remains PARTIAL. Current regression: 79 backend tests, 9 frontend
+Phase 1 engineering acceptance is **PASS**: real ingestion, persistence and recovery,
+loaded security hardening, user-observed post-start login/pairing, OBS rendering and
+preview expiry all pass. Formal raw-image archival remains PARTIAL under the user's
+accepted visual-evidence alternative. Final regression: 79 backend tests, 9 frontend
 tests and Chromium synthetic E2E; tested-commit GitHub CI also passed.
 See [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md). The user's latest request
 authorizes automatic Phase 2 only after mandatory quality gates pass; do not bypass them.
+Phase 2 local single-action integration is now implemented and tested; see
+[PHASE2-IMPLEMENTATION.md](PHASE2-IMPLEMENTATION.md). Live Phase 2 activation remains
+NOT_RUN. No Phase 3 progression or second live-service restart is inferred.
 
 ## Phase 0 — Repository and architecture (2026-10-26)
 

@@ -1,9 +1,9 @@
-"""Local authenticated manual previews. No AIG runtime, Plans or execution routes."""
+"""Local manual previews, with separately opt-in authenticated Phase 2 routes."""
 
 import asyncio
 import secrets
 import time
-from contextlib import asynccontextmanager, suppress
+from contextlib import ExitStack, asynccontextmanager, suppress
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -47,6 +47,7 @@ def create_app(
     eventsub_factory=EventSub,
     clock=time.time,
     monotonic=time.monotonic,
+    phase2_factory=None,
 ):
     settings = settings or Settings.load()
     settings.state_dir.mkdir(parents=True, exist_ok=True)
@@ -61,18 +62,26 @@ def create_app(
     async def lifespan(app):
         lock = FileLock(settings.state_dir / "phase1.lock")
         lock.acquire(timeout=0)
-        task = asyncio.create_task(eventsub.run())
-        try:
-            yield
-        finally:
-            task.cancel()
-            with suppress(asyncio.CancelledError):
-                await task
-            await auth.close()
-            lock.release()
+        task = None
+        with ExitStack() as contexts:
+            try:
+                app.state.phase2_service = (
+                    contexts.enter_context(phase2_factory()) if phase2_factory else None
+                )
+                task = asyncio.create_task(eventsub.run())
+                yield
+            finally:
+                if task is not None:
+                    task.cancel()
+                    with suppress(asyncio.CancelledError):
+                        await task
+                app.state.phase2_service = None
+                await auth.close()
+                lock.release()
 
     app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
     app.state.auth, app.state.store, app.state.eventsub = auth, store, eventsub
+    app.state.phase2_service = None
 
     @app.middleware("http")
     async def security(request: Request, call_next):
@@ -341,6 +350,11 @@ def create_app(
             "remaining_seconds": max(0, preview["deadline"] - monotonic()),
             "source": preview["source"],
         }
+
+    if phase2_factory is not None:
+        from .phase2_routes import register_phase2
+
+        register_phase2(app, owner)
 
     assets = ROOT / "frontend/dist/assets"
     if assets.exists():

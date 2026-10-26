@@ -251,3 +251,14 @@ If owner login or OBS pairing is needed, provide exact steps and wait for the us
 to perform them. Retain only user:read:chat, never send Twitch chat or start a stream.
 Verify real recovery and distinguish controlled deduplication tests from genuine
 Twitch delivery. Phase 2 remains conditional on all mandatory Phase 1 gates passing.
+
+## Phase 2 gate update — 2026-10-26
+
+The user completed post-start real OAuth, OBS pairing, Inbox selection, OBS rendering
+and approximately 65-second preview expiry. Read-only live evidence and final Phase 1
+regression corroborate the engineering gates. Original PNG archival stays PARTIAL,
+using the user's explicitly accepted visual-evidence alternative. The existing
+conditional Phase 2 authorization now applies to the documented local single-action
+AIG integration and its tests. Preserve the working Phase 1 process; do not infer
+another live restart, a real Action's Approval/Authorization, paid calls, Phase 3,
+deployment or submission authority from test consent.

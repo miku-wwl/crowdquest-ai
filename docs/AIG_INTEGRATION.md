@@ -1,6 +1,8 @@
 # AIG integration contract
 
-Status: installed dependency and public API verified; application integration `NOT_RUN`.
+Status: Phase 2 local single-action integration PASS; see
+[implementation and evidence](PHASE2-IMPLEMENTATION.md). Live activation, real model,
+authenticated human Action approval and worker rendering remain NOT_RUN.
 
 ## Immutable release and instructions
 
@@ -49,7 +51,7 @@ Versions are read from current state; do not hard-code the reference example's v
 numbers into a dashboard. AIG demo prompts and UI are service-demo specific and will
 not be reused as a generic Twitch planner or authentication boundary.
 
-## Frozen trusted composition (proposed, not provisioned)
+## Frozen trusted composition (implemented; only temporary test profiles provisioned)
 
 | Field | Design value |
 | --- | --- |

@@ -1,0 +1,107 @@
+{
+  "checked_at_utc": "2026-10-26T05:37:08.130080+00:00",
+  "agent_evidence_class": "READ_ONLY_REAL_EVENTSUB_SQLITE_CORROBORATION",
+  "human_evidence_class": "USER_OBSERVED_REAL_E2E",
+  "runtime": {
+    "pid": 19880,
+    "tested_code_commit": "97b023048f695bbee4ca170c1e968eaf4b4c4720",
+    "sources_still_match_loaded_tested_code": true,
+    "pair_code_bits": 64,
+    "auth_transient_class_loaded": true
+  },
+  "oauth": {
+    "validation_http_status": 200,
+    "owner_client_matches": true,
+    "scopes": [
+      "user:read:chat"
+    ]
+  },
+  "matching_enabled_subscriptions": 1,
+  "eventsub": {
+    "pid": 19880,
+    "updated_at": 1792993027.497993,
+    "status": "connected",
+    "reason": "CONNECTED",
+    "stage": "receive",
+    "ready": true,
+    "socket_open": true,
+    "waiting_for_message": true,
+    "last_frame_at": 1792993027.4948008,
+    "keepalive_timeout": 10,
+    "session_hash": "bbd66c96a524",
+    "subscription_hash": "c7a40b92e159",
+    "owner_hash": "180988ab5012",
+    "counters": {
+      "welcomes": 1,
+      "subscriptions": 1,
+      "keepalives": 582,
+      "notifications": 1,
+      "accepted": 1,
+      "failures": 0
+    },
+    "last_failure": null,
+    "last_intake_result": "ACCEPTED"
+  },
+  "sqlite": {
+    "integrity": "ok",
+    "counts": {
+      "deliveries": 2,
+      "messages": 2,
+      "candidates": 2
+    },
+    "recent_candidates": [
+      {
+        "channel_hash": "180988ab5012",
+        "chat_id_hash": "60c53573da37",
+        "delivery_id_hash": "4876513f873d",
+        "event_timestamp": "2026-10-26T05:33:06.660457+00:00",
+        "state": "previewed",
+        "source": "twitch_eventsub"
+      },
+      {
+        "channel_hash": "180988ab5012",
+        "chat_id_hash": "59171c230b77",
+        "delivery_id_hash": "9d6daadf3891",
+        "event_timestamp": "2026-10-26T01:51:02.688668+00:00",
+        "state": "previewed",
+        "source": "twitch_eventsub"
+      }
+    ],
+    "reason_counts": {
+      "ACCEPTED": 2
+    },
+    "scope": "Persisted intake only; not OAuth/browser/OBS verification",
+    "matching_restart_candidate_count": 1,
+    "original_candidate_still_present": true
+  },
+  "new_event_journal_excerpt": [
+    {
+      "at": 1792992787.4809203,
+      "event": "notification_received",
+      "delivery_hash": "4876513f873d",
+      "legacy_delivery_id_would_reject": true
+    },
+    {
+      "at": 1792992787.4995809,
+      "event": "intake_result",
+      "result": "ACCEPTED"
+    }
+  ],
+  "user_manual_report": {
+    "owner_oauth": "PASS",
+    "actual_obs_pairing": "PASS",
+    "overlay_ready": "PASS",
+    "real_chat_message_sent": "PASS",
+    "dashboard_inbox": "PASS",
+    "manual_selection_preview": "PASS",
+    "actual_obs_render": "PASS",
+    "preview_expired_approximately_65_seconds": "PASS",
+    "source": "User explicit manual acceptance reply in this conversation",
+    "agent_automated_obs": "NOT_RUN"
+  },
+  "real_duplicate_redelivery_observed": false,
+  "deduplication_proof": "Controlled automated temporary-database tests, not live duplicate replay",
+  "database_mutated_by_this_inspection": false,
+  "new_raw_screenshot_supplied": false,
+  "twitch_stream_started_by_agent": false
+}

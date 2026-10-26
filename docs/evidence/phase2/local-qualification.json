@@ -1,0 +1,119 @@
+{
+  "checked_at_utc": "2026-10-26T06:03:55.160159+00:00",
+  "qualification": "PASS",
+  "scope": "Local Phase 2 engineering integration; actual installed AIG and temporary SQLite, synthetic proposals/OAuth/consent. No real human Action consent or renderer claim.",
+  "aig": {
+    "installed_version": "0.3.0",
+    "commit": "bb8e8fb1234128613a750bee17967b225072bb14",
+    "public_runtime_imports_only": true,
+    "installed_RECORD_verified_python_files": 45,
+    "execution_timeout_seconds": 5
+  },
+  "commands": [
+    {
+      "command": "uv run pytest -q",
+      "result": "PASS",
+      "exit_code": 0,
+      "passed": 125,
+      "phase2_cases": 46,
+      "duration_seconds": 46.28,
+      "warnings": 1
+    },
+    {
+      "command": "uv run ruff check crowdquest tests",
+      "result": "PASS",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff format --check crowdquest tests",
+      "result": "PASS",
+      "python_files": 31,
+      "exit_code": 0
+    },
+    {
+      "command": "uv run python -m tests.browser_e2e",
+      "result": "PASS",
+      "exit_code": 0,
+      "classification": "Actual Chromium, synthetic OAuth/EventSub"
+    },
+    {
+      "command": "npm --prefix frontend run test",
+      "result": "PASS",
+      "passed": 9,
+      "exit_code": 0
+    },
+    {
+      "command": "npm --prefix frontend run build",
+      "result": "PASS",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --locked python -I scripts/verify_baseline.py",
+      "result": "PASS",
+      "exit_code": 0
+    },
+    {
+      "command": "uv lock --check --offline",
+      "result": "PASS",
+      "exit_code": 0
+    },
+    {
+      "command": "uv pip check",
+      "result": "PASS",
+      "exit_code": 0
+    }
+  ],
+  "verified_durable_test_invariants": {
+    "succeeded_effect_job_count": 1,
+    "receipt_payload_and_full_binding_match": true,
+    "missing_approval_or_authorization_job_count": 0,
+    "concurrent_SQLite_request_threads": 8,
+    "concurrent_effect_job_count": 1,
+    "inflight_poll_state": "PENDING_CONFIRMATION",
+    "crash_fixture_actual_exit_code": 73,
+    "crash_recovered_action": "Unknown",
+    "unknown_job_state": "QUARANTINED",
+    "effect_count_after_crash_and_recovery": 1,
+    "recovery_second_dispatches": 0,
+    "actual_windows_private_directory_acl": "PASS"
+  },
+  "failure_history": [
+    {
+      "probe": "Initial late-ack deadline 50ms",
+      "result": "FAIL",
+      "reason": "Deadline could expire before dispatch; no job existed. Separate pre-dispatch and post-commit probes now cover both."
+    },
+    {
+      "probe": "Initial Windows ACL inspection",
+      "result": "FAIL",
+      "reason": "Fixture PowerShell module autoload unavailable; then expected principals omitted OWNER RIGHTS. Direct .NET inspection plus explicit actual-owner validation passed."
+    }
+  ],
+  "preserved_live_instance": {
+    "pid": 19880,
+    "phase": "PHASE1",
+    "root_http_status": 200,
+    "eventsub_ready": true,
+    "phase2_route_http_status": 404,
+    "second_live_restart_performed": false
+  },
+  "phase2_live_activation": "NOT_RUN",
+  "real_human_action_approval": "NOT_RUN",
+  "real_model": "NOT_RUN",
+  "worker_or_obs_rendering": "NOT_RUN",
+  "phase2_remote_ci": "NOT_RUN",
+  "phase2_remote_push": "NOT_RUN",
+  "source_sha256": {
+    "crowdquest/admission.py": "dd820a6b1f21be59242e61a73c698be1e4425ebd879279694115dc9d29562297",
+    "crowdquest/challenges.py": "7ced495b7494bf74ec72b0661ad324d2b1ea8b54664c41148f66b78fb124719f",
+    "crowdquest/phase2.py": "05951cc3ad1be6862dceb35636e7bafcf32a4b9445f75dc4e785561a178be596",
+    "crowdquest/phase2_routes.py": "33a0f177592d2d5038c885b8df91e57b1c8e7ba28af3f774675296f58980433f",
+    "crowdquest/app.py": "b2dea2318dba9a988deebd0c3616a44453475d0bf5415a24f53b77310e58510c",
+    "crowdquest/__main__.py": "82641e8dd9c7fc3e0798f50b5fedc8ac34eb2fdcaa2a6d81e52e253175539753",
+    "tests/test_phase2.py": "363c53597bece3c2fbb1d6a81dfe6d9723f2eed07df9783e2114d8f59a0737ee",
+    "tests/test_phase2_routes.py": "f50ed7000105a9905d54a440937e44db452db03d09aa447ff16db0c9a0b0ab36",
+    "tests/phase2_crash.py": "80124db50315447feacd9d85c138260e68274a77158062884784124cb590ea09"
+  },
+  "secrets_exported": false,
+  "real_database_modified_by_qualification": false
+}

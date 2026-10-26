@@ -1,13 +1,16 @@
 # Phase 1 final engineering acceptance
 
-Date: 2026-10-26, Pacific/Auckland. **Final status: PARTIAL; Phase 2 is BLOCKED.**
+Date: 2026-10-26, Pacific/Auckland. **Final engineering status: PASS.**
 
 The real viewer-to-OBS display chain passed user observation and is corroborated by
 live EventSub/SQLite evidence. The user subsequently authorized a controlled restart;
 the tested security/recovery fixes are now loaded and EventSub is genuinely listening.
 Post-start owner login, OBS pairing, a fresh real message and OBS expiry observation
-await user actions. Formal raw-image archival remains incomplete and is reported
-separately. No standard was lowered to announce PASS.
+were completed by the user and corroborated by read-only backend checks. Formal
+raw-image archival remains PARTIAL and is reported separately, using the alternative
+USER_PROVIDED_VISUAL_EVIDENCE explicitly accepted by the user's screenshot correction.
+No PNG original path or hash is invented. This engineering PASS does not claim complete
+raw-image archival, agent-controlled OBS testing, or complete competition eligibility.
 
 ## Git provenance and scope
 
@@ -18,6 +21,8 @@ and preserved. Tested implementation commit:
 [GitHub CI 40260251492](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40260251492)
 completed successfully for that exact commit. The final response identifies final
 main without self-referential SHA claims.
+Documentation/recovery receipt `a47a155efb683166acf159af22bdb492eaecbd9e` also passed
+[GitHub CI 40267114672](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40267114672).
 
 No AIG core, pin, private credentials or real candidate records were modified. The
 complete 12,127-byte upstream consumer instructions remain intact. AIG stays
@@ -31,14 +36,16 @@ complete 12,127-byte upstream consumer instructions remain intact. AIG stays
 | PHASE1_SQLITE_PERSISTENCE | PASS | Real integrity_check=ok, 1 delivery/message/candidate, previewed; actual unique indexes; controlled duplicate/concurrency/process/service-restart tests |
 | PHASE1_DASHBOARD_SELECTION | PASS | USER_OBSERVED_REAL_E2E: supplied dashboard image shows Selected/Previously previewed; agent read-only DB confirms previewed |
 | PHASE1_OBS_RENDER | PASS | USER_PROVIDED_VISUAL_EVIDENCE: actual OBS window/canvas screenshot, not an agent browser screenshot |
-| PHASE1_SECURITY | PARTIAL | Tested hardening is loaded; old owner/overlay sessions denied; user verification of new real owner login/pairing remains pending |
+| PHASE1_SECURITY | PASS | Tested hardening loaded in PID 19880; old sessions denied; user completed new owner login/read-only OBS pairing; scope revalidated as user:read:chat only |
 | PHASE1_RESILIENCE | PASS | Controlled temporary-service, actual temporary SQLite write-lock/restart, mock API-error and browser offline/reconnect tests; live fault injection is NOT_RUN |
 | PHASE1_REGRESSION | PASS | 79 backend, 9 frontend, lint, type/build, actual Chromium synthetic E2E, dependency and advisory checks; see commands below |
 | PHASE1_EVIDENCE_ARCHIVE | PARTIAL | Redacted real proof and two-image visual index saved; PNG original bytes/local paths/hashes unavailable, raw-image import USER_ACTION_REQUIRED |
-| PHASE1_FINAL_STATUS | PARTIAL | Post-start real owner/OBS validation is pending; raw-image archival remains explicitly PARTIAL |
+| PHASE1_FINAL_STATUS | PASS | P1-01 through P1-05 and mandatory security/recovery gates passed; accepted user visual evidence is retained; raw-image bytes remain an explicit archive limitation |
 
-Formal Phase 1 Definition of Done is not fully satisfied. The successful OBS display
-does not automatically close security or archival gates.
+Phase 1 engineering Definition of Done is satisfied. Archive status stays PARTIAL;
+the user's approved visual-evidence alternative meets the actual OBS observation
+criterion without asserting that original image files are locally archived. No future
+release/submission gate or missing real-provider evidence is waived.
 
 ## Real evidence
 
@@ -154,11 +161,26 @@ at 2026-10-26 04:01:14 UTC / 17:01:14 NZDT:
   tests/test_persistence_process.py` returned 14 passed, one existing deprecation warning.
   These remain controlled tests, not real duplicate delivery evidence.
 
-The user was asked to sign in, refresh/pair the actual OBS source, send one fresh
-real !quest message, manually Preview it, and observe expiry after approximately
-65 seconds. Those post-start observations are pending. Phase 1 stays PARTIAL and
-Phase 2 remains BLOCKED until the mandatory checks are complete. No Twitch stream
-was started, and the agent sent no chat.
+The user then explicitly reported PASS for owner OAuth, actual OBS pairing/Ready,
+Inbox, manual Preview, actual OBS rendering and expiry after approximately 65 seconds.
+[postrestart-real-acceptance.json](evidence/phase1/postrestart-real-acceptance.json)
+corroborates that report: PID 19880 still runs the tested security code; token validation
+and subscription lookup return 200; the real notification was ACCEPTED; SQLite now has
+2 deliveries/messages/candidates with integrity_check=ok. The original candidate remains
+and exactly one matching new candidate is previewed. New event timestamp:
+2026-10-26T05:33:06.660457Z / 18:33:06 NZDT; delivery hash 4876513f873d,
+chat hash 60c53573da37. Its unique IDs differ from the original message.
+
+OBS rendering/expiry are USER_OBSERVED_REAL_E2E, not agent automated OBS proof. The
+agent did not observe genuine Twitch duplicate redelivery; durable deduplication is
+proven by controlled tests. No real DB replay, stream, chat write or credential reset
+was performed. The complete final suite was rerun after this manual acceptance:
+79 backend tests (20.03 seconds), 9 frontend tests, actual Chromium synthetic E2E,
+lint/format, type/build, baseline, lock, pip compatibility and npm audit all passed;
+npm audit reported zero vulnerabilities. Existing HTTPX deprecation warning remains.
+After the opt-in Phase 2 addition, the entire combined backend suite passed again:
+125 tests in 46.28 seconds (46 Phase 2 cases), plus 9 frontend tests and actual Chromium
+synthetic E2E. The live Phase 1 process was preserved throughout this later work.
 
 ## Phase 2 gate
 
@@ -168,7 +190,7 @@ domain Plan, persistent Run, exact Approval, separate Action Authorization, one 
 claim and transactional local queue/receipt, with Unknown quarantine and negative tests.
 No new product feature, provider call, paid service or deployment is inferred.
 
-PHASE2_IMPLEMENTATION_STATUS=BLOCKED; PHASE2_TEST_STATUS=NOT_RUN;
-PHASE2_FINAL_STATUS=BLOCKED. The user's automatic progression is conditional on all
-mandatory gates passing. Phase 1 is still PARTIAL, so no Phase 2 source or AIG execution
-was started. Competition eligibility/reuse ambiguity remains UNVERIFIED separately.
+The conditional Phase 2 prerequisite is now satisfied for the existing roadmap's local
+single-action integration. Read [Phase 2 implementation](PHASE2-IMPLEMENTATION.md) for
+its own results and limits; Phase 1 PASS does not certify Phase 2 or production Approval.
+Competition eligibility/reuse ambiguity remains UNVERIFIED separately.

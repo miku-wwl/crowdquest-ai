@@ -1,12 +1,16 @@
-# Proposed architecture
+# Application architecture
 
-Status: design only. Python 3.13/FastAPI, React/TypeScript, SQLite and OBS Browser Source.
+Stack: Python 3.13/FastAPI, React/TypeScript, SQLite and OBS Browser Source.
 Initial deployment is one local host, one streamer/channel and one active runtime owner.
 
-Phase 1 update: OAuth, intake and a separate manual preview are now implemented.
-The production AI/AIG/queue diagram below remains future design. Phase 1 uses HTTP
+Phase 1 OAuth, intake and a separate manual preview are implemented and accepted.
+Phase 2 adds opt-in installed AIG composition, exact review/Authorization routes and
+transactional queue/receipts, qualified with temporary stores and synthetic consent.
+Real AI, the full review UI and overlay worker/acknowledgements remain Phase 3 design.
+The running live instance is still Phase 1. Phase 1 uses HTTP
 polling, in-memory owner/overlay sessions, Windows Credential Manager and private
-SQLite intake state. It creates no gate database, executable Plan, Action or grant.
+SQLite intake state. Default startup creates no gate, Plan, Action or grant; only
+explicit Phase 2 startup composition enables those APIs and private stores.
 
 ```mermaid
 flowchart LR

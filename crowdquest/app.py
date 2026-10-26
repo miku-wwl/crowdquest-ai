@@ -29,7 +29,7 @@ class Selection(BaseModel):
 
 class PairCode(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
-    code: str = Field(pattern=r"^[A-F0-9]{12}$")
+    code: str = Field(pattern=r"^[A-F0-9]{16}$")
 
 
 @dataclass
@@ -39,14 +39,23 @@ class Session:
     expires: float
 
 
-def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSub, clock=time.time):
+def create_app(
+    settings=None,
+    *,
+    auth=None,
+    store=None,
+    eventsub_factory=EventSub,
+    clock=time.time,
+    monotonic=time.monotonic,
+):
     settings = settings or Settings.load()
     settings.state_dir.mkdir(parents=True, exist_ok=True)
     store = store or Store(settings.state_dir / "intake.sqlite3")
     auth = auth or TwitchAuth(settings, WindowsVault(settings.state_dir))
     eventsub = eventsub_factory(auth, store)
     sessions, overlays, views = {}, {}, {}
-    preview = {"revision": 0, "expires": 0, "text": "", "source": ""}
+    pairing_failures = []
+    preview = {"revision": 0, "expires": 0, "deadline": 0, "text": "", "source": ""}
 
     @asynccontextmanager
     async def lifespan(app):
@@ -104,7 +113,7 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         if (
             identity is None
             or session is None
-            or session.expires <= clock()
+            or session.expires <= monotonic()
             or session.generation != auth.generation
         ):
             raise HTTPException(401, "OWNER_AUTH_REQUIRED")
@@ -122,8 +131,10 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
             return {
                 "authenticated": False,
                 "configured": settings.configured,
-                "connection": "unauthenticated",
-                "reason": "USER_ACTION_REQUIRED",
+                "connection": "auth_unavailable"
+                if auth.reason == "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE"
+                else "unauthenticated",
+                "reason": auth.reason,
             }
         return {
             "authenticated": True,
@@ -132,6 +143,7 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
             "connection": eventsub.status,
             "reason": eventsub.reason,
             "last_event_at": eventsub.last_event_at,
+            "eventsub": eventsub.snapshot() if hasattr(eventsub, "snapshot") else None,
             "warning": WARNING,
         }
 
@@ -161,7 +173,7 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         except (AuthError, RuntimeError):
             response = RedirectResponse("/?auth_error=AUTHENTICATION_FAILED", status_code=303)
         else:
-            now = clock()
+            now = monotonic()
             expired = [key for key, value in sessions.items() if value.expires <= now]
             for key in expired:
                 del sessions[key]
@@ -186,6 +198,8 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         overlays.clear()
         views.clear()
         preview["expires"] = 0
+        preview["deadline"] = 0
+        pairing_failures.clear()
         response = JSONResponse({"ok": True})
         response.delete_cookie("cq_owner", path="/")
         return response
@@ -208,6 +222,7 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         preview.update(
             revision=preview["revision"] + 1,
             expires=clock() + 60,
+            deadline=monotonic() + 60,
             text=candidate["suggestion"],
             source=candidate["source"],
         )
@@ -217,10 +232,11 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
     async def clear(request: Request):
         await owner(request, True)
         preview["expires"] = 0
+        preview["deadline"] = 0
         return {"ok": True}
 
     def prune_overlays():
-        now = clock()
+        now = monotonic()
         for key in list(overlays):
             value = overlays[key]
             if (
@@ -241,8 +257,8 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         if len(overlays) >= 8:
             raise HTTPException(429, "PAIRING_CAPACITY")
         token = secrets.token_urlsafe(32)
-        code = secrets.token_hex(6).upper()
-        overlays[digest(token)] = {"code": code, "approved": False, "expires": clock() + 300}
+        code = secrets.token_hex(8).upper()
+        overlays[digest(token)] = {"code": code, "approved": False, "expires": monotonic() + 300}
         response = JSONResponse({"code": code, "approved": False})
         response.set_cookie(
             "cq_overlay",
@@ -260,19 +276,33 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         prune_overlays()
         return {
             "pending": [v["code"] for v in overlays.values() if not v["approved"]],
-            "ready": sum(v["ready"] > clock() - 10 for v in overlays.values() if v["approved"]),
+            "ready": sum(
+                v["ready"] is not None and v["ready"] > monotonic() - 10
+                for v in overlays.values()
+                if v["approved"]
+            ),
         }
 
     @app.post("/api/overlays/authorize")
     async def approve_pair(request: Request, value: PairCode):
         await owner(request, True)
         prune_overlays()
+        now = monotonic()
+        pairing_failures[:] = [at for at in pairing_failures if at > now - 60]
+        if len(pairing_failures) >= 5:
+            raise HTTPException(429, "PAIRING_RATE_LIMIT")
         found = next(
             (v for v in overlays.values() if secrets.compare_digest(v["code"], value.code)), None
         )
         if found is None:
+            pairing_failures.append(now)
             raise HTTPException(404, "PAIRING_EXPIRED")
-        found.update(approved=True, generation=auth.generation, expires=clock() + 6 * 3600, ready=0)
+        if found["approved"]:
+            pairing_failures.append(now)
+            raise HTTPException(409, "PAIRING_CODE_ALREADY_USED")
+        found.update(
+            approved=True, generation=auth.generation, expires=monotonic() + 6 * 3600, ready=None
+        )
         return {"ok": True}
 
     @app.get("/api/overlay/current")
@@ -280,7 +310,11 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         prune_overlays()
         overlay_key = digest(request.cookies.get("cq_overlay", ""))
         pairing = overlays.get(overlay_key)
-        if not pairing or not pairing["approved"] or not await auth.ensure():
+        if not pairing or not pairing["approved"]:
+            raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
+        if not await auth.ensure():
+            if auth.reason == "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE":
+                raise HTTPException(503, "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE")
             raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
         view = request.headers.get("x-overlay-view", "")
         try:
@@ -292,11 +326,11 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
         if key not in views:
             if sum(k[0] == overlay_key for k in views) >= 8:
                 raise HTTPException(429, "VIEW_CAPACITY")
-            views[key] = {"baseline": preview["revision"], "expires": clock() + 120}
-        views[key]["expires"] = clock() + 120
-        pairing["ready"] = clock()
-        if preview["expires"] <= clock():
-            return {"state": "expired" if preview["revision"] else "waiting", "warning": WARNING}
+            views[key] = {"baseline": preview["revision"], "expires": monotonic() + 120}
+        views[key]["expires"] = monotonic() + 120
+        pairing["ready"] = monotonic()
+        if preview["deadline"] <= monotonic():
+            return {"state": "waiting", "reason": "PREVIEW_ENDED", "warning": WARNING}
         if preview["revision"] <= views[key]["baseline"]:
             return {"state": "waiting", "warning": WARNING}
         return {
@@ -304,6 +338,7 @@ def create_app(settings=None, *, auth=None, store=None, eventsub_factory=EventSu
             "warning": WARNING,
             "text": preview["text"],
             "expires_at": preview["expires"],
+            "remaining_seconds": max(0, preview["deadline"] - monotonic()),
             "source": preview["source"],
         }
 

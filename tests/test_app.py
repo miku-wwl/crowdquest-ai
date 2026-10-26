@@ -112,7 +112,7 @@ def test_owner_selection_overlay_expiry_refresh_reconnect(harness):
         == "waiting"
     )
     h["clock"][0] += 61
-    assert client.get("/api/overlay/current", headers=view).json()["state"] == "expired"
+    assert client.get("/api/overlay/current", headers=view).json()["state"] == "waiting"
     assert h["store"].candidates("123")[0]["state"] == "previewed"
 
 

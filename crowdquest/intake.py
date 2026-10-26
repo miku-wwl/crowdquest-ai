@@ -14,6 +14,7 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 ID = r"^[A-Za-z0-9_-]{1,128}$"
+OPAQUE_DELIVERY_ID = r"^[\x21-\x7e]{1,128}$"
 USER_ID = r"^[1-9][0-9]{0,24}$"
 
 
@@ -23,7 +24,9 @@ class InvalidEvent(ValueError):
 
 class Metadata(BaseModel):
     model_config = ConfigDict(strict=True, extra="ignore")
-    message_id: str = Field(pattern=ID)
+    # Twitch delivery IDs are opaque strings, not UUIDs or URL-safe identifiers.
+    # Preserve printable ASCII (including Base64 + / =) exactly for deduplication.
+    message_id: str = Field(pattern=OPAQUE_DELIVERY_ID)
     message_type: str
     message_timestamp: str
     subscription_type: str | None = None
@@ -32,7 +35,11 @@ class Metadata(BaseModel):
 
 def timestamp(value: str, now: float) -> float:
     try:
-        if not re.fullmatch(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?Z", value):
+        if not re.fullmatch(
+            r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,9})?"
+            r"(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)",
+            value,
+        ):
             raise ValueError
         parsed = datetime.fromisoformat(value).timestamp()
         if not now - 600 <= parsed <= now + 30:
@@ -84,7 +91,10 @@ def validate_notification(raw, *, owner_id, session_id, subscription_id, now):
             "enabled",
         ):
             raise InvalidEvent("SUBSCRIPTION_IDENTITY")
-        if sub["transport"] != {"method": "websocket", "session_id": session_id}:
+        if (
+            sub["transport"].get("method") != "websocket"
+            or sub["transport"].get("session_id") != session_id
+        ):
             raise InvalidEvent("SESSION_IDENTITY")
         if sub["condition"] != {"broadcaster_user_id": owner_id, "user_id": owner_id}:
             raise InvalidEvent("CHANNEL_IDENTITY")

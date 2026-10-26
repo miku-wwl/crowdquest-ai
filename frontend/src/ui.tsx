@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 
 export const WARNING = 'DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED';
 export type Candidate = {id: string; suggestion: string; event_time: number; state: string; source: string};
-type Me = {authenticated: boolean; configured?: boolean; login?: string; csrf?: string; connection: string; reason?: string};
+type Me = {authenticated: boolean; configured?: boolean; login?: string; csrf?: string; connection: string; reason?: string;
+  eventsub?: {ready: boolean; counters: {keepalives: number; notifications: number; accepted: number}} | null};
 type Pairings = {pending: string[]; ready: number};
-type OverlayData = {state: string; text?: string; source?: string; expires_at?: number; code?: string};
+type OverlayData = {state: string; text?: string; source?: string; expires_at?: number; remaining_seconds?: number; deadline?: number; reason?: string; code?: string};
 
 async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(path, {credentials: 'same-origin', cache: 'no-store',
@@ -74,17 +75,23 @@ export function Dashboard() {
   return <div className="shell">
     <header><a className="brand" href="/" aria-label="CrowdQuest home"><span className="brand-mark">CQ</span> CrowdQuest<span className="brand-ai">AI</span></a>
       <span className="phase">PHASE 01 <span>Connectivity lab</span></span>
-      <span className={`connection ${me.connection === 'connected' ? 'live' : ''}`}><i />{me.connection.replaceAll('_', ' ')}</span></header>
+      <span className={`connection ${me.eventsub?.ready ? 'live' : ''}`}><i />{me.connection.replaceAll('_', ' ')}</span></header>
     <main>
       <div className="hero"><div><p className="eyebrow">CROWD-POWERED. STREAMER-CONTROLLED.</p>
         <h1>Give chat a place to play.</h1><p className="lede">Collect suggestions. Choose what appears on your stream.</p></div>
         <div className="owner"><span>CHANNEL OWNER</span><strong>{me.login ? `@${me.login}` : 'Not connected'}</strong><small>Read-only Twitch integration</small></div></div>
       <div className="warning" role="note">{WARNING}</div>
+      {me.authenticated && me.eventsub && <p className="fine" role="status">
+        EventSub {me.eventsub.ready ? 'listening' : 'not ready'} · Heartbeats {me.eventsub.counters.keepalives} ·
+        Notifications {me.eventsub.counters.notifications} · Stored {me.eventsub.counters.accepted}
+      </p>}
       {error && <div role="alert" className="error">{error}</div>}
       {notice && <div role="status" className="notice">{notice}</div>}
       {!me.authenticated ? <section className="signin"><span className="step-number">01</span><h2>Connect your channel</h2>
         <p>Sign in with the configured broadcaster account to review suggestions and control development previews.</p>
-        <a className="primary" href="/auth/twitch/start">Connect Twitch →</a>
+        {me.reason === 'TWITCH_AUTH_TEMPORARILY_UNAVAILABLE' ?
+          <p role="status">Twitch is temporarily unavailable. Your session is retained; retrying.</p> :
+          <a className="primary" href="/auth/twitch/start">Connect Twitch →</a>}
         {me.configured === false && <p className="setup-hint">Local setup is required. Follow the Twitch setup instructions in the README.</p>}
         <p className="fine">Only chat reading is requested. This phase does not use AI or execute challenges.</p></section> :
         <div className="workspace"><section className="inbox"><div className="section-title"><h2>Audience inbox <span>{candidates.length}</span></h2><span>!quest &lt;suggestion&gt;</span></div>
@@ -112,6 +119,7 @@ export function Overlay() {
     async function poll() {
       if (working) return;
       working = true;
+      const started = performance.now();
       try {
         const response = await fetch('/api/overlay/current', {cache: 'no-store', credentials: 'same-origin',
           headers: {'X-Overlay-View': view}, signal: AbortSignal.timeout(4000)});
@@ -121,7 +129,22 @@ export function Overlay() {
           if (active) setData({state: 'pairing', code: pair.code});
         } else {
           if (!response.ok) throw new Error('OVERLAY_UNAVAILABLE');
-          const value = await response.json();
+          const value: OverlayData = await response.json();
+          if (value.state === 'preview') {
+            // Compatibility with the already-running Phase 1 server: use its HTTP
+            // Date header, never the client's wall clock, for the legacy response.
+            if (value.remaining_seconds === undefined && value.expires_at !== undefined) {
+              const serverNow = Date.parse(response.headers.get('Date') || '');
+              value.remaining_seconds = Math.min(60, value.expires_at - serverNow / 1000);
+            }
+            if (!Number.isFinite(value.remaining_seconds) || value.remaining_seconds! <= 0 || value.remaining_seconds! > 60) {
+              throw new Error('INVALID_PREVIEW_DURATION');
+            }
+            value.deadline = started + value.remaining_seconds! * 1000;
+            if (value.deadline <= performance.now()) {
+              value.state = 'waiting'; value.text = undefined;
+            }
+          }
           if (active) setData(value);
         }
       } catch {
@@ -130,7 +153,7 @@ export function Overlay() {
       } finally {working = false;}
     }
     void poll(); const timer = setInterval(poll, 1000);
-    const expiry = setInterval(() => setData(value => value.expires_at && value.expires_at * 1000 <= Date.now() ? {state: 'expired'} : value), 250);
+    const expiry = setInterval(() => setData(value => value.deadline !== undefined && value.deadline <= performance.now() ? {state: 'waiting', reason: 'PREVIEW_ENDED'} : value), 250);
     return () => {active = false; clearInterval(timer); clearInterval(expiry);};
   }, []);
   return <main className="overlay-shell"><div className="overlay-card"><div className="overlay-brand"><span className="brand-mark">CQ</span> CrowdQuest AI <span>LIVE PREVIEW LAB</span></div>

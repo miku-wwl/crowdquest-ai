@@ -6,10 +6,11 @@ AI-powered Twitch audience challenges with streamer approval, safe execution, an
 
 ## Current status
 
-**Phase 1 is implemented; acceptance is PARTIAL pending real Twitch and OBS evidence.**
-OAuth, read-only EventSub intake, durable SQLite deduplication and manual owner-selected
-previews have synthetic tests and actual Chromium E2E coverage. Twitch application setup,
-real OAuth/chat and actual OBS observation remain `USER_ACTION_REQUIRED` / `NOT_RUN`.
+**The real Twitch → SQLite → owner-selected Dashboard → OBS display chain is evidenced.**
+Phase 1 final acceptance remains PARTIAL: final backend security hardening is tested but
+not loaded into the preserved live process, and raw screenshot originals are not locally
+archived. Two supplied visual attachments corroborate actual OBS and Dashboard behavior.
+See the [final acceptance report](docs/PHASE1-FINAL-ACCEPTANCE.md) for exact evidence classes.
 No AI Plans, AIG Runtime execution or production Approval/Authorization are implemented.
 
 The public repository already existed with one README-only initial commit
@@ -113,6 +114,7 @@ fully verified competition eligibility. No organizer has been contacted.
 - [Decisions](docs/DECISIONS.md)
 - [Phase 0 evidence](docs/PHASE0_EVIDENCE.md)
 - [Phase 1 evidence and live-user steps](docs/PHASE1_EVIDENCE.md)
+- [Phase 1 final engineering acceptance](docs/PHASE1-FINAL-ACCEPTANCE.md)
 
 Read [AGENTS.md](AGENTS.md) before development. It preserves the entire authoritative
 AIG consumer template and appends CrowdQuest constraints. No AIG core changes are allowed.

@@ -4,9 +4,11 @@ The subsequent user instruction authorizes Phase 1 implementation/tests and norm
 main delivery. Phase 2 onward still needs new authorization; no deployment/submission.
 Historical Phase 0 scope remains recorded below.
 
-Phase 1 is **PARTIAL**: implementation/synthetic checks complete; owned-channel
-confirmation, real OAuth/chat and actual OBS observation remain outstanding. See
-[PHASE1_EVIDENCE.md](PHASE1_EVIDENCE.md). Stop before Phase 2.
+Phase 1 is **PARTIAL**: real ingestion and user-observed Dashboard/OBS rendering now
+pass, while final security activation and formal raw-image archival remain explicit
+gaps. Current regression: 79 backend tests, 9 frontend tests and Chromium synthetic E2E.
+See [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md). The user's latest request
+authorizes automatic Phase 2 only after mandatory quality gates pass; do not bypass them.
 
 ## Phase 0 — Repository and architecture (2026-10-26)
 

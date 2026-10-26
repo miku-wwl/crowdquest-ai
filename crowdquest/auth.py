@@ -22,6 +22,10 @@ class AuthError(Exception):
     """Only fixed safe reason codes cross into UI/logs."""
 
 
+class AuthUnavailable(AuthError):
+    """Temporary provider/transport failure, not evidence of revoked consent."""
+
+
 def digest(value):
     return hashlib.sha256(value.encode()).hexdigest()
 
@@ -52,6 +56,7 @@ class TwitchAuth:
         self.reason = "USER_ACTION_REQUIRED"
         self.states = {}
         self.lock = asyncio.Lock()
+        self.retry_after = 0
 
     def begin(self):
         if not self.settings.configured:
@@ -127,11 +132,15 @@ class TwitchAuth:
     async def _post(self, data):
         try:
             result = await self.client.post(TOKEN_URL, data=data)
+            if result.status_code == 429 or result.status_code >= 500:
+                raise AuthUnavailable("TWITCH_AUTH_TEMPORARILY_UNAVAILABLE")
             if result.status_code != 200 or len(result.content) > 16384:
                 raise AuthError("TOKEN_EXCHANGE_REJECTED")
             return result.json()
-        except (httpx.HTTPError, ValueError):
-            raise AuthError("TWITCH_AUTH_UNAVAILABLE") from None
+        except httpx.HTTPError:
+            raise AuthUnavailable("TWITCH_AUTH_TEMPORARILY_UNAVAILABLE") from None
+        except ValueError:
+            raise AuthError("TOKEN_RESPONSE_SHAPE") from None
 
     async def _validate(self, access):
         try:
@@ -141,7 +150,7 @@ class TwitchAuth:
             if result.status_code == 401:
                 raise AuthError("TOKEN_REVOKED")
             if result.status_code != 200 or len(result.content) > 16384:
-                raise AuthError("TOKEN_VALIDATION_FAILED")
+                raise AuthUnavailable("TWITCH_AUTH_TEMPORARILY_UNAVAILABLE")
             value = result.json()
             if (
                 value.get("client_id") != self.settings.client_id
@@ -155,10 +164,9 @@ class TwitchAuth:
                 raise AuthError("OWNER_CLIENT_OR_SCOPE_MISMATCH")
             return Identity(value["user_id"], value["login"]), value["expires_in"]
         except (httpx.HTTPError, ValueError):
-            raise AuthError("TWITCH_AUTH_UNAVAILABLE") from None
+            raise AuthUnavailable("TWITCH_AUTH_TEMPORARILY_UNAVAILABLE") from None
 
-    def _save(self, tokens, identity):
-        # Save before publishing identity; vault failure cannot produce an authenticated session.
+    def _persist_tokens(self, tokens):
         self.vault.set(
             "tokens",
             json.dumps(
@@ -171,8 +179,13 @@ class TwitchAuth:
                 }
             ),
         )
+
+    def _save(self, tokens, identity):
+        # Save before publishing identity; vault failure cannot produce an authenticated session.
+        self._persist_tokens(tokens)
         self.tokens, self.identity = tokens, identity
         self.validated_at, self.reason = self.clock(), "AUTHENTICATED"
+        self.retry_after = 0
 
     def invalidate(self, reason):
         self.identity, self.tokens = None, None
@@ -186,6 +199,8 @@ class TwitchAuth:
     async def ensure(self):
         async with self.lock:
             if not self.settings.configured:
+                return None
+            if self.clock() < self.retry_after:
                 return None
             try:
                 if self.tokens is None:
@@ -211,6 +226,7 @@ class TwitchAuth:
                     tokens = self._tokens(refreshed)
                     # Retain rotated refresh token even if subsequent validation fails.
                     self.tokens = tokens
+                    self._persist_tokens(tokens)
                     self.identity = None
                     self.validated_at = 0
                 if self.identity is None or self.clock() - self.validated_at >= 3600:
@@ -218,6 +234,11 @@ class TwitchAuth:
                     tokens.expires = self.clock() + expires
                     self._save(tokens, identity)
                 return self.identity
+            except AuthUnavailable:
+                self.identity = None
+                self.reason = "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE"
+                self.retry_after = self.clock() + 5
+                return None
             except (AuthError, RuntimeError, KeyError, TypeError, ValueError):
                 self.invalidate("REAUTHENTICATION_REQUIRED")
                 return None

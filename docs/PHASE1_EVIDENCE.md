@@ -1,5 +1,8 @@
 # Phase 1 evidence — PARTIAL
 
+This is the historical initial-delivery snapshot. For the current real-chain evidence,
+final regression results and remaining gates, see [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md).
+
 Date: 2026-10-26, Pacific/Auckland. Engineering implementation is available; real
 Twitch authentication/chat and actual OBS observation remain unverified. Phase 2/3
 have not started. Personal eligibility/Devpost registration are unconfirmed and

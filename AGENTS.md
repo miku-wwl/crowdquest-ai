@@ -227,3 +227,16 @@ No chat writes, moderation, organizer contact, deployment, video upload or submi
 All previews visibly say DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED.
 Keep live Twitch, synthetic browser tests and actual OBS evidence distinct. Stop
 after Phase 1; unresolved competition eligibility stays PARTIAL/UNVERIFIED.
+
+## Final acceptance authorization update — 2026-10-26
+
+The user's latest request authorizes Phase 1 final engineering/security acceptance
+and conditional automatic Phase 2 progression only after all mandatory Phase 1
+quality gates pass. Preserve existing uncommitted diagnostic fixes and real private
+data. Two final user-provided screenshots are visual evidence; do not invent local
+image files or require the two historical screenshots that were explicitly excluded.
+Do not redo real OAuth/pairing, start streaming, mutate credentials, send Twitch chat,
+or interrupt the working live instance to force a test pass. Use temporary databases
+and fixture services for destructive/fault tests. Stop on a mandatory unresolved gate
+or any need for new authorization. Existing Phase 1 normal main delivery authority
+continues; no core AIG changes, paid calls, deployment, release or submission.

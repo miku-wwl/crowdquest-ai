@@ -14,7 +14,12 @@ def harness(tmp_path):
     settings, auth, mock = make_auth(tmp_path, clock=lambda: clock[0])
     store = Store(tmp_path / "intake.sqlite3")
     app = create_app(
-        settings, auth=auth, store=store, eventsub_factory=PassiveEventSub, clock=lambda: clock[0]
+        settings,
+        auth=auth,
+        store=store,
+        eventsub_factory=PassiveEventSub,
+        clock=lambda: clock[0],
+        monotonic=lambda: clock[0],
     )
     with TestClient(app, base_url=settings.origin, follow_redirects=False) as client:
 

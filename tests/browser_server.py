@@ -29,7 +29,13 @@ def build(directory, port):
             subscription_id="sub-1",
             source="synthetic",
         )
-    return create_app(settings, auth=auth, store=store, eventsub_factory=PassiveEventSub)
+    app = create_app(settings, auth=auth, store=store, eventsub_factory=PassiveEventSub)
+
+    @app.get("/_test/health")
+    async def fixture_identity():
+        return {"fixture_id": directory.name}
+
+    return app
 
 
 if __name__ == "__main__":
@@ -55,4 +61,7 @@ if __name__ == "__main__":
         server.should_exit = True
 
     threading.Thread(target=shutdown_monitor, daemon=True).start()
-    server.run()
+    try:
+        server.run()
+    finally:
+        (directory / "stopped").touch()

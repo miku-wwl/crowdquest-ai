@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { vi, beforeEach, afterEach } from 'vitest';
 import { CandidateList, Dashboard, Overlay, WARNING } from './ui';
 
@@ -6,7 +6,7 @@ const suggestion = '<img src=x onerror="window.pwned=1"> Survive 60 seconds';
 const candidates = [{id: 'candidate-1', suggestion, event_time: 1800000000, state: 'candidate', source: 'synthetic'}];
 let posts: {path: string; body?: string}[];
 beforeEach(() => {posts = [];});
-afterEach(() => {vi.restoreAllMocks();});
+afterEach(() => {vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks();});
 
 function transport(authenticated = true) {
   vi.stubGlobal('fetch', vi.fn(async (path: string, options?: RequestInit) => {
@@ -15,7 +15,7 @@ function transport(authenticated = true) {
       return new Response(JSON.stringify({ok: true}));
     }
     const result = path === '/api/me' ? {authenticated, login: 'fixture_owner', csrf: 'synthetic-csrf', connection: 'connected'} :
-      path === '/api/candidates' ? {candidates} : {pending: ['ABCDEF123456'], ready: 1};
+      path === '/api/candidates' ? {candidates} : {pending: ['ABCDEF1234567890'], ready: 1};
     return new Response(JSON.stringify(result));
   }));
 }
@@ -71,7 +71,7 @@ it('renders a server rejection after a manual action', async () => {
 
 it('renders overlay untrusted text with the warning and synthetic attribution', async () => {
   vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({state: 'preview', text: suggestion,
-    expires_at: Date.now()/1000+60, source: 'synthetic'}))));
+    expires_at: Date.now()/1000+60, remaining_seconds: 60, source: 'synthetic'}))));
   const {container} = render(<Overlay />);
   expect(await screen.findByText(suggestion)).toBeVisible();
   expect(screen.getByText(WARNING)).toBeVisible();
@@ -84,4 +84,24 @@ it('clears overlay into disconnected state when polling fails', async () => {
   render(<Overlay />);
   expect(await screen.findByText('Connection lost')).toBeVisible();
   expect(screen.queryByText(suggestion)).toBeNull();
+});
+
+it.each(['remaining', 'legacy_date'])('expires by monotonic time despite client clock jumps (%s)', async protocol => {
+  vi.useFakeTimers({toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'Date', 'performance']});
+  const serverEpoch = 1800000000;
+  vi.setSystemTime((serverEpoch + 86400) * 1000);
+  let requests = 0;
+  vi.stubGlobal('fetch', vi.fn(async () => {
+    if (++requests > 1) return new Promise<Response>(() => {});
+    return new Response(JSON.stringify({state: 'preview', text: 'Monotonic preview', source: 'synthetic',
+      expires_at: serverEpoch + 2, ...(protocol === 'remaining' ? {remaining_seconds: 2} : {})}),
+      {headers: {Date: new Date(serverEpoch * 1000).toUTCString()}});
+  }));
+  render(<Overlay />);
+  await act(async () => {await vi.advanceTimersByTimeAsync(0);});
+  expect(screen.getByText('Monotonic preview')).toBeVisible();
+  vi.setSystemTime((serverEpoch - 86400) * 1000);
+  await act(async () => {await vi.advanceTimersByTimeAsync(2250);});
+  expect(screen.queryByText('Monotonic preview')).toBeNull();
+  expect(screen.getByText('Ready for your next idea')).toBeVisible();
 });

@@ -1,0 +1,156 @@
+{
+  "checked_at_utc": "2026-10-26T02:30:38.902721+00:00",
+  "scope": "Agent read-only corroboration of real EventSub and persisted intake; dashboard/OBS are user-observed visual evidence.",
+  "token_validation": {
+    "http_status": 200,
+    "owner_client_matches": true,
+    "scopes": [
+      "user:read:chat"
+    ]
+  },
+  "matching_enabled_subscriptions": 1,
+  "live_status": {
+    "pid": 47404,
+    "updated_at": 1792981833.8905997,
+    "status": "connected",
+    "reason": "CONNECTED",
+    "stage": "receive",
+    "ready": true,
+    "socket_open": true,
+    "waiting_for_message": true,
+    "last_frame_at": 1792981833.8842554,
+    "keepalive_timeout": 10,
+    "session_hash": "41f3052a4286",
+    "subscription_hash": "64d2b407fbff",
+    "owner_hash": "180988ab5012",
+    "counters": {
+      "welcomes": 1,
+      "subscriptions": 1,
+      "keepalives": 349,
+      "notifications": 2,
+      "accepted": 1,
+      "failures": 0
+    },
+    "last_failure": null,
+    "last_intake_result": "ACCEPTED"
+  },
+  "sqlite": {
+    "integrity": "ok",
+    "counts": {
+      "deliveries": 1,
+      "messages": 1,
+      "candidates": 1
+    },
+    "unique_indexes": {
+      "deliveries": [
+        {
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ],
+      "messages": [
+        {
+          "unique": true,
+          "columns": [
+            "channel",
+            "id"
+          ]
+        }
+      ],
+      "candidates": [
+        {
+          "unique": true,
+          "columns": [
+            "channel",
+            "chat_id"
+          ]
+        },
+        {
+          "unique": true,
+          "columns": [
+            "delivery_id"
+          ]
+        },
+        {
+          "unique": true,
+          "columns": [
+            "id"
+          ]
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "channel_hash": "180988ab5012",
+        "chat_hash": "59171c230b77",
+        "delivery_hash": "9d6daadf3891",
+        "event_timestamp_utc": "2026-10-26T01:51:02.688668+00:00",
+        "state": "previewed",
+        "source": "twitch_eventsub",
+        "matches_user_reported_suggestion": true,
+        "legacy_delivery_id_would_reject": true
+      }
+    ]
+  },
+  "redacted_journal_excerpt": [
+    {
+      "at": 1792977792.971016,
+      "event": "session_welcome",
+      "keepalive_timeout": 10
+    },
+    {
+      "at": 1792977793.2498658,
+      "event": "subscription_response",
+      "http_status": 202
+    },
+    {
+      "at": 1792977793.2544723,
+      "event": "subscription_enabled",
+      "broadcaster_matches": true,
+      "user_matches": true
+    },
+    {
+      "at": 1792978329.6793408,
+      "event": "session_welcome",
+      "keepalive_timeout": 10
+    },
+    {
+      "at": 1792978329.9664948,
+      "event": "subscription_response",
+      "http_status": 202
+    },
+    {
+      "at": 1792978329.9695442,
+      "event": "subscription_enabled",
+      "broadcaster_matches": true,
+      "user_matches": true
+    },
+    {
+      "at": 1792979288.7480106,
+      "event": "notification_received",
+      "delivery_hash": "d2d6aa149e42",
+      "legacy_delivery_id_would_reject": true
+    },
+    {
+      "at": 1792979288.7518578,
+      "event": "intake_result",
+      "result": "NOT_QUEST"
+    },
+    {
+      "at": 1792979463.7501364,
+      "event": "notification_received",
+      "delivery_hash": "9d6daadf3891",
+      "legacy_delivery_id_would_reject": true
+    },
+    {
+      "at": 1792979463.7648036,
+      "event": "intake_result",
+      "result": "ACCEPTED"
+    }
+  ],
+  "real_database_mutated_by_this_check": false,
+  "runtime_security_hardening_loaded": false,
+  "runtime_note": "Existing process 47404 is intentionally preserved; acceptance hardening source changes have not been loaded into that process."
+}

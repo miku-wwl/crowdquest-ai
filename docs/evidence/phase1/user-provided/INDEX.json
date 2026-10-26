@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-26",
+  "classification": "USER_PROVIDED_VISUAL_EVIDENCE",
+  "chain_classification": "USER_OBSERVED_REAL_E2E",
+  "archive_status": "PARTIAL",
+  "raw_image_import_status": "USER_ACTION_REQUIRED",
+  "scope_note": "Only the two final screenshots supplied in the current conversation are included. Earlier historical screenshots were explicitly excluded by the user.",
+  "items": [
+    {
+      "supplied_name": "image(20261026-020358).png",
+      "source": "First inline image in the user's final-acceptance request",
+      "local_original_path": null,
+      "sha256": null,
+      "observations": [
+        "OBS Studio 32.2.2 window, CrowdQuest Demo scene and CrowdQuest Overlay source",
+        "Actual OBS canvas displays Survive 60 seconds without healing",
+        "Development preview and read-only display warnings are visible",
+        "OBS shows Start Streaming and idle stream/recording timers"
+      ],
+      "agent_automated_obs_test": "NOT_RUN"
+    },
+    {
+      "supplied_name": "image(20261026-020410).png",
+      "source": "Second inline image in the user's final-acceptance request",
+      "local_original_path": null,
+      "sha256": null,
+      "observations": [
+        "Dashboard identifies @miku_wwl",
+        "EventSub listening, Notifications 2, Stored 1",
+        "Audience inbox shows the matching suggestion as Selected and Previously previewed",
+        "Browser Source shows 2 Ready"
+      ],
+      "agent_automated_real_dashboard_test": "NOT_RUN"
+    }
+  ],
+  "import_directory": "docs/evidence/phase1/user-provided/",
+  "path_note": "The import directory and this index exist. The named PNG originals do not currently exist here; filenames above are user-supplied labels, not local file links. No image was generated or reconstructed."
+}

@@ -1,45 +1,29 @@
 """Actual Chromium with synthetic Twitch/OAuth fixtures. Never claim live Twitch/OBS."""
 
 import argparse
-import subprocess
-import sys
 import tempfile
-import time
 from pathlib import Path
 from urllib.parse import parse_qs, urlencode, urlsplit
-from urllib.request import urlopen
 
 from playwright.sync_api import expect, sync_playwright
+
+from tests.process_helpers import start_fixture, stop_fixture
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
-    port = 8765
-    origin = f"http://localhost:{port}"
     with tempfile.TemporaryDirectory(prefix="crowdquest-synthetic-") as state:
-        server = subprocess.Popen(
-            [sys.executable, "-m", "tests.browser_server", state, str(port)],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+        server, origin = start_fixture(Path(state))
         try:
-            for _ in range(100):
-                if server.poll() is not None:
-                    raise RuntimeError("Synthetic server failed to start")
-                try:
-                    if urlopen(origin + "/api/me", timeout=0.3).status == 200:
-                        break
-                except OSError:
-                    time.sleep(0.1)
             with sync_playwright() as playwright:
                 browser = playwright.chromium.launch()
                 context = browser.new_context(viewport={"width": 1440, "height": 1000})
 
                 def isolated_transport(route):
                     url = urlsplit(route.request.url)
-                    if url.netloc != f"localhost:{port}":
+                    if url.netloc != urlsplit(origin).netloc:
                         route.abort()  # No external browser request is permitted in this fixture.
                     elif url.path == "/auth/twitch/start":
                         # Exercise the real state/cookie creation, replace only external consent.
@@ -107,18 +91,13 @@ def main():
                 expect(overlay.locator(".overlay-text")).to_have_count(0)
                 context.close()
                 browser.close()
-                print(
-                    "BROWSER_E2E=PASS; Chromium; synthetic OAuth/EventSub; owner selection; pairing; "
-                    "escaping; long text; refresh/reconnect no replay. LIVE_TWITCH=NOT_RUN; OBS=NOT_RUN"
-                )
         finally:
-            # Graceful exit also releases Windows redirected-interpreter child handles.
-            Path(state, "stop").touch()
-            try:
-                server.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                server.terminate()
-                server.wait(timeout=10)
+            stop_fixture(server, Path(state))
+    print(
+        "BROWSER_E2E=PASS; actual Chromium; synthetic OAuth/EventSub; owner selection; "
+        "pairing; escaping; long text; refresh/reconnect no replay; cleanup acknowledged. "
+        "LIVE_TWITCH=NOT_RUN; OBS=NOT_RUN"
+    )
 
 
 if __name__ == "__main__":

@@ -14,6 +14,23 @@ completed SUCCESS: 125 backend tests, 9 frontend tests, lint/build/provenance an
 Chromium synthetic E2E. Its push/CI are PASS; prior NOT_RUN delivery text is historical.
 That does not establish Phase 2 live activation or genuine human Action consent.
 
+Phase 3 implementation was pushed non-forcefully to main at
+`45a67f10fecc1bba85d88759a059a06165c5508a`.
+[GitHub run 40289129582](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40289129582)
+was independently observed completed SUCCESS for that exact SHA: 163 backend tests,
+16 frontend tests, lint/build/provenance, Phase 1 actual Chromium synthetic E2E and
+Phase 3 actual Chromium plus separately authenticated worker synthetic E2E. The
+remote expiry observation was RENDERED then EXPIRED. Real Twitch, human Action
+consent and actual OBS rendering were NOT_RUN in CI. This receipt is a subsequent
+documentation-only change; it does not substitute a different source revision.
+
+A private preparation backup of real intake passed source/backup integrity and
+logical-content comparison, preserving two delivery/message/candidate records.
+Credentials were not copied or changed, and the live Phase 1 process was not stopped.
+The service, fresh EventSub readiness, exact user:read:chat scope and original row
+counts were rechecked after source delivery. A fresh backup is still required
+immediately before any separately authorized activation.
+
 ## 3A: bounded real-model planning
 
 `crowdquest/providers.py` implements the public AIG ModelProvider contract for the

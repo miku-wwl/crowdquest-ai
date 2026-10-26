@@ -156,7 +156,8 @@
     ],
     "agent_restarted_service": false,
     "agent_mutated_real_candidate_rows": false,
-    "agent_changed_credentials": false
+    "agent_changed_credentials": false,
+    "rechecked_at_utc": "2026-10-26T08:07:38.816863+00:00"
   },
   "local_model_residency": {
     "name": "phi4-mini:latest",
@@ -238,8 +239,20 @@
     "tests/test_service_restart.py": "f3a817657c7f7d7fea7dd2ac06a755363258c2f494e8d97eb952c681e8b28504"
   },
   "remote_ci": {
-    "status": "NOT_RUN",
-    "note": "To be replaced only after observing the exact pushed implementation commit workflow"
+    "status": "PASS",
+    "commit": "45a67f10fecc1bba85d88759a059a06165c5508a",
+    "run_id": 40289129582,
+    "url": "https://github.com/miku-wwl/crowdquest-ai/actions/runs/40289129582",
+    "backend_passed": 163,
+    "frontend_passed": 16,
+    "phase1_actual_chromium_synthetic_e2e": "PASS",
+    "phase3_actual_chromium_separate_worker_synthetic_e2e": "PASS",
+    "phase3_expiry_observation": [
+      "RENDERED",
+      "EXPIRED"
+    ],
+    "real_twitch_human_obs_in_ci": "NOT_RUN",
+    "verified_at_utc": "2026-10-26T08:07:38.816886+00:00"
   },
   "live_activation": "NOT_RUN",
   "real_human_action_approval": "NOT_RUN",
@@ -255,5 +268,26 @@
     "scanned_paths": 101,
     "text_files": 96,
     "secret_values_or_fingerprints_printed": false
+  },
+  "preparation_backup": {
+    "created_at_utc": "2026-10-26T08:03:27.115278+00:00",
+    "source_integrity": "ok",
+    "backup_integrity": "ok",
+    "logical_content_matches": true,
+    "counts": {
+      "deliveries": 2,
+      "messages": 2,
+      "candidates": 2
+    },
+    "credential_files_copied": false,
+    "live_process_stopped": false,
+    "note": "Preparation backup only; recheck and take a fresh snapshot immediately before any separately authorized restart.",
+    "private_location": "Outside checkout; path retained only in private operator state"
+  },
+  "remote_push": {
+    "status": "PASS",
+    "source_commit": "45a67f10fecc1bba85d88759a059a06165c5508a",
+    "branch": "main",
+    "force": false
   }
 }

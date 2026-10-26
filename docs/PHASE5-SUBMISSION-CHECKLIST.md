@@ -9,7 +9,7 @@ Internal target: 2026-11-02 18:00 NZDT. No submission/upload is authorized here.
 
 - [x] Phase 1 engineering and Phase 2 installed-runtime integration qualified.
 - [x] Genuine Phase 3 single-Action session accepted; [session evidence](PHASE3-REAL-ACCEPTANCE.md).
-- [ ] Phase 4 exact source, local gates, safe push and that exact commit's CI verified.
+- [x] Phase 4 exact implementation source, local gates, safe push and its own CI verified; see PHASE4-ACCEPTANCE.md.
 - [ ] Separately authorize activation and complete [Phase 4 live runbook](PHASE4-LIVE-RUNBOOK.md).
 - [ ] Archive redacted real vote/Plan/consent/receipt/actual OBS and expiry/outcome evidence.
 - [ ] Fresh-machine Windows setup and judging access rehearsed without sharing private credentials.

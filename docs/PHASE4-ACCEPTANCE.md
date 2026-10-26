@@ -3,8 +3,12 @@
 Date: 2026-10-27, Pacific/Auckland. Project: CrowdQuest AI.
 Git baseline: `369ec862465705225f8781dd867ecd23fdf90028`, clean before work.
 **Local Phase 4A/4B/4C/4D qualification PASS; complete Phase 4 status PARTIAL pending
-separately authorized genuine Twitch/voting/outcome/OBS acceptance.** Remote CI receipt
-is added after the exact implementation commit is delivered; no old CI proves new code.
+separately authorized genuine Twitch/voting/outcome/OBS acceptance.** Implementation commit `a4e00a9429072e9593b317b272867a90a04ee3f7` was pushed without force. Its
+[exact-commit CI run 40319271865](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40319271865)
+completed SUCCESS: 203 backend tests, 25 frontend tests, dependency/security/static/build
+checks and all three actual Chromium suites. The [CI receipt](evidence/phase4/ci-receipt.json)
+is a subsequent documentation record, not a different source revision. Any later
+documentation receipt commit is checked separately at final delivery.
 
 ## Implemented and measured gates
 
@@ -118,3 +122,41 @@ and verify any documentation receipt commit separately. Never substitute baselin
 Next operational step: separately authorize controlled activation and the exact bounded
 session in PHASE4-LIVE-RUNBOOK.md. No live work, organizer contact, video capture/upload,
 deployment or Devpost submission was performed in Phase 4 development.
+
+## Required status fields
+
+```text
+PROJECT=CrowdQuest AI
+PHASE4A_VOTING_STATUS=PASS_LOCAL
+PHASE4B_OUTCOME_STATUS=PASS_LOCAL
+PHASE4C_BROADCAST_UX_STATUS=PASS_SYNTHETIC_CHROMIUM
+PHASE4D_REGRESSION_STATUS=PASS_LOCAL_AND_EXACT_IMPLEMENTATION_CI
+PHASE4_FINAL_STATUS=PARTIAL_LIVE_ACCEPTANCE_PENDING
+VOTING_SECURITY=PASS_LOCAL
+EVENTSUB_DEDUPLICATION=PASS_SYNTHETIC
+SQLITE_PERSISTENCE=PASS_TEMPORARY_REAL_SQLITE
+VOTING_CONCURRENCY=PASS
+WINNER_BINDING=PASS
+AIG_SAFETY_REGRESSION=PASS
+OUTCOME_IDEMPOTENCY=PASS
+OBS_OVERLAY_E2E=PASS_SYNTHETIC_CHROMIUM
+BACKEND_TESTS=203_PASS_EXIT_0
+FRONTEND_TESTS=25_PASS_EXIT_0
+CHROMIUM_E2E=3_SUITES_PASS_EXIT_0
+SECURITY_CHECKS=PASS_SCOPED_LOCAL_AND_CI
+DEPENDENCY_CHECKS=PASS_AIG_0.3.0_PIN_AND_FILELOCK_4.2.4
+GITHUB_CI=PASS_IMPLEMENTATION_a4e00a9429072e9593b317b272867a90a04ee3f7
+REAL_TWITCH_ACCEPTANCE=NOT_RUN_PHASE4
+REAL_OBS_ACCEPTANCE=NOT_RUN_PHASE4
+COMPETITION_ELIGIBILITY=UNVERIFIED
+ORIGINALITY_DISCLOSURE=PASS
+ORGANIZER_CLARIFICATION=PENDING
+PERSONAL_ELIGIBILITY=UNVERIFIED
+DEMO_STORYBOARD=READY_NOT_RECORDED
+SUBMISSION_READINESS=PARTIAL
+GIT_BASELINE=369ec862465705225f8781dd867ecd23fdf90028
+REMOTE_PUSH_STATUS=PASS_IMPLEMENTATION_MAIN_NON_FORCE
+```
+
+Final documentation HEAD, its own CI and final worktree status are reported after
+that commit finishes. They cannot be embedded self-referentially in their own commit.

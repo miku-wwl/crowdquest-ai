@@ -21,7 +21,8 @@ remain historical. Original live screenshot files were not exported to Git.
 
 Phase 4 adds two-candidate crowd voting (`!vote 1` / `!vote 2`), exact winner-to-Plan
 binding, owner-reported Completed/Failed/Skipped outcomes and a transparent broadcast
-UI. Local qualification uses temporary SQLite and actual Chromium, with synthetic
+UI. **Phase 4 local engineering and exact-commit CI are PASS**
+([acceptance/CI receipt](docs/PHASE4-ACCEPTANCE.md)). Qualification uses temporary SQLite and actual Chromium, with synthetic
 chat/model/consent. **Phase 4 real Twitch voting/outcome/OBS acceptance is NOT_RUN.**
 The running accepted Phase 3 instance and its built assets are preserved. Loading the
 upgrade requires separate controlled-activation permission; follow the

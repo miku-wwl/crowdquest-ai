@@ -1,0 +1,68 @@
+{
+  "evidence": "AGENT_VERIFIED_READ_ONLY",
+  "stores": {
+    "intake": {
+      "integrity": "ok",
+      "protected_counts": {
+        "deliveries": 6,
+        "messages": 6,
+        "candidates": 5,
+        "reasons": 2,
+        "voting_identity": 1,
+        "voting_rounds": 1,
+        "crowd_votes": 1,
+        "voting_commands": 2,
+        "voting_origins": 1,
+        "voting_audit": 4
+      }
+    },
+    "gate": {
+      "integrity": "ok",
+      "protected_counts": {
+        "runs": 2,
+        "approval_decisions": 2,
+        "audit_events": 10,
+        "approval_plan_bindings": 2,
+        "actions": 2,
+        "action_authorizations": 2,
+        "action_attempts": 2,
+        "action_command_receipts": 6,
+        "action_events": 8
+      }
+    },
+    "product": {
+      "integrity": "ok",
+      "protected_counts": {
+        "candidates": 2,
+        "proposals": 2,
+        "audit": 10
+      }
+    },
+    "admission": {
+      "integrity": "ok",
+      "protected_counts": {
+        "identity": 1,
+        "reviews": 2,
+        "links": 2,
+        "jobs": 2
+      }
+    },
+    "render": {
+      "integrity": "ok",
+      "protected_counts": {
+        "identity": 1,
+        "renders": 2,
+        "observations": 2,
+        "render_origins": 1,
+        "challenge_outcomes": 1,
+        "outcome_issues": 1
+      }
+    }
+  },
+  "protected_rows_unchanged": true,
+  "real_action_commands": 0,
+  "worker_lease_fresh": true,
+  "studio_http": 200,
+  "isolated_build_served": true,
+  "private_logs_empty": true
+}

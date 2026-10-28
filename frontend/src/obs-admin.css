@@ -1,0 +1,139 @@
+.obs-admin-shell {
+  max-width: 1180px;
+}
+.obs-admin-shell main {
+  padding-bottom: 48px;
+}
+.obs-note {
+  color: #aaa3b8;
+  font-size: 13px;
+  margin: 0 0 24px;
+}
+.obs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.obs-panel {
+  background: #19181f;
+  border: 1px solid #302d3b;
+  border-radius: 18px;
+  padding: 28px;
+  min-width: 0;
+}
+.obs-panel h2 {
+  margin-top: 0;
+}
+.obs-panel p {
+  color: #aaa4b5;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.obs-panel dl {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(0, 1.4fr);
+  gap: 12px;
+  font-size: 14px;
+  margin: 24px 0;
+}
+.obs-panel dt {
+  color: #aaa4b5;
+}
+.obs-panel dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.obs-admin-shell button {
+  background: #b79bff;
+  border: 0;
+  border-radius: 9px;
+  color: #1b102e;
+  font-weight: 650;
+  padding: 12px 18px;
+}
+.obs-panel label {
+  display: block;
+  color: #c7bed7;
+  font-size: 13px;
+  margin: 20px 0 8px;
+}
+.obs-panel input,
+.obs-panel select {
+  display: block;
+  width: 100%;
+  background: #100e16;
+  border: 1px solid #635079;
+  border-radius: 8px;
+  color: #eeeaf5;
+  padding: 12px;
+  font: inherit;
+  margin-bottom: 20px;
+}
+.obs-panel input:focus-visible,
+.obs-panel select:focus-visible {
+  outline: 2px solid #c6afff;
+}
+.obs-error,
+.obs-feedback {
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+.obs-error {
+  background: #351d24;
+  color: #ffbbc9;
+  border: 1px solid #794052;
+}
+.obs-error p {
+  font-size: 13px;
+}
+.obs-feedback {
+  background: #1b342b;
+  color: #a3e2c8;
+  border: 1px solid #365e4d;
+}
+.obs-signin {
+  max-width: 560px;
+}
+.obs-record-state {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+  font-weight: 700;
+}
+.obs-record-state.active {
+  color: #ffb1c4;
+}
+.obs-record-state span {
+  color: #aaa4b5;
+  font-variant-numeric: tabular-nums;
+}
+.obs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.obs-path {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 720px) {
+  .obs-grid {
+    grid-template-columns: 1fr;
+  }
+  .obs-admin-shell header {
+    padding: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+    height: auto;
+  }
+  .obs-admin-shell main {
+    padding: 28px 20px;
+  }
+  .obs-admin-shell .phase {
+    display: none;
+  }
+  .obs-panel {
+    padding: 22px;
+  }
+}

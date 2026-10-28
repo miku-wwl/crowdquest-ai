@@ -12,7 +12,24 @@ from crowdquest.intake import Store
 from tests.support import PassiveEventSub, make_auth, notification
 
 
-def build(directory, port, *, phase3=False, phase4=False):
+def build(directory, port, *, phase3=False, phase4=False, obs_admin=False):
+    if obs_admin:
+        from crowdquest.obs_admin import create_admin_app
+        from tests.obs_support import make_adapter
+
+        adapter, obs = make_adapter()
+        adapter.overlay_url = obs.url = f"http://localhost:{port}/overlay"
+        app = create_admin_app(
+            port=port,
+            adapter=adapter,
+            frontend_directory=os.environ.get("CROWDQUEST_TEST_FRONTEND"),
+        )
+
+        @app.get("/_test/health")
+        async def fixture_identity():
+            return {"fixture_id": directory.name}
+
+        return app
     settings, auth, _ = make_auth(directory, port=port)
     store = Store(directory / "intake.sqlite3")
     texts = (
@@ -99,6 +116,7 @@ def build(directory, port, *, phase3=False, phase4=False):
         eventsub_factory=FixtureEvents if phase4 else PassiveEventSub,
         phase3_factory=factory,
         frontend_directory=os.environ.get("CROWDQUEST_TEST_FRONTEND"),
+        studio_evidence="SYNTHETIC_TEST",
     )
 
     @app.get("/_test/health")
@@ -122,6 +140,7 @@ if __name__ == "__main__":
                 int(sys.argv[2]),
                 phase3=len(sys.argv) > 3 and sys.argv[3] == "phase3",
                 phase4=len(sys.argv) > 3 and sys.argv[3] == "phase4",
+                obs_admin=len(sys.argv) > 3 and sys.argv[3] == "obs-admin",
             ),
             host="127.0.0.1",
             port=int(sys.argv[2]),

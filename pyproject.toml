@@ -16,8 +16,11 @@ dependencies = [
   "filelock>=4.2.1,<5",
 ]
 
+[project.optional-dependencies]
+obs = ["obsws-python==1.8.0"]
+
 [dependency-groups]
-dev = ["pytest>=9,<10", "pytest-asyncio>=1,<2", "playwright>=1.55,<2", "ruff>=0.14,<1"]
+dev = ["pytest>=9,<10", "pytest-asyncio>=1,<2", "playwright>=1.55,<2", "ruff>=0.14,<1", "obsws-python==1.8.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

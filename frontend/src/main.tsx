@@ -1,5 +1,7 @@
 import { createRoot } from "react-dom/client";
 import { Dashboard, Overlay } from "./ui";
+import { ObsAdmin } from "./obs-admin";
+import { BroadcastStudio } from "./studio";
 import "./style.css";
 import "./championship.css";
 
@@ -13,5 +15,13 @@ document.documentElement.classList.toggle(
 );
 
 createRoot(document.getElementById("root")!).render(
-  window.location.pathname === "/overlay" ? <Overlay /> : <Dashboard />,
+  window.location.pathname === "/overlay" ? (
+    <Overlay />
+  ) : window.location.pathname === "/broadcast-studio" ? (
+    <BroadcastStudio />
+  ) : window.location.pathname === "/obs-admin" ? (
+    <ObsAdmin />
+  ) : (
+    <Dashboard />
+  ),
 );

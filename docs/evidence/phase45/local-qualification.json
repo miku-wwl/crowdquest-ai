@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "evidence": "SYNTHETIC_TEST",
+  "actual_canvas_recording": true,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "wall_elapsed_seconds": 34.951,
+  "file": "synthetic-crowdquest-20261028075209-d88fb997.webm",
+  "bytes": 7345796,
+  "sha256": "bf756dd29d5d302ceb094b212dbd385706f0f502346410a79844b5e95d95cae4",
+  "playback": {
+    "width": 1920,
+    "height": 1080,
+    "duration": 31.9265,
+    "ready": 4,
+    "error": null
+  },
+  "preview_video_comparison": {
+    "mean_absolute_rgb_error": 2.2797370113168722,
+    "width": 1920,
+    "height": 1080
+  },
+  "real_twitch": "NOT_RUN",
+  "real_aig_actions": 0,
+  "synthetic_aig_actions": 1,
+  "obs_used": false,
+  "desktop_automation": false,
+  "decoded_duration_seconds": 32.0,
+  "decoded_frames": 813,
+  "average_fps": 25.41,
+  "ffmpeg_full_decode": "PASS",
+  "artifact_relative_directory": ".artifacts/phase45-browser/qualified",
+  "observed_date": "2026-10-28",
+  "timezone": "Pacific/Auckland",
+  "backend_tests": {
+    "passed": 225,
+    "seconds": 109.92,
+    "warnings": 1
+  },
+  "frontend_tests": {
+    "passed": 49,
+    "files": 6
+  },
+  "chromium_suites": {
+    "phase1": "PASS",
+    "phase3": "PASS",
+    "phase4": "PASS",
+    "optional_obs_fixture": "PASS",
+    "studio": "PASS"
+  },
+  "dependency_checks": {
+    "aig_version": "0.3.0",
+    "aig_commit": "bb8e8fb1234128613a750bee17967b225072bb14",
+    "installed_record_hashes": 45,
+    "preserved_upstream_bytes": 12127,
+    "npm_audit": "NO_KNOWN_VULNERABILITIES",
+    "pip_audit": "NO_KNOWN_REGISTRY_VULNERABILITIES_AIG_SKIPPED_SEPARATELY_VERIFIED"
+  },
+  "iab": {
+    "earlier_waiting_recording": {
+      "evidence": "AGENT_VERIFIED_REAL_IAB",
+      "seconds": 73.286699,
+      "bytes": 16074845,
+      "sha256": "068449c120c27889e8f613051646babf4f2989cd19f02aae27bcf1d5d918c887",
+      "resolution": [
+        1920,
+        1080
+      ],
+      "full_decode": "PASS_WITH_NONFATAL_CLUSTER_WARNING_PRE_FINAL_FIX"
+    },
+    "current_access": "BLOCKED_HOST_UNAVAILABLE",
+    "final_build_reacceptance": "NOT_RUN",
+    "overall": "PARTIAL"
+  },
+  "overall_acceptance": "PARTIAL"
+}

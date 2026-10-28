@@ -39,7 +39,9 @@ def http_product(tmp_path, *, owner="123"):
     app = create_app(
         settings, auth=auth, store=store, eventsub_factory=PassiveEventSub, phase3_factory=factory
     )
-    with TestClient(app, base_url=settings.origin, follow_redirects=False) as client:
+    with TestClient(
+        app, base_url=settings.origin, follow_redirects=False, client=("127.0.0.1", 35000)
+    ) as client:
         yield client, app, candidate, directory
 
 

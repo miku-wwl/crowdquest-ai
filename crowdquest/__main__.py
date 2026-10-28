@@ -21,6 +21,11 @@ if __name__ == "__main__":
     parser.add_argument("--phase3-directory", type=Path)
     parser.add_argument("--phase3-owner-id")
     parser.add_argument("--predecessor-stopped", action="store_true")
+    parser.add_argument(
+        "--obs-admin",
+        action="store_true",
+        help="Optional OBS compatibility; requires the obs extra",
+    )
     args = parser.parse_args()
     phase2_factory = None
     phase3_factory = None
@@ -51,7 +56,12 @@ if __name__ == "__main__":
     elif args.phase2_owner_id or args.phase3_owner_id or args.predecessor_stopped:
         parser.error("Phase 2 arguments require --phase2-directory")
     uvicorn.run(
-        create_app(settings, phase2_factory=phase2_factory, phase3_factory=phase3_factory),
+        create_app(
+            settings,
+            phase2_factory=phase2_factory,
+            phase3_factory=phase3_factory,
+            obs_admin_enabled=args.obs_admin,
+        ),
         host="127.0.0.1",
         port=settings.port,
         access_log=False,

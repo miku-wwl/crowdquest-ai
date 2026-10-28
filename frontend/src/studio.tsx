@@ -1,0 +1,510 @@
+import { useEffect, useRef, useState } from "react";
+import {
+  anchorState,
+  drawBroadcast,
+  SCENES,
+  sceneFor,
+  atTime,
+  type BroadcastState,
+  type Scene,
+} from "./studio-canvas";
+import {
+  CanvasRecorder,
+  MAX_SECONDS,
+  supportedCodec,
+  validFilename,
+  type RecorderSnapshot,
+} from "./studio-recorder";
+import "./studio.css";
+
+type Me = { authenticated: boolean; configured?: boolean; csrf?: string };
+type SystemStatus = {
+  backend: string;
+  eventsub: string;
+  worker: string;
+  challenge_state: string | null;
+  last_outcome: { kind: string; presentation: string } | null;
+  evidence: string;
+  obs_required: boolean;
+};
+const initial: BroadcastState = { state: "connecting" };
+const initialRecorder: RecorderSnapshot = {
+  state: "Idle",
+  seconds: 0,
+  error: "",
+  recordings: [],
+};
+function filename() {
+  return `crowdquest-${new Date()
+    .toISOString()
+    .replace(/[^0-9]/g, "")
+    .slice(0, 14)}-${crypto.randomUUID().slice(0, 8)}.webm`;
+}
+
+async function request(path: string, options: RequestInit = {}) {
+  const response = await fetch(path, {
+    credentials: "same-origin",
+    cache: "no-store",
+    signal: AbortSignal.timeout(5000),
+    ...options,
+  });
+  if (!response.ok)
+    throw new Error(
+      response.status === 401
+        ? "OWNER_SIGN_IN_REQUIRED"
+        : "BROADCAST_CONNECTION_UNAVAILABLE",
+    );
+  return response.json();
+}
+
+export function BroadcastStudio() {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const live = useRef<BroadcastState>(initial);
+  const layoutRef = useRef<Scene | "Live">("Live");
+  const recorder = useRef<CanvasRecorder | null>(null);
+  const [me, setMe] = useState<Me | null>(null);
+  const [system, setSystem] = useState<SystemStatus | null>(null);
+  const [presentation, setPresentation] = useState(initial);
+  const [layout, setLayout] = useState<Scene | "Live">("Live");
+  const [resolution, setResolution] = useState("1920x1080");
+  const [recording, setRecording] = useState(initialRecorder);
+  const [outputName, setOutputName] = useState(filename);
+  const [error, setError] = useState("");
+  const [drawn, setDrawn] = useState(false);
+  const [now, setNow] = useState(performance.now());
+  const downloaded = useRef(new Set<string>());
+  const supported = supportedCodec();
+  const [width, height] = resolution.split("x").map(Number);
+  live.current = presentation;
+  layoutRef.current = layout;
+
+  useEffect(() => {
+    const controller = new CanvasRecorder((value) => {
+      setRecording(value);
+      if (["Ready", "Interrupted"].includes(value.state))
+        setOutputName(filename());
+      if (controller.active)
+        sessionStorage.setItem("cq_recording_interrupted", "1");
+      else sessionStorage.removeItem("cq_recording_interrupted");
+    });
+    recorder.current = controller;
+    if (sessionStorage.getItem("cq_recording_interrupted")) {
+      setError(
+        "The previous page closed during recording. Unfinalized browser memory cannot be recovered. No recording was restarted.",
+      );
+      sessionStorage.removeItem("cq_recording_interrupted");
+    }
+    const unload = (event: BeforeUnloadEvent) => {
+      if (
+        controller.active ||
+        controller.snapshot.recordings.some(
+          (item) => !downloaded.current.has(item.url),
+        )
+      ) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+    const visibility = () => {
+      if (document.hidden) controller.interrupt();
+    };
+    const pagehide = () => {
+      controller.interrupt();
+    };
+    window.addEventListener("beforeunload", unload);
+    window.addEventListener("pagehide", pagehide);
+    document.addEventListener("visibilitychange", visibility);
+    return () => {
+      controller.dispose();
+      window.removeEventListener("beforeunload", unload);
+      window.removeEventListener("pagehide", pagehide);
+      document.removeEventListener("visibilitychange", visibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    let active = true,
+      working = false;
+    let view = crypto.randomUUID();
+    let csrf = "";
+    const acknowledged = new Set<string>();
+    async function poll() {
+      if (working || !active) return;
+      working = true;
+      const started = performance.now();
+      try {
+        const [value, status]: [BroadcastState, SystemStatus] =
+          await Promise.all([
+            request("/api/studio/current", {
+              headers: { "X-Overlay-View": view },
+            }),
+            request("/api/studio/status"),
+          ]);
+        const anchored = anchorState(
+          { ...value, evidence: status.evidence },
+          started,
+        );
+        if (!active) return;
+        setPresentation(anchored);
+        setSystem(status);
+        if (
+          value.state === "challenge" &&
+          value.delivery_id &&
+          !acknowledged.has(value.delivery_id)
+        ) {
+          if (
+            !canvas.current ||
+            layoutRef.current !== "Live" ||
+            document.hidden
+          )
+            throw new Error("DISPLAY_NOT_VISIBLE");
+          drawBroadcast(canvas.current, anchored, performance.now());
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+          if (!active) return;
+          await request("/api/studio/ack", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-CSRF-Token": csrf,
+              "X-Overlay-View": view,
+            },
+            body: JSON.stringify({
+              render_id: value.render_id,
+              delivery_id: value.delivery_id,
+            }),
+          });
+          acknowledged.add(value.delivery_id);
+        }
+      } catch {
+        view = crypto.randomUUID();
+        if (active) {
+          setSystem(null);
+          setPresentation({ state: "disconnected" });
+        }
+      } finally {
+        working = false;
+      }
+    }
+    void (async () => {
+      try {
+        const identity: Me = await request("/api/me");
+        if (!active) return;
+        setMe(identity);
+        if (!identity.authenticated) return;
+        csrf = identity.csrf!;
+        await request("/api/studio/connect", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
+        });
+        await poll();
+      } catch {
+        if (active)
+          setError(
+            "Studio could not establish its local owner session. Refresh after signing in.",
+          );
+      }
+    })();
+    const timer = setInterval(() => {
+      if (csrf) void poll();
+    }, 1000);
+    return () => {
+      active = false;
+      clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    let animation = 0,
+      previous = 0,
+      failed = false;
+    function frame(time: number) {
+      if (failed) return;
+      if (canvas.current && time - previous >= 1000 / 30) {
+        try {
+          drawBroadcast(canvas.current, live.current, time, layoutRef.current);
+          previous = time - ((time - previous) % (1000 / 30));
+          setDrawn(true);
+        } catch {
+          failed = true;
+          setDrawn(false);
+          setError("Canvas rendering is unavailable. Recording is disabled.");
+          return;
+        }
+      }
+      animation = requestAnimationFrame(frame);
+    }
+    animation = requestAnimationFrame(frame);
+    const clock = setInterval(() => setNow(performance.now()), 250);
+    return () => {
+      cancelAnimationFrame(animation);
+      clearInterval(clock);
+    };
+  }, [resolution]);
+
+  const state = atTime(presentation, now);
+  const active = ["Starting", "Recording", "Stopping", "Finalizing"].includes(
+    recording.state,
+  );
+  const scene = sceneFor(state);
+  return (
+    <div className="shell studio-shell">
+      <header>
+        <a className="brand" href="/">
+          <span className="brand-mark">CQ</span>CrowdQuest{" "}
+          <span className="brand-ai">AI</span>
+        </a>
+        <span className="phase">BROADCAST STUDIO</span>
+        <span className={`connection ${system ? "live" : ""}`}>
+          <i />
+          {system ? "Backend connected" : "Disconnected"}
+        </span>
+      </header>
+      <main>
+        <div className="hero">
+          <div>
+            <p className="eyebrow">YOUR CHAT. ONE BROADCAST SURFACE.</p>
+            <h1>Make the moment yours.</h1>
+            <p className="lede">
+              Live scenes and local recording, right in your browser.
+            </p>
+          </div>
+          <a href="/">Open director dashboard ↗</a>
+        </div>
+        {error && (
+          <div className="studio-error" role="alert">
+            {error}
+          </div>
+        )}
+        {!me ? (
+          <p>Checking local owner session…</p>
+        ) : !me.authenticated ? (
+          <section className="studio-panel">
+            <h2>Sign in as the channel owner</h2>
+            <p>
+              The Studio uses your existing local owner session. Chat reading
+              remains the only Twitch permission.
+            </p>
+            <a href="/auth/twitch/start">Connect Twitch →</a>
+          </section>
+        ) : (
+          <>
+            <div className="studio-status" aria-label="System status">
+              <span>
+                Backend <b>{system ? "Connected" : "Unavailable"}</b>
+              </span>
+              <span>
+                EventSub <b>{system?.eventsub || "Unknown"}</b>
+              </span>
+              <span>
+                Worker <b>{system?.worker || "Unknown"}</b>
+              </span>
+              <span>
+                Challenge <b>{system?.challenge_state || "Waiting"}</b>
+              </span>
+              <span>
+                Recorder <b>{recording.state}</b>
+              </span>
+            </div>
+            <div className="studio-workspace">
+              <section className="studio-stage">
+                <div className="studio-stage-heading">
+                  <span className="eyebrow">
+                    {layout === "Live"
+                      ? "LIVE PRESENTATION"
+                      : "LOCAL LAYOUT PREVIEW"}{" "}
+                    · {layout === "Live" ? scene : layout}
+                  </span>
+                  <button
+                    onClick={() => {
+                      void canvas.current
+                        ?.requestFullscreen()
+                        .catch(() =>
+                          setError(
+                            "Fullscreen was not granted. Use the embedded preview.",
+                          ),
+                        );
+                    }}
+                  >
+                    Full-screen preview
+                  </button>
+                </div>
+                <canvas
+                  ref={canvas}
+                  width={width}
+                  height={height}
+                  aria-label="Broadcast output"
+                  role="img"
+                />
+                <div className="studio-stage-caption">
+                  <span>
+                    {width} × {height} · 30 FPS target · Silent video
+                  </span>
+                  <span>
+                    {system?.evidence === "SYNTHETIC_TEST"
+                      ? "SYNTHETIC TEST DATA"
+                      : "Server-authoritative state"}
+                  </span>
+                </div>
+                <p className="studio-live-description" aria-live="polite">
+                  Current scene: {scene}.{" "}
+                  {state.round
+                    ? `${state.round.state}; ${state.round.total_votes} votes; ${state.round.choices.map((item) => `Candidate ${item.number}: ${item.votes}`).join("; ")}; ${Math.ceil(state.remaining_seconds || 0)} seconds; winner ${state.round.winner ?? "undecided"}.`
+                    : state.challenge
+                      ? `${state.challenge.title}. ${state.challenge.description}. ${Math.ceil(state.remaining_seconds || 0)} seconds.`
+                      : state.outcome
+                        ? `${state.outcome}, reported by the streamer.`
+                        : state.state === "expired"
+                          ? "Challenge expired."
+                          : "No active presentation."}
+                </p>
+              </section>
+              <aside>
+                <section className="studio-panel">
+                  <p className="eyebrow">SCENES</p>
+                  <h2>Follow the moment.</h2>
+                  <div className="studio-scenes">
+                    {(["Live", ...SCENES] as const).map((item) => (
+                      <button
+                        key={item}
+                        aria-pressed={layout === item}
+                        disabled={active}
+                        onClick={() => setLayout(item)}
+                      >
+                        {item === "Live" ? "Follow live state" : item}
+                      </button>
+                    ))}
+                  </div>
+                  <p>
+                    Layout previews show matching current content only. They
+                    never create votes or challenges. Recording uses Follow live
+                    state.
+                  </p>
+                  {system?.last_outcome && (
+                    <p>
+                      Last persisted outcome: <b>{system.last_outcome.kind}</b>{" "}
+                      · {system.last_outcome.presentation}. Historical results
+                      are not replayed.
+                    </p>
+                  )}
+                </section>
+                <section className="studio-panel">
+                  <p className="eyebrow">LOCAL RECORDING</p>
+                  <h2>Keep a real moment.</h2>
+                  <label htmlFor="studio-resolution">
+                    Recording resolution
+                  </label>
+                  <select
+                    id="studio-resolution"
+                    value={resolution}
+                    disabled={active}
+                    onChange={(event) => setResolution(event.target.value)}
+                  >
+                    <option value="1920x1080">1920 × 1080</option>
+                    <option value="1280x720">1280 × 720</option>
+                  </select>
+                  <label htmlFor="studio-filename">Output filename</label>
+                  <input
+                    id="studio-filename"
+                    value={outputName}
+                    maxLength={85}
+                    disabled={active}
+                    onChange={(event) => setOutputName(event.target.value)}
+                  />
+                  <output aria-label="Recording state">
+                    {recording.state} · {recording.seconds.toFixed(1)}s
+                  </output>
+                  <div className="studio-record-buttons">
+                    <button
+                      className="primary"
+                      disabled={
+                        !system ||
+                        !drawn ||
+                        !supported ||
+                        !validFilename(outputName) ||
+                        layout !== "Live" ||
+                        active ||
+                        !recorder.current?.canStart
+                      }
+                      onClick={() => {
+                        if (canvas.current)
+                          recorder.current?.start(canvas.current, outputName);
+                      }}
+                    >
+                      Start Recording
+                    </button>
+                    <button
+                      disabled={
+                        !["Starting", "Recording"].includes(recording.state)
+                      }
+                      onClick={() => recorder.current?.stop()}
+                    >
+                      Stop Recording
+                    </button>
+                  </div>
+                  {recording.error && (
+                    <p role="alert" className="studio-error">
+                      {recording.error}
+                    </p>
+                  )}
+                  {!supported && (
+                    <p role="alert">
+                      This browser has no supported Canvas/WebM recorder. Live
+                      preview remains available.
+                    </p>
+                  )}
+                  <p>
+                    Up to {MAX_SECONDS} seconds / 64 MiB per file; three files
+                    per page. Keep this tab visible. No microphone or system
+                    audio.
+                  </p>
+                  <p>
+                    Files stay in browser memory. Download before closing or
+                    refreshing; your browser chooses the local Downloads folder.
+                  </p>
+                  <div className="studio-downloads">
+                    {recording.recordings.map((item) => (
+                      <article key={item.url}>
+                        <strong>
+                          {item.verified
+                            ? item.interrupted
+                              ? "Recovered partial recording"
+                              : "Finalized · playback verified"
+                            : "Unverified recording"}
+                        </strong>
+                        <p>
+                          {item.width} × {item.height} ·{" "}
+                          {item.seconds.toFixed(1)}s captured ·{" "}
+                          {(item.bytes / 1048576).toFixed(2)} MiB · WebM
+                        </p>
+                        <a
+                          href={item.url}
+                          download={item.filename}
+                          onClick={() => downloaded.current.add(item.url)}
+                        >
+                          Download {item.filename}
+                        </a>
+                        <video
+                          controls
+                          muted
+                          playsInline
+                          src={item.url}
+                          aria-label={`Playback ${item.filename}`}
+                        />
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              </aside>
+            </div>
+          </>
+        )}
+        <footer>
+          OBS-free · Display and recording only · Approval, Admission,
+          Authorization and Execute remain separate.
+        </footer>
+      </main>
+    </div>
+  );
+}

@@ -290,3 +290,28 @@ Do not restart the real service, change real stores/credentials, repeat OAuth/pa
 send Twitch messages or execute another real Action. Phase 4 live acceptance needs
 separate permission. Prepare the demo/script and submission checklist, but do not
 record/upload video, contact organizers, deploy, or submit the project.
+
+## Phase 4.5 local OBS Admin authorization — 2026-10-28
+
+The user authorizes a lightweight loopback-only, session/CSRF-protected OBS v5 Admin
+page; isolated tests; documentation; and, after all required gates pass, scoped normal
+main commit/push and exact-commit CI. The bounded real acceptance includes existing
+scene switching, existing CrowdQuest source refresh and one short local recording,
+stop and playable-file verification. No streaming, new Twitch events, new/replayed
+AIG Actions or edits to previous acceptance evidence. Keep OBS control outside the
+AIG tool registry. Do not automatically restart an active service with pending work.
+OBS security-setting changes and password entry must be performed by the user; stop
+at that specific setup step. Never weaken OBS authentication or expose credentials.
+
+## Phase 4.5 OBS-free replacement authorization — 2026-10-28
+
+The latest user attachment supersedes the OBS-required acceptance path: implement
+the browser Broadcast Studio with one Canvas for presentation and native local
+recording/export. Preserve in-progress OBS Admin work as optional compatibility;
+do not request OBS setup. Computer Use and all native desktop automation are
+FORBIDDEN for this task. Use only coding/terminal, IAB and supported browser tests.
+No new real Twitch events, AIG Actions, historical replay, streaming or publication.
+Safe local startup and fixture recordings are authorized; do not restart an active
+service with pending Actions or overwrite real SQLite/evidence. Scoped normal
+main delivery and exact-commit CI are authorized after applicable qualification.
+Keep Phase 4 historical overall PARTIAL and label synthetic/IAB footage distinctly.

@@ -11,7 +11,7 @@ from urllib.request import urlopen
 from filelock import FileLock
 
 
-def start_fixture(directory, *, phase3=False, phase4=False):
+def start_fixture(directory, *, phase3=False, phase4=False, obs_admin=False):
     for name in ("stop", "stopped"):
         (directory / name).unlink(missing_ok=True)
     with socket.socket() as listener:
@@ -19,7 +19,7 @@ def start_fixture(directory, *, phase3=False, phase4=False):
         port = listener.getsockname()[1]
     process = subprocess.Popen(
         [sys.executable, "-m", "tests.browser_server", str(directory), str(port)]
-        + (["phase4"] if phase4 else ["phase3"] if phase3 else []),
+        + (["obs-admin"] if obs_admin else ["phase4"] if phase4 else ["phase3"] if phase3 else []),
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
         creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0,

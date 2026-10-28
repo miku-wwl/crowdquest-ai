@@ -1,0 +1,223 @@
+.studio-shell {
+  max-width: 1600px;
+}
+.studio-shell main {
+  padding-bottom: 32px;
+}
+.studio-shell .hero h1 {
+  font-size: clamp(32px, 3.3vw, 48px);
+}
+.studio-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 18px 22px;
+  border: 1px solid #30283f;
+  border-radius: 12px;
+  background: #1a1523;
+  margin-bottom: 24px;
+}
+.studio-status span {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  color: #a69cb8;
+  gap: 4px;
+}
+.studio-status b {
+  color: #dfd3f5;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+.studio-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+.studio-stage {
+  min-width: 0;
+  position: sticky;
+  top: 16px;
+}
+.studio-stage-heading,
+.studio-stage-caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.studio-stage-heading {
+  margin-bottom: 12px;
+}
+.studio-stage-heading .eyebrow {
+  margin: 0;
+}
+.studio-stage canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  display: block;
+  background: #100e19;
+  border: 1px solid #48335e;
+  border-radius: 16px;
+  box-shadow: 0 24px 80px #0006;
+}
+.studio-stage canvas:fullscreen {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  border: 0;
+  border-radius: 0;
+  background: #100e19;
+}
+.studio-stage-caption {
+  font-size: 11px;
+  color: #ada0c0;
+  margin-top: 12px;
+}
+.studio-live-description {
+  font-size: 12px;
+  color: #a99bb9;
+  overflow-wrap: anywhere;
+}
+.studio-workspace aside {
+  min-width: 0;
+  display: grid;
+  gap: 20px;
+}
+.studio-panel {
+  padding: 24px;
+  background: #1a1721;
+  border: 1px solid #332b40;
+  border-radius: 16px;
+  min-width: 0;
+}
+.studio-panel h2 {
+  margin: 4px 0 20px;
+}
+.studio-panel p {
+  font-size: 12px;
+  color: #ada1bb;
+  line-height: 1.7;
+}
+.studio-shell button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #554168;
+  background: #251c32;
+  color: #e6d9fa;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+.studio-shell button.primary {
+  background: #b69aff;
+  color: #1a1029;
+}
+.studio-scenes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.studio-scenes button:first-child {
+  grid-column: 1 / -1;
+}
+.studio-scenes button[aria-pressed="true"] {
+  border-color: #c5a4ff;
+  background: #3c2855;
+  color: #fff;
+}
+.studio-panel label {
+  display: block;
+  font-size: 12px;
+  color: #b5a5ca;
+  margin: 14px 0 7px;
+}
+.studio-panel input,
+.studio-panel select {
+  display: block;
+  width: 100%;
+  border: 1px solid #584469;
+  color: #e8ddf4;
+  background: #100e18;
+  border-radius: 8px;
+  padding: 10px;
+  font: inherit;
+  font-size: 12px;
+}
+.studio-panel output {
+  display: block;
+  margin: 18px 0;
+  color: #a4e7c6;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+.studio-record-buttons {
+  display: flex;
+  gap: 8px;
+}
+.studio-error {
+  border: 1px solid #784253;
+  color: #ffbcd0;
+  background: #361d29;
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+.studio-downloads article {
+  padding-top: 18px;
+  margin-top: 18px;
+  border-top: 1px solid #43314e;
+  font-size: 12px;
+}
+.studio-downloads a {
+  overflow-wrap: anywhere;
+  display: block;
+  margin: 12px 0;
+}
+.studio-downloads video {
+  display: block;
+  width: 100%;
+  background: #100e19;
+  border-radius: 8px;
+}
+@media (max-width: 1020px) {
+  .studio-workspace {
+    grid-template-columns: 1fr;
+  }
+  .studio-stage {
+    position: static;
+  }
+  .studio-workspace aside {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 680px) {
+  .studio-shell main {
+    padding: 24px 16px;
+  }
+  .studio-shell header {
+    padding: 20px 16px;
+    flex-wrap: wrap;
+    gap: 16px;
+    height: auto;
+  }
+  .studio-shell .phase {
+    display: none;
+  }
+  .studio-workspace aside {
+    grid-template-columns: 1fr;
+  }
+  .studio-stage-caption {
+    align-items: start;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .studio-shell .hero {
+    align-items: start;
+    flex-direction: column;
+  }
+}

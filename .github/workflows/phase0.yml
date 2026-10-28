@@ -55,5 +55,9 @@ jobs:
         run: uv run python -m tests.phase3_browser_e2e
       - name: Phase 4 crowd vote, outcome, layout and safety in actual Chromium
         run: uv run python -m tests.phase4_browser_e2e
+      - name: Local OBS Admin in actual Chromium with synthetic OBS only
+        run: uv run python -m tests.obs_browser_e2e
+      - name: OBS-free Canvas recording and playback with isolated application state
+        run: uv run python -m tests.studio_browser_e2e
       - name: Check committed whitespace
         run: git show --format= --check HEAD

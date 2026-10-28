@@ -21,7 +21,9 @@ def harness(tmp_path):
         clock=lambda: clock[0],
         monotonic=lambda: clock[0],
     )
-    with TestClient(app, base_url=settings.origin, follow_redirects=False) as client:
+    with TestClient(
+        app, base_url=settings.origin, follow_redirects=False, client=("127.0.0.1", 35000)
+    ) as client:
 
         def login():
             start = client.get("/auth/twitch/start")

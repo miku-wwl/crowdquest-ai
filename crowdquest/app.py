@@ -57,6 +57,8 @@ def create_app(
     phase2_factory=None,
     phase3_factory=None,
     frontend_directory=None,
+    obs_admin_enabled=False,
+    studio_evidence="REAL_APPLICATION_STATE",
 ):
     if phase2_factory is not None and phase3_factory is not None:
         raise ValueError("SELECT_ONE_WORKFLOW")
@@ -93,6 +95,8 @@ def create_app(
                         await task
                 app.state.phase2_service = None
                 app.state.phase3_service = None
+                if app.state.obs_adapter is not None:
+                    app.state.obs_adapter.close()
                 await auth.close()
                 lock.release()
 
@@ -100,6 +104,12 @@ def create_app(
     app.state.auth, app.state.store, app.state.eventsub = auth, store, eventsub
     app.state.phase2_service = None
     app.state.phase3_service = None
+
+    app.state.obs_adapter = None
+    if obs_admin_enabled:
+        from .obs_admin import register_obs_admin
+
+        register_obs_admin(app, port=settings.port)
 
     @app.middleware("http")
     async def security(request: Request, call_next):
@@ -129,7 +139,7 @@ def create_app(
                 "X-Content-Type-Options": "nosniff",
                 "X-Frame-Options": "DENY",
                 "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; "
-                "connect-src 'self'; img-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+                "connect-src 'self'; img-src 'self'; media-src 'self' blob:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
             }
         )
         return response
@@ -242,6 +252,78 @@ def create_app(
         identity, _ = await owner(request)
         return {"candidates": store.candidates(identity.user_id)}
 
+    @app.post("/api/studio/connect")
+    async def connect_studio(request: Request):
+        await owner(request, True)
+        prune_overlays()
+        key = digest(request.cookies.get("cq_studio", ""))
+        previous = overlays.get(key)
+        if previous and previous.get("studio") and previous["approved"]:
+            return {"connected": True}
+        if len(overlays) >= 8:
+            raise HTTPException(429, "DISPLAY_CAPACITY")
+        token = secrets.token_urlsafe(32)
+        overlays[digest(token)] = {
+            "code": "",
+            "approved": True,
+            "studio": True,
+            "generation": auth.generation,
+            "expires": monotonic() + 6 * 3600,
+            "ready": None,
+        }
+        response = JSONResponse({"connected": True})
+        response.set_cookie(
+            "cq_studio",
+            token,
+            httponly=True,
+            samesite="strict",
+            max_age=6 * 3600,
+            path="/api/studio",
+        )
+        return response
+
+    @app.get("/api/studio/status")
+    async def studio_status(request: Request):
+        identity, _ = await owner(request)
+        current = app.state.phase3_service
+        worker, lifecycle, last_outcome = "not_enabled", None, None
+        if current is not None:
+            if current.owner_id != identity.user_id:
+                raise HTTPException(403, "WORKFLOW_OWNER_REQUIRED")
+            try:
+                from contextlib import closing
+
+                rendering = current.renderer.store
+                with closing(rendering.connect()) as db:
+                    leader = db.execute("SELECT boot,deadline FROM leader").fetchone()
+                    worker = (
+                        "ready"
+                        if leader[0] == current.renderer.boot and leader[1] > rendering.monotonic()
+                        else "unavailable"
+                    )
+                    row = db.execute(
+                        "SELECT effect_key,state FROM renders ORDER BY rowid DESC LIMIT 1"
+                    ).fetchone()
+                    lifecycle = row["state"] if row else "WAITING"
+                    outcome = db.execute(
+                        "SELECT kind,state FROM challenge_outcomes ORDER BY rowid DESC LIMIT 1"
+                    ).fetchone()
+                    last_outcome = (
+                        {"kind": outcome[0], "presentation": outcome[1]} if outcome else None
+                    )
+            except Exception:  # noqa: BLE001 -- no private storage errors at HTTP boundary
+                raise HTTPException(503, "STUDIO_STATE_UNAVAILABLE") from None
+        return {
+            "backend": "connected",
+            "eventsub": eventsub.status,
+            "worker": worker,
+            "challenge_state": lifecycle,
+            "last_outcome": last_outcome,
+            "workflow": "production" if current is not None else "development",
+            "obs_required": False,
+            "evidence": studio_evidence,
+        }
+
     @app.post("/api/preview")
     async def select(request: Request, value: Selection):
         identity, _ = await owner(request, True)
@@ -342,10 +424,14 @@ def create_app(
         )
         return {"ok": True}
 
+    @app.get("/api/studio/current")
     @app.get("/api/overlay/current")
     async def current(request: Request):
+        studio = request.url.path.startswith("/api/studio/")
+        if studio:
+            await owner(request)
         prune_overlays()
-        overlay_key = digest(request.cookies.get("cq_overlay", ""))
+        overlay_key = digest(request.cookies.get("cq_studio" if studio else "cq_overlay", ""))
         pairing = overlays.get(overlay_key)
         if not pairing or not pairing["approved"]:
             raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
@@ -399,10 +485,14 @@ def create_app(
 
         register_phase4(app, owner, store, clock)
 
+        @app.post("/api/studio/ack")
         @app.post("/api/overlay/ack")
         async def render_ack(request: Request, value: RenderAck):
+            studio = request.url.path.startswith("/api/studio/")
+            if studio:
+                await owner(request, True)
             prune_overlays()
-            key = digest(request.cookies.get("cq_overlay", ""))
+            key = digest(request.cookies.get("cq_studio" if studio else "cq_overlay", ""))
             pairing = overlays.get(key)
             if not pairing or not pairing["approved"] or not await auth.ensure():
                 raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
@@ -424,6 +514,10 @@ def create_app(
 
         register_phase2(app, owner)
 
+    from .studio import protect_studio
+
+    protect_studio(app)
+
     frontend_directory = Path(frontend_directory) if frontend_directory else ROOT / "frontend/dist"
     assets = frontend_directory / "assets"
     if assets.exists():
@@ -431,6 +525,8 @@ def create_app(
 
     @app.get("/")
     @app.get("/overlay")
+    @app.get("/obs-admin")
+    @app.get("/broadcast-studio")
     async def frontend():
         index = frontend_directory / "index.html"
         if not index.exists():

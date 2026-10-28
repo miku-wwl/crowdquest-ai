@@ -23,10 +23,21 @@ Phase 4 adds two-candidate crowd voting (`!vote 1` / `!vote 2`), exact winner-to
 binding, owner-reported Completed/Failed/Skipped outcomes and a transparent broadcast
 UI. **Phase 4 local engineering and exact-commit CI are PASS**
 ([acceptance/CI receipt](docs/PHASE4-ACCEPTANCE.md)). Qualification uses temporary SQLite and actual Chromium, with synthetic
-chat/model/consent. **Phase 4 real Twitch voting/outcome/OBS acceptance is NOT_RUN.**
-The running accepted Phase 3 instance and its built assets are preserved. Loading the
-upgrade requires separate controlled-activation permission; follow the
-[Phase 4 live runbook](docs/PHASE4-LIVE-RUNBOOK.md).
+chat/model/consent. Subsequent Phase 4 real acceptance established
+**CORE_ACTION_CHAIN=PASS / PHASE4_OVERALL=PARTIAL**. The intermediate Open 1:0 OBS
+frame was not independently captured, and a RECONNECT_URL rejection recovered in
+approximately 4.83 seconds without a resolved root cause. Historical reports retain
+their original dates and scope; no historical Action is replayed.
+
+**Phase 4.5 introduces OBS-free Broadcast Studio:** one Canvas for live scenes,
+countdowns and silent local WebM recording. Open **http://localhost:8000/broadcast-studio**
+after owner sign-in. OBS is optional and disabled by default. Engineering regression
+and actual Chromium recording/playback pass; final IAB reacceptance remains PARTIAL
+because the browser access host was unavailable after the interrupted session.
+The earlier genuine IAB Waiting recording is preserved separately from fixture
+footage. See [usage and limits](docs/PHASE45-BROADCAST-STUDIO.md),
+[acceptance report](docs/PHASE45-BROADCAST-STUDIO-ACCEPTANCE.md) and
+[prepared Phase 5 demo runbook](docs/PHASE5-DEMO-RUNBOOK.md).
 
 **Your Chat Becomes the Game Director.** Viewers propose, the community chooses,
 the local model structures the challenge, and the streamer keeps the final say.
@@ -41,9 +52,20 @@ Phase 0 preserves that history; it does not fork or import another project's sou
 
 Product flow: Twitch `!quest` → validated candidate → AI Plan → streamer preview and
 explicit approval → independent AIG Authorization → durable overlay-job admission →
-separate worker → OBS Browser Source. Admission and rendering have separate outcomes.
+separate worker → browser Broadcast Studio (or optional OBS Browser Source).
+Admission and rendering have separate outcomes.
 
 ## Local Windows setup
+
+Primary presentation/recording: **http://localhost:8000/broadcast-studio**.
+Sign in through the Dashboard, choose Follow live state, start/stop recording,
+wait for playback verification and download the WebM before closing the page.
+No OBS setup, microphone or screen capture is needed. Capture targets 30 FPS;
+measured output and browser-memory limits are in the acceptance report.
+
+The preserved [Local OBS Admin](docs/PHASE45-OBS-ADMIN.md) is optional compatibility,
+requiring the `obs` extra and explicit `--obs-admin` flag. It is not part of the
+core dependency chain. OBS has not been uninstalled automatically.
 
 Requirements: Python 3.13, uv and Node.js 22.12+ (CI uses 24; locally verified with 26.5).
 In this repository:
@@ -67,16 +89,18 @@ npm --prefix frontend run build
    changes. Use one server process; a private file lock enforces it.
 4. Manually send `!quest Survive 60 seconds without healing` in that owned channel. Wait
    for a candidate and connected status. Missed/disconnected events are not replayed.
-5. Open the overlay, match its code in the owner dashboard and click Pair. Wait for Ready.
-   Select a candidate, then Preview selected. Nothing is automatically published.
+5. Open Broadcast Studio using the same owner session, then select a candidate in
+   Dashboard and Preview selected. The Studio uses its own read-only display cookie
+   without OBS pairing. Nothing is automatically approved or executed.
 
 Every preview says **DEVELOPMENT PREVIEW — NOT APPROVED / NOT EXECUTED** and expires in
 60 seconds. Refresh/reconnect/restart do not replay old previews. Text is escaped.
 
-For OBS: add a Browser Source using **http://localhost:8000/overlay**, size 1280×720.
+For optional OBS compatibility: add a Browser Source using **http://localhost:8000/overlay**, size 1280×720.
 Pair the code shown **inside OBS**, wait for Ready, then select a fresh preview. The
 URL has no credential. Inspect the actual OBS canvas; a normal browser screenshot is
-not OBS proof. Actual Phase 3 OBS observation passed in the recorded session; Phase 4 still needs its separate live gate.
+not OBS proof. Historical real OBS evidence and current browser Studio evidence
+remain separate; the unresolved Phase 4 limitations above are not erased.
 
 Use the exact localhost URL; the server binds 127.0.0.1 and rejects other Host/Origin
 values, LAN aliases and tunnels. No plaintext secret fallback. The consumer does not

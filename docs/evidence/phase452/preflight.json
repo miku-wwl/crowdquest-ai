@@ -1,0 +1,100 @@
+{
+  "project": "CrowdQuest AI",
+  "phase": "4.5.2",
+  "classification": "AGENT_VERIFIED",
+  "result": "BLOCKED_BEFORE_LIVE_ACCEPTANCE",
+  "source_commit": "fa5f9645271c48749306b19355d7df3ea368e649",
+  "git_before_report": {
+    "branch": "main",
+    "worktree_clean": true
+  },
+  "browser": {
+    "official_builtin_browser": true,
+    "studio_and_twitch_tabs_read_before_go": true,
+    "post_go_read_only_control": "UNAVAILABLE",
+    "error": "browser.user is unavailable",
+    "classification": "BROWSER_CONTROL_API_UNAVAILABLE",
+    "live_operations_stopped": true
+  },
+  "http": {
+    "root": 200,
+    "broadcast_studio": 200
+  },
+  "pre_go_observation": {
+    "channel_owner_login": "miku_wwl",
+    "studio": "Waiting",
+    "eventsub": "Connected",
+    "worker": "Ready",
+    "challenge": "EXPIRED",
+    "recorder": "Idle",
+    "classification": "AGENT_VERIFIED_BEFORE_GO"
+  },
+  "eventsub_snapshot": {
+    "observed_at_utc": "2026-10-28T11:25:29Z",
+    "status": "connected",
+    "stage": "receive",
+    "ready": true,
+    "socket_open": true,
+    "waiting_for_message": true,
+    "oauth_scope_recorded": "user:read:chat",
+    "counters": {
+      "welcomes": 1,
+      "subscriptions": 1,
+      "keepalives": 322,
+      "notifications": 0,
+      "accepted": 0,
+      "votes": 0,
+      "failures": 0,
+      "reconnects": 0
+    }
+  },
+  "post_stop_read_only_database_check": {
+    "integrity_check": "ok",
+    "databases": {
+      "intake": {
+        "deliveries": 6,
+        "messages": 6,
+        "candidates": 5,
+        "voting_rounds": 1,
+        "crowd_votes": 1
+      },
+      "aig_gate": {
+        "runs": 2,
+        "actions": 2,
+        "actions_by_state": {
+          "Succeeded": 2
+        },
+        "action_attempts": 2
+      },
+      "overlay_admission": {
+        "jobs": 2
+      },
+      "product": {
+        "proposals": 2
+      },
+      "render": {
+        "renders": 2,
+        "renders_by_state": {
+          "EXPIRED": 2
+        },
+        "challenge_outcomes": 1
+      }
+    },
+    "active_voting_rounds": 0,
+    "pending_or_uncertain_actions": 0,
+    "new_real_twitch_messages_after_go": 0,
+    "new_voting_rounds_after_go": 0,
+    "new_plans_after_go": 0,
+    "new_actions_after_go": 0,
+    "recordings_started_after_go": 0
+  },
+  "screenshot": {
+    "path": "studio-preflight.jpg",
+    "captured_at_utc": "2026-10-28T11:17:55Z",
+    "sha256": "17b943695a8419a5f55992974f4e08d5ea5da99036dade0cbd42d34cd9465ae8",
+    "classification": "AGENT_VERIFIED_PRE_GO_SCREENSHOT"
+  },
+  "sensitive_values_recorded": false,
+  "synthetic_events_used_as_live_evidence": false,
+  "live_stream_started": false
+}

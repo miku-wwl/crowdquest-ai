@@ -1,0 +1,47 @@
+{
+  "classification": "AGENT_VERIFIED",
+  "at": 1793183790.8467124,
+  "source_commit": "1cfe8e6df6e858d38831425146bbd646ff6ca963",
+  "eventsub_sha256": "57d479859fe106e9771abae3cd71133ed306654421bb11e9df2e120cfafb2e13",
+  "loaded_source_verified": true,
+  "obs_sdk_installed": false,
+  "obs_adapter_enabled": false,
+  "oauth_scope": [
+    "user:read:chat"
+  ],
+  "eventsub_ready": true,
+  "eventsub_counters": {
+    "welcomes": 1,
+    "subscriptions": 1,
+    "keepalives": 40,
+    "notifications": 0,
+    "accepted": 0,
+    "votes": 0,
+    "failures": 0,
+    "reconnects": 0
+  },
+  "eventsub_status_age_seconds": 10.521,
+  "worker_lease_fresh": true,
+  "pending_actions": 0,
+  "active_rounds": 0,
+  "active_renders": 0,
+  "active_results": 0,
+  "database_integrity_after_activation": {
+    "intake": "ok",
+    "gate": "ok",
+    "product": "ok",
+    "admission": "ok",
+    "render": "ok"
+  },
+  "protected_rows_unchanged_after_activation": true,
+  "routes_http": {
+    "/": 200,
+    "/broadcast-studio": 200
+  },
+  "agent_iab_access": "PASS",
+  "human_iab_page_render": "PASS_USER_REPORTED",
+  "owner_browser_authentication": "USER_ACTION_REQUIRED",
+  "live_go": "NOT_OBTAINED",
+  "fresh_phase451_live_events_created": 0,
+  "fresh_phase451_actions_created": 0
+}

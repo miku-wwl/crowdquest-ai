@@ -1,0 +1,10 @@
+{
+  "classification": "AGENT_VERIFIED",
+  "head": "1cfe8e6df6e858d38831425146bbd646ff6ca963",
+  "status": "PASS",
+  "url": "https://github.com/miku-wwl/crowdquest-ai/actions/runs/40671883480",
+  "job_count": 1,
+  "all_steps_passed": true,
+  "completed_at": "2026-10-28T10:27:53Z",
+  "note": "Exact implementation-source CI; final report-only delivery is tracked separately."
+}

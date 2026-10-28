@@ -42,9 +42,12 @@ footage. See [usage and limits](docs/PHASE45-BROADCAST-STUDIO.md),
 Phase 4.5.1 recovers the interrupted EventSub fix: documented root reconnect URLs,
 continuous old-socket intake through handover, strict destination/redirect controls
 and shutdown/restart regressions. Current local qualification is 276 backend tests,
-49 frontend tests and five Chromium suites. Restored IAB access shows the real
-Studio's owner sign-in gate. New controlled live acceptance requires readiness,
-explicit GO and exact Plan approval; see the [Phase 4.5.1 record](docs/PHASE451-FINAL-ACCEPTANCE.md).
+49 frontend tests and five Chromium suites; exact implementation CI passes. IAB
+initially recovered and showed the owner sign-in gate; after user-reported login,
+its automation API became unavailable again. The activated service remains healthy.
+New controlled live acceptance remains NOT_RUN and requires restored browser access,
+readiness, explicit GO and exact Plan approval; see the
+[Phase 4.5.1 record](docs/PHASE451-FINAL-ACCEPTANCE.md).
 
 **Your Chat Becomes the Game Director.** Viewers propose, the community chooses,
 the local model structures the challenge, and the streamer keeps the final say.

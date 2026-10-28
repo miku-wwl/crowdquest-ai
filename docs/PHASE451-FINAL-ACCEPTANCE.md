@@ -4,10 +4,12 @@ Date: 2026-10-28, Pacific/Auckland. Root Codex session:
 `01a172e3-9804-73c2-b597-8c5df928a56c`.
 Starting main/remote baseline: `c7d4ab1fbb65b694ffed7c54b5aac0bfe5a99dc1`.
 
-**Engineering tests PASS locally. Real E2E NOT_RUN at this checkpoint.**
+**Engineering PASS locally and in exact-source CI. Real E2E NOT_RUN at this checkpoint.**
 This report is new; Phase 3, Phase 4 and Phase 4.5 reports/archives are preserved.
 The final source/CI receipt and live observations are added only after verification.
 No historical Action is replayed and no live event has been sent in this phase.
+Implementation commit: `1cfe8e6df6e858d38831425146bbd646ff6ca963`.
+[Exact-source CI: all steps passed](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40671883480).
 
 ## Interrupted work recovered
 
@@ -129,8 +131,55 @@ Before activation, five real SQLite databases passed read-only integrity checks 
 new online backups passed integrity plus consistent-snapshot logical comparison.
 No pending Action, Draft/Open voting round, active result or unrendered job existed.
 Private identity, credentials and historical records remain outside Git. Activation
-is limited to the freshly verified CrowdQuest process and worker, after another
-idle check; post-start health and protected-row comparison are recorded separately.
+is complete: a second five-database backup set was verified immediately before the
+idle check and graceful stop of the identified backend. The new backend and separate
+worker use the existing profile. The loaded EventSub module hash matches the tested
+commit; both continuous handover and redirect guard are present. All five databases
+passed post-start integrity and protected rows matched the activation snapshots.
+Only the expected worker lease/boot state was excluded from the protected-row check.
+No unrelated process was stopped.
+
+Post-start evidence includes a real welcome, validated subscription and increasing
+keepalives, zero connection failures, matching owner identity, and a fresh worker
+lease. Both exact HTTP routes serve the expected isolated bundle. A later read-only
+pre-login check again verified readiness, no pending Actions, no active rounds/renders
+or results, and matching loaded source. No synthetic event was injected into these
+real stores. Token validation retained exactly `user:read:chat`; no credential value
+was changed or published.
+
+The ordinary Connect Twitch link was opened in the restored IAB. The actual Twitch
+consent page shows `miku_wwl`; its URL was checked for exactly `user:read:chat` and
+the registered localhost callback. The agent did not click consent. This step was
+handed to the user, as explicitly required by the recovery instruction.
+An original IAB screenshot records this handoff, not successful owner authentication.
+
+### Post-login checkpoint: browser API unavailable
+
+The user subsequently confirmed Studio login. This is **USER_REPORTED**; the next
+agent read failed because the IAB browser-user API was unavailable. The documented
+DOM alternative and one bounded fresh binding of the same existing tab also failed.
+No native control, alternate browser driver, tunnel, cookie extraction or fake owner
+session was used. Further unavailable-host attempts stopped. This is a browser-tool
+limitation, not a reproduced Studio HTTP or rendering defect. The earlier successful
+IAB screenshot/DOM inspection remains valid historical evidence, not current access.
+
+A new read-only backend check still found both exact routes HTTP 200 with the expected
+bundle, loaded implementation source matching its recorded hash, five intact SQLite
+stores, real EventSub welcome/subscription and 70 keepalives with zero failures, and
+a fresh worker lease. Counts remain five candidates, one closed round, one vote,
+two Actions/attempts/jobs/expired renders and one historical outcome. No Action,
+round, render or result is active. These are current service observations and do
+not prove the user's owner-session cookie. Sessions are process-local; the agent
+did not bypass the browser boundary to inspect credentials or process memory.
+
+Current **AGENT_IAB_ACCESS=BLOCKED**, **OWNER_AUTHENTICATION=PARTIAL**. No GO was
+requested because an operable browser is a required readiness condition. No fresh
+real messages, votes, rounds, model Plans, Actions or acceptance recordings were
+created. Preserve the logged-in page; do not repeat OAuth merely to work around
+this tool failure. Minimum manual verification is to check that the exact Studio
+URL shows the authenticated channel, backend/EventSub/worker indicators and Waiting
+canvas, without sending chat or invoking workflow controls. This observation would
+remain USER_REPORTED and would not substitute for the bounded real acceptance.
 
 ## Evidence index and live gate
 
@@ -141,6 +190,10 @@ idle check; post-start health and protected-row comparison are recorded separate
 | IAB sign-in screenshot | Private phase451 operation `original-images/studio-owner-signin.jpg`; actual IAB screenshot, 43,952 bytes, SHA256 `ce7e2be9799f29c1929688b915b5b2b76b7cfc9fce973032ed14114bea86d172`. AGENT_VERIFIED, not authenticated live acceptance. |
 | Database backups/readiness | New private `%LOCALAPPDATA%/CrowdQuestAI/engineering/phase451-real-*` operation; originals excluded from Git/public review. |
 | Public qualification | Sanitized `docs/evidence/phase451/` counts, classifications and later exact CI receipt; no private databases, cookies or tokens. |
+| Implementation CI | `docs/evidence/phase451/implementation-ci.json`; exact implementation SHA, successful job and all successful steps; AGENT_VERIFIED. |
+| Activated service | `docs/evidence/phase451/activation-readiness.json`; loaded source, real socket counters, worker lease, route and database checks; AGENT_VERIFIED. |
+| Owner consent handoff | Private operation `original-images/twitch-owner-consent-handoff.jpg`; actual IAB, 55,275 bytes, SHA256 `c4bf9274f6e93ca723ea3b5b305e56b7f0f0af92ebddf2184f07f0a91a422c34`. No consent was clicked. |
+| Post-login/browser checkpoint | `docs/evidence/phase451/browser-owner-checkpoint.json`; login USER_REPORTED, current IAB access BLOCKED, fresh service checks AGENT_VERIFIED, real workflow NOT_RUN. |
 | Human browser render | USER_REPORTED in the recovery request, independently corroborated by the restored agent IAB observation. |
 
 **No fresh live suggestion, vote, round, Plan, Action or outcome has been created.**
@@ -160,6 +213,74 @@ Phase 4.5.1 overall and Phase 5 readiness remain **PARTIAL**. Engineering delive
 does not substitute for those gates. No livestream, OBS control, cloud deployment,
 YouTube upload, Devpost submission or automatic Phase 5 work is performed.
 
+## Acceptance matrix at latest browser checkpoint
+
+The EventSub, dependency, security and regression PASS entries below use isolated
+SYNTHETIC_TEST coverage where stated above. Service/readiness/HTTP/IAB observations
+are AGENT_VERIFIED; the manual page render and latest login are USER_REPORTED. Real workflow
+and recording fields refer exclusively to a fresh Phase 4.5.1 run, not historical
+Phase 4 or the synthetic WebM. Browser-session verification is incomplete because
+the browser API is unavailable, not because an authentication defect was reproduced.
+The SHA/working-tree entries below describe the pre-documentation-delivery checkpoint;
+the final documentation SHA, exact CI and clean-tree observation are recorded in the
+separate delivery receipt to avoid an impossible self-referential commit hash.
+
+```text
+PROJECT=CrowdQuest AI
+PHASE=4.5.1
+INTERRUPTED_WORK_RECOVERED=PASS
+EXISTING_MODIFICATIONS_PRESERVED=PASS
+INITIAL_GIT_STATUS=2 modified, 1 untracked, 0 staged
+EVENTSUB_ROOT_URL_VALIDATION=PASS
+EVENTSUB_URL_SECURITY=PASS
+EVENTSUB_CONTINUOUS_HANDOVER=PASS
+EVENTSUB_NOTIFICATION_PRESERVATION=PASS
+EVENTSUB_DEDUPLICATION=PASS
+EVENTSUB_RECOVERY_TESTS=PASS (60 focused cases)
+OBS_FREE_STARTUP=PASS
+BROADCAST_STUDIO_HTTP=PASS
+BROADCAST_STUDIO_RENDER=PARTIAL
+OWNER_AUTHENTICATION=PARTIAL
+TWITCH_EVENTSUB_READY=PASS
+WORKER_READY=PASS
+HUMAN_IAB_PAGE_RENDER=PASS
+AGENT_IAB_ACCESS=BLOCKED
+CHROMIUM_E2E=PASS (5 suites; SYNTHETIC_TEST)
+REAL_TWITCH_ACCEPTANCE=NOT_RUN
+REAL_VOTING_OPEN_TALLY=NOT_RUN
+REAL_UNIQUE_VOTERS=0
+REAL_MODEL_PLAN=NOT_RUN
+EXACT_PLAN_APPROVAL=NOT_RUN
+ACTION_ADMISSION=NOT_RUN
+ACTION_AUTHORIZATION=NOT_RUN
+AIG_EXECUTION=NOT_RUN
+ADMISSION_RECEIPT=NOT_RUN
+OWNER_REPORTED_OUTCOME=NOT_RUN
+NO_REPLAY=NOT_RUN
+LOCAL_RECORDING=NOT_RUN
+WEBM_EXPORT=NOT_RUN
+REAL_VIDEO_PLAYBACK=NOT_RUN
+VIDEO_RESOLUTION=NOT_RUN
+VIDEO_FPS=NOT_RUN
+BACKEND_TESTS=PASS (276 passed, 0 skipped)
+FRONTEND_TESTS=PASS (49 passed, 0 skipped)
+SECURITY_CHECKS=PASS
+AIG_REGRESSION=PASS
+GITHUB_CI=PASS
+GIT_FINAL_HEAD=1cfe8e6df6e858d38831425146bbd646ff6ca963
+WORKTREE_STATUS=PARTIAL
+PHASE451_ENGINEERING_STATUS=PASS
+PHASE451_REAL_E2E_STATUS=NOT_RUN
+PHASE451_FINAL_STATUS=PARTIAL
+PHASE5_READINESS=PARTIAL
+```
+
+Recommendation at this checkpoint: **PHASE451_REMAINS_PARTIAL**. Owner login is
+reported complete; do not request another OAuth flow. When IAB access is available,
+verify that existing authenticated UI and readiness, then request the explicit
+one-round GO before any new genuine chat or voting event. Exact Plan approval and
+truthful owner outcome remain later human checkpoints.
+
 ## Rollback and continuation
 
 If rollback becomes necessary, first preserve new recordings/evidence and confirm no
@@ -170,8 +291,8 @@ reset/clean user work, delete databases or replay old Actions. No schema migrati
 was introduced. Keep the existing private profile/identity/receipts and inspect any
 Unknown history. A code rollback does not justify replacing real SQLite with backups.
 
-The next required human step, after final service/CI verification, is owner login
-through the ordinary IAB Twitch flow with only user:read:chat. The agent then checks
-readiness and requests the specific one-round GO. Exact Plan approval and factual
+The user has reported owner login with the existing narrow scope. Current browser
+API access must recover before the agent can verify that UI, finish readiness and
+request the specific one-round GO. Exact Plan approval and factual
 outcome confirmation remain later checkpoints. See the final delivery receipt for
 the eventual exact source HEAD and CI; a report cannot embed its own commit hash.

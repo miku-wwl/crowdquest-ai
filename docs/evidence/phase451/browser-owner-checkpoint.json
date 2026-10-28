@@ -1,0 +1,48 @@
+{
+  "classification": "AGENT_VERIFIED_READ_ONLY",
+  "at": 1793184081.7007368,
+  "source_commit": "1cfe8e6df6e858d38831425146bbd646ff6ca963",
+  "loaded_source_verified": true,
+  "database_integrity": "PASS_ALL_5",
+  "counts": {
+    "candidates": 5,
+    "rounds": 1,
+    "votes": 1,
+    "active_rounds": 0,
+    "actions": 2,
+    "attempts": 2,
+    "pending_actions": 0,
+    "jobs": 2,
+    "renders": 2,
+    "active_renders": 0,
+    "outcomes": 1,
+    "active_results": 0
+  },
+  "eventsub_ready": true,
+  "eventsub_counters": {
+    "welcomes": 1,
+    "subscriptions": 1,
+    "keepalives": 70,
+    "notifications": 0,
+    "accepted": 0,
+    "votes": 0,
+    "failures": 0,
+    "reconnects": 0
+  },
+  "worker_ready": true,
+  "routes": {
+    "/": 200,
+    "/broadcast-studio": 200
+  },
+  "owner_browser_login": "USER_REPORTED_NOT_AGENT_VERIFIED",
+  "agent_iab_access": "BLOCKED",
+  "browser_failure": "BROWSER_USER_API_UNAVAILABLE",
+  "browser_failure_is_application_failure": false,
+  "previous_iab_read_and_screenshot": "PASS_BEFORE_USER_HANDOFF",
+  "go_obtained": false,
+  "real_twitch_acceptance": "NOT_RUN",
+  "fresh_live_messages_sent": 0,
+  "fresh_actions_executed": 0,
+  "fresh_real_recordings": 0,
+  "native_desktop_or_obs_used": false
+}

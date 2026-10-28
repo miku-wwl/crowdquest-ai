@@ -46,7 +46,7 @@
   "uv_lock_and_compatibility": "PASS",
   "npm_audit": "ZERO_KNOWN",
   "real_twitch_acceptance": "NOT_RUN",
-  "engineering_status": "PASS_LOCAL_CI_PENDING",
+  "engineering_status": "PASS_LOCAL_AND_IMPLEMENTATION_CI",
   "real_e2e_status": "NOT_RUN",
   "phase451_status": "PARTIAL",
   "root_session": "01a172e3-9804-73c2-b597-8c5df928a56c",

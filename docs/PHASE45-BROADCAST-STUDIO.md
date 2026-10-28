@@ -143,6 +143,32 @@ installation `uv sync --locked --no-dev` omits the OBS SDK; a fresh normal front
 build plus existing application/operator startup is sufficient. Do not reset or
 re-provision an existing private AIG profile to enable Studio.
 
+For a fresh development installation after private Twitch setup:
+
+```powershell
+uv sync --locked --no-dev --python 3.13
+npm --prefix frontend ci
+npm --prefix frontend run build
+uv run --locked --no-dev python -m crowdquest
+```
+
+This retains Phase 1 development previews; it does not automatically enable the
+production AIG composition. Existing production installations retain their private
+profile and separate worker startup from [the operator runbook](PHASE3-RUNBOOK.md),
+using Studio instead of its optional OBS display steps. Do not run a second backend
+against an active profile or rebuild live assets during pending work.
+
+## Rollback
+
+Download and preserve browser recordings first. Inspect durable Actions/jobs and
+stop only the identified CrowdQuest backend/worker during an authorized safe window;
+do not interrupt pending/ambiguous work or auto-replay it. Return to the previously
+qualified source, locked environment and preserved frontend assets. Keep real SQLite,
+private identities, receipts and credentials intact: Studio adds no schema migration
+and rollback does not require restoring or clearing a database. Return to the prior
+display workflow only if its own prerequisites are available; it may require OBS.
+An interrupted historical Action must not be re-executed to demonstrate rollback.
+
 ## Optional OBS compatibility and removal
 
 The preserved OBS Admin prototype is disabled by default. Only operators choosing

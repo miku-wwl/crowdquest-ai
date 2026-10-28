@@ -1,0 +1,109 @@
+{
+  "observed_date": "2026-10-28",
+  "timezone": "Pacific/Auckland",
+  "implementation_commit": "5d08184e0f640a327812731fb6e3b58a5a36daf1",
+  "run_id": 40654308171,
+  "url": "https://github.com/miku-wwl/crowdquest-ai/actions/runs/40654308171",
+  "status": "completed",
+  "conclusion": "success",
+  "backend_tests": 225,
+  "frontend_tests": 49,
+  "chromium_suites": 5,
+  "evidence_class": "REMOTE_CI_SYNTHETIC_TEST",
+  "real_twitch": "NOT_RUN",
+  "real_obs": "NOT_RUN",
+  "raw_logs_committed": false,
+  "jobs": [
+    {
+      "name": "baseline",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install locked dependencies",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check lock and installed dependency compatibility",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify installed public API, instructions and documents",
+          "conclusion": "success"
+        },
+        {
+          "name": "Audit Python packages (Git-only AIG integrity is verified separately)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Backend lint and tests (synthetic)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked frontend install, tests and build",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Chromium for synthetic browser E2E",
+          "conclusion": "success"
+        },
+        {
+          "name": "Actual Chromium with synthetic OAuth and chat",
+          "conclusion": "success"
+        },
+        {
+          "name": "Phase 3 Chromium and separate worker with synthetic consent",
+          "conclusion": "success"
+        },
+        {
+          "name": "Phase 4 crowd vote, outcome, layout and safety in actual Chromium",
+          "conclusion": "success"
+        },
+        {
+          "name": "Local OBS Admin in actual Chromium with synthetic OBS only",
+          "conclusion": "success"
+        },
+        {
+          "name": "OBS-free Canvas recording and playback with isolated application state",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check committed whitespace",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "receipt_commit_note": "This later documentation receipt has its own exact-commit CI checked separately and does not change implementation source."
+}

@@ -110,6 +110,15 @@ as an unchanged byte-for-byte database file; protected historical rows are compa
 independently. The original `frontend/dist`, old environments and prior review ZIP
 were not replaced. New frontend assets were built in the ignored isolated directory.
 
+## Implementation CI receipt
+
+Implementation `5d08184e0f640a327812731fb6e3b58a5a36daf1` passed
+[GitHub run 40654308171](https://github.com/miku-wwl/crowdquest-ai/actions/runs/40654308171).
+Remote logs confirm 225 backend tests, 49 frontend tests and all five Chromium
+suites. See [structured CI receipt](evidence/phase45/ci-receipt.json). The subsequent
+documentation-only receipt commit is checked independently; its final SHA and CI
+are recorded in the final delivery report, avoiding a self-referential commit hash.
+
 ## Delivery and remaining work
 
 Scoped normal main delivery is authorized for this replacement task. Local software
@@ -129,7 +138,7 @@ and remains the user's decision. Full final-build IAB/real demo acceptance and
 competition eligibility are incomplete; Phase 5 readiness is PARTIAL. The demo
 runbook is prepared, not executed or submitted.
 
-## Required status fields (report cutoff before remote CI)
+## Required status fields (implementation CI verified)
 
 ```text
 PROJECT=CrowdQuest AI
@@ -164,9 +173,9 @@ BACKEND_TESTS=225_PASS
 FRONTEND_TESTS=49_PASS
 SECURITY_CHECKS=PASS_SCOPED_LOCAL
 DEPENDENCY_CHECKS=PASS_PIN_LOCK_RECORD_AND_AUDITS
-GITHUB_CI=NOT_RUN_AT_REPORT_CUTOFF
-GIT_FINAL_HEAD=PENDING_DELIVERY_RECEIPT
-WORKTREE_STATUS=SCOPED_CHANGES_BEFORE_COMMIT
+GITHUB_CI=PASS_IMPLEMENTATION_5d08184e0f640a327812731fb6e3b58a5a36daf1
+GIT_FINAL_HEAD=SEE_FINAL_DELIVERY_REPORT
+WORKTREE_STATUS=DOCUMENTATION_RECEIPT_PENDING_AT_REPORT_CUTOFF
 PHASE45_FINAL_STATUS=PARTIAL
 PHASE5_READINESS=PARTIAL_RUNBOOK_PREPARED
 REAL_TWITCH_ACCEPTANCE=NOT_RUN_THIS_PHASE

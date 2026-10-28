@@ -37,6 +37,15 @@ human-consent evidence. Existing historical Actions may be inspected, never repl
 
 ## Export review
 
+Reserve 10–15 seconds of the under-three-minute edit for genuine Codex development
+evidence as well as genuine Twitch interaction. Studio records only its Canvas:
+it cannot capture chat, the review Dashboard or Codex's UI. Those complementary
+clips need a separately authorized supported browser-recording workflow in Phase 5.
+Use actual dated development/session evidence, redact credentials/private state,
+and never substitute a drawn Codex screen or a fixture chat for genuine footage.
+Native desktop capture is not authorized by the current OBS-free task. Narration,
+music/gameplay rights review and any editing/publication remain future work.
+
 - Retain original WebM, SHA256, resolution, duration, actual playback observation and
   any frame-rate limitation. Preview screenshots alone do not prove recorded content.
 - Inspect recorded voting, challenge/countdown, result and expired frames. A browser

@@ -315,3 +315,21 @@ Safe local startup and fixture recordings are authorized; do not restart an acti
 service with pending Actions or overwrite real SQLite/evidence. Scoped normal
 main delivery and exact-commit CI are authorized after applicable qualification.
 Keep Phase 4 historical overall PARTIAL and label synthetic/IAB footage distinctly.
+
+## Phase 4.5.1 recovery and acceptance authorization — 2026-10-28
+
+Preserve the interrupted EventSub changes and all historical stores/evidence. The
+latest user request authorizes completing the documented reconnect URL/security and
+continuous-handover fix, isolated regression, scoped normal main delivery and exact
+CI. A safe restart of the verified CrowdQuest services requires intact, verified
+database backups and no pending Action or active voting round. Keep the existing
+private identity, AIG pin/default five-second budget and user:read:chat scope.
+Use terminal and IAB only; no native desktop/OBS automation, tunnels or substitute
+live browser driver. Distinguish user-reported IAB rendering from agent automation.
+Before any fresh live events, finish readiness checks and obtain the user's explicit
+GO. Then at most two genuine suggestions, one round, one account vote, one real Plan
+and one Action may be used. Show the exact Plan/version and wait for explicit human
+approval; retain independent Approval, Admission, Authorization and Execute gates.
+Ask for the factual owner outcome when not observed; never fabricate completion.
+No historical replay, second uncertain Execute, extra scopes, streaming, upload,
+deployment, competition submission or automatic Phase 5 work is authorized.

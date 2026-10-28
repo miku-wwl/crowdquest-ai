@@ -1,7 +1,9 @@
+import asyncio
 import json
 from datetime import UTC, datetime
 
 import pytest
+from websockets.exceptions import ConnectionClosedOK
 
 from crowdquest.eventsub import EventSub, reconnect_url
 from crowdquest.intake import InvalidEvent, Store
@@ -28,17 +30,22 @@ def welcome(session):
 
 
 class Socket:
-    def __init__(self, messages):
+    def __init__(self, messages, *, wait_for_close=False):
         self.messages, self.closed = list(messages), False
+        self.wait_for_close, self.close_event = wait_for_close, asyncio.Event()
 
     async def recv(self):
         if not self.messages:
+            if self.wait_for_close:
+                await self.close_event.wait()
+                raise ConnectionClosedOK(None, None)
             raise ConnectionError("synthetic ordinary disconnect")
         value = self.messages.pop(0)
         return json.dumps(value) if type(value) is not str else value
 
     async def close(self):
         self.closed = True
+        self.close_event.set()
 
 
 async def test_welcome_keepalive_notification_migration_and_revocation(tmp_path):
@@ -60,7 +67,8 @@ async def test_welcome_keepalive_notification_migration_and_revocation(tmp_path)
                     }
                 },
             ),
-        ]
+        ],
+        wait_for_close=True,
     )
     second = Socket(
         [

@@ -1,0 +1,15 @@
+{
+  "baseline": "c7d4ab1fbb65b694ffed7c54b5aac0bfe5a99dc1",
+  "evidence": "SYNTHETIC_TEST",
+  "before_fix": {
+    "failures": 5,
+    "passes": 2,
+    "root_form_rejections": 4,
+    "old_reader_not_consuming": 1
+  },
+  "after_fix_focused_passes": 60,
+  "original_phase4_incident_cause": "UNCONFIRMED_ORIGINAL_URI_NOT_RETAINED",
+  "official_cli": "NOT_RUN_NOT_INSTALLED",
+  "loopback_wire_reconnect": "PASS_SYNTHETIC",
+  "redirect_destination_not_contacted": "PASS_SYNTHETIC"
+}

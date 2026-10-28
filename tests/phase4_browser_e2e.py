@@ -212,7 +212,10 @@ def main():
                         omit_background=True,
                     )
                 review.get_by_role("button", name="Completed", exact=True).click()
-                expect(overlays[0].get_by_text("Challenge complete.")).to_be_visible()
+                # Each old view must actually consume the result before its reload
+                # can test no replay. A first display in an unpolled view is valid.
+                for overlay in overlays:
+                    expect(overlay.get_by_text("Challenge complete.")).to_be_visible()
                 expect(review.get_by_text("Completed · Streamer-reported result")).to_be_visible()
                 if args.output_dir:
                     overlays[0].screenshot(

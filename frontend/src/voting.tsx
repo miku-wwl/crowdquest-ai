@@ -217,7 +217,9 @@ export function VotingPanel({
         <div className="shortlist">
           <h3>01 / Shortlist two ideas</h3>
           <p className="muted">
-            Pick two suggestions, then open the vote on stream.
+            {candidates.length < 2
+              ? `Waiting for ${2 - candidates.length} new suggestion${candidates.length === 1 ? "" : "s"} before a fresh vote can start.`
+              : "Pick two suggestions, then open the vote on stream."}
           </p>
           <fieldset disabled={unfinished || busy} className="shortlist-options">
             <legend className="sr-only">

@@ -149,6 +149,13 @@ class Store:
                     source TEXT NOT NULL CHECK(source IN ('twitch_eventsub','synthetic')),
                     UNIQUE(channel,chat_id)
                 ) STRICT;
+                CREATE TABLE IF NOT EXISTS dashboard_sessions (
+                    channel TEXT PRIMARY KEY,
+                    generation INTEGER NOT NULL CHECK(generation>=1),
+                    candidate_after INTEGER NOT NULL CHECK(candidate_after>=0),
+                    round_after INTEGER NOT NULL CHECK(round_after>=0),
+                    cleared_at REAL NOT NULL
+                ) STRICT;
                 CREATE TABLE IF NOT EXISTS reasons (
                     code TEXT PRIMARY KEY, count INTEGER NOT NULL, last_time REAL NOT NULL
                 ) STRICT;
@@ -283,6 +290,80 @@ class Store:
                     (owner_id,),
                 )
             ]
+
+    @staticmethod
+    def _session(db, owner_id):
+        row = db.execute(
+            "SELECT generation,candidate_after,round_after,cleared_at "
+            "FROM dashboard_sessions WHERE channel=?",
+            (owner_id,),
+        ).fetchone()
+        if row is None:
+            return {
+                "generation": 0,
+                "candidate_after": 0,
+                "round_after": 0,
+                "cleared_at": None,
+            }
+        return dict(row)
+
+    def dashboard_session(self, owner_id):
+        with closing(self.connect()) as db:
+            return self._session(db, owner_id)
+
+    def dashboard_candidates(self, owner_id):
+        """Return the current display boundary and candidates from one SQLite snapshot."""
+        with closing(self.connect()) as db:
+            db.execute("BEGIN")
+            session = self._session(db, owner_id)
+            candidates = [
+                dict(row)
+                for row in db.execute(
+                    "SELECT id,suggestion,event_time,state,source FROM candidates "
+                    "WHERE channel=? AND rowid>? ORDER BY received DESC LIMIT 50",
+                    (owner_id, session["candidate_after"]),
+                )
+            ]
+            return session, candidates
+
+    def dashboard_candidate(self, owner_id, candidate_id):
+        with closing(self.connect()) as db:
+            db.execute("BEGIN")
+            session = self._session(db, owner_id)
+            row = db.execute(
+                "SELECT id,suggestion,event_time,state,source FROM candidates "
+                "WHERE id=? AND channel=? AND rowid>?",
+                (candidate_id, owner_id, session["candidate_after"]),
+            ).fetchone()
+            return dict(row) if row else None
+
+    def clear_dashboard_history(self, owner_id, *, now=None):
+        """Advance display watermarks without changing candidate, vote or audit rows."""
+        now = time.time() if now is None else now
+        with closing(self.connect()) as db:
+            db.execute("BEGIN IMMEDIATE")
+            if db.execute(
+                "SELECT 1 FROM voting_rounds WHERE channel=? AND state IN ('Draft','Open') LIMIT 1",
+                (owner_id,),
+            ).fetchone():
+                raise ValueError("DEMO_HISTORY_RESET_VOTING_ACTIVE")
+            candidate_after = db.execute(
+                "SELECT COALESCE(MAX(rowid),0) FROM candidates WHERE channel=?", (owner_id,)
+            ).fetchone()[0]
+            round_after = db.execute(
+                "SELECT COALESCE(MAX(rowid),0) FROM voting_rounds WHERE channel=?", (owner_id,)
+            ).fetchone()[0]
+            db.execute(
+                "INSERT INTO dashboard_sessions(channel,generation,candidate_after,round_after,cleared_at) "
+                "VALUES(?,1,?,?,?) ON CONFLICT(channel) DO UPDATE SET "
+                "generation=dashboard_sessions.generation+1, "
+                "candidate_after=excluded.candidate_after, round_after=excluded.round_after, "
+                "cleared_at=excluded.cleared_at",
+                (owner_id, candidate_after, round_after, now),
+            )
+            session = self._session(db, owner_id)
+            db.commit()
+            return session
 
     def select(self, candidate_id, owner_id):
         with closing(self.connect()) as db, db:

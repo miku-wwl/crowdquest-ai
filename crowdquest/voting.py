@@ -156,14 +156,17 @@ class VotingStore:
             ),
         }
 
-    def current(self, channel, *, now=None):
+    def current(self, channel, *, now=None, after_rowid=0):
         now = self.clock() if now is None else now
+        if type(after_rowid) is not int or after_rowid < 0:
+            raise ValueError("VOTING_DISPLAY_BOUNDARY")
         with closing(self.intake.connect()) as db, db:
             db.execute("BEGIN IMMEDIATE")
             self._expire(db, channel, now)
             row = db.execute(
-                "SELECT * FROM voting_rounds WHERE channel=? ORDER BY rowid DESC LIMIT 1",
-                (channel,),
+                "SELECT * FROM voting_rounds WHERE channel=? AND rowid>? "
+                "ORDER BY rowid DESC LIMIT 1",
+                (channel, after_rowid),
             ).fetchone()
             return self._snapshot(db, row, now)
 

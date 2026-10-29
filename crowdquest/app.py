@@ -3,7 +3,7 @@
 import asyncio
 import secrets
 import time
-from contextlib import ExitStack, asynccontextmanager, suppress
+from contextlib import ExitStack, asynccontextmanager, closing, suppress
 from dataclasses import dataclass
 from pathlib import Path
 from uuid import UUID
@@ -255,7 +255,8 @@ def create_app(
     @app.get("/api/candidates")
     async def candidates(request: Request):
         identity, _ = await owner(request)
-        return {"candidates": store.candidates(identity.user_id)}
+        session, visible = store.dashboard_candidates(identity.user_id)
+        return {"session": session, "candidates": visible}
 
     @app.post("/api/studio/connect")
     async def connect_studio(request: Request):
@@ -458,7 +459,12 @@ def create_app(
                 from .phase4_routes import voting_presentation
 
                 result = voting_presentation(
-                    store, app.state.phase3_service, auth.identity.user_id, result, clock()
+                    store,
+                    app.state.phase3_service,
+                    auth.identity.user_id,
+                    result,
+                    clock(),
+                    round_after=store.dashboard_session(auth.identity.user_id)["round_after"],
                 )
             except Exception:  # noqa: BLE001 -- fixed code, no raw SQLite/credential errors
                 raise HTTPException(503, "RENDER_STATE_UNAVAILABLE") from None
@@ -491,6 +497,67 @@ def create_app(
         from .phase4_routes import register_phase4
 
         register_phase4(app, owner, store, clock)
+
+        def demo_reset_blocked(service):
+            """Fail closed while an old workflow or browser delivery is still active."""
+            with service.lock:
+                if service.model_active:
+                    return True
+                with closing(service.proposals.connect()) as db:
+                    candidates = db.execute("SELECT current_run,status FROM candidates").fetchall()
+                if any(status in ("GENERATING", "EDITING") for _, status in candidates):
+                    return True
+                for run_id, _ in candidates:
+                    if not run_id:
+                        continue
+                    for action in service.base.actions_for_run(run_id):
+                        if action.state.value not in ("Succeeded", "Failed", "Unknown"):
+                            return True
+                with closing(service.base.store.connect()) as db:
+                    eligible = {
+                        row[0]
+                        for row in db.execute("SELECT effect_key FROM jobs WHERE state='ELIGIBLE'")
+                    }
+                with closing(service.renderer.store.connect()) as db:
+                    rendered = {row[0] for row in db.execute("SELECT effect_key FROM renders")}
+                    if eligible - rendered:
+                        return True
+                    if db.execute(
+                        "SELECT 1 FROM renders WHERE state IN ('CLAIMED','SENT','RENDERED') LIMIT 1"
+                    ).fetchone():
+                        return True
+            return False
+
+        @app.get("/api/demo/session")
+        async def demo_session(request: Request):
+            identity, _ = await owner(request)
+            service = app.state.phase3_service
+            if service is None or service.owner_id != identity.user_id:
+                raise HTTPException(403, "WORKFLOW_OWNER_REQUIRED")
+            return {"session": store.dashboard_session(identity.user_id)}
+
+        @app.post("/api/demo/session/clear")
+        async def clear_demo_session(request: Request):
+            identity, _ = await owner(request, True)
+            service = app.state.phase3_service
+            if service is None or service.owner_id != identity.user_id:
+                raise HTTPException(403, "WORKFLOW_OWNER_REQUIRED")
+            try:
+                if demo_reset_blocked(service):
+                    raise HTTPException(409, "DEMO_HISTORY_RESET_BUSY")
+            except HTTPException:
+                raise
+            except Exception:  # noqa: BLE001 -- fail closed on private state read errors
+                raise HTTPException(503, "DEMO_HISTORY_STORAGE_UNAVAILABLE") from None
+            try:
+                session = store.clear_dashboard_history(identity.user_id, now=clock())
+            except ValueError as error:
+                if str(error) == "DEMO_HISTORY_RESET_VOTING_ACTIVE":
+                    raise HTTPException(409, "DEMO_HISTORY_RESET_BUSY") from None
+                raise HTTPException(409, "DEMO_HISTORY_RESET_DENIED") from None
+            except Exception:  # noqa: BLE001 -- never expose private storage details
+                raise HTTPException(503, "DEMO_HISTORY_STORAGE_UNAVAILABLE") from None
+            return {"session": session}
 
         @app.post("/api/studio/claim")
         async def studio_claim(request: Request, value: StudioClaim):

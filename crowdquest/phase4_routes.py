@@ -44,12 +44,12 @@ class OutcomeCommand(BaseModel):
     idempotency_key: str
 
 
-def voting_presentation(intake, service, channel, result, now):
+def voting_presentation(intake, service, channel, result, now, *, round_after=0):
     if result["state"] not in ("waiting", "expired"):
         return result
     if result["state"] == "expired":
         return result
-    round_ = intake.voting.current(channel, now=now)
+    round_ = intake.voting.current(channel, now=now, after_rowid=round_after)
     if not round_ or round_["state"] in ("Draft", "Cancelled"):
         return result
     state = "voting" if round_["state"] == "Open" else "winner"
@@ -99,8 +99,13 @@ def register_phase4(app, owner, intake, clock):
     async def current(request: Request):
         current = await service(request)
         try:
+            session = intake.dashboard_session(current.owner_id)
             return {
-                "round": intake.voting.current(current.owner_id, now=clock()),
+                "round": intake.voting.current(
+                    current.owner_id,
+                    now=clock(),
+                    after_rowid=session["round_after"],
+                ),
                 "audit": intake.voting.audit(current.owner_id),
             }
         except Exception as error:  # noqa: BLE001 -- redact private runtime/storage errors at HTTP boundary
@@ -112,6 +117,11 @@ def register_phase4(app, owner, intake, clock):
         check(*value.candidate_ids, value.idempotency_key)
         try:
             with current.lock:
+                if any(
+                    intake.dashboard_candidate(current.owner_id, candidate_id) is None
+                    for candidate_id in value.candidate_ids
+                ):
+                    raise ValueError("CANDIDATE_NOT_IN_CURRENT_DEMO_SESSION")
                 if any(current.proposals.item(c) for c in value.candidate_ids):
                     raise ValueError("CANDIDATE_ALREADY_PLANNED")
                 round_ = intake.voting.create(
@@ -133,7 +143,12 @@ def register_phase4(app, owner, intake, clock):
             with current.lock:
                 if current.model_active:
                     raise GenerationBusy("GENERATION_BUSY")
-                snapshot = intake.voting.current(current.owner_id, now=clock())
+                session = intake.dashboard_session(current.owner_id)
+                snapshot = intake.voting.current(
+                    current.owner_id,
+                    now=clock(),
+                    after_rowid=session["round_after"],
+                )
                 if not snapshot or snapshot["id"] != round_id or not snapshot["winner"]:
                     raise ValueError("CURRENT_WINNER_REQUIRED")
                 winner = snapshot["choices"][snapshot["winner"] - 1]["candidate_id"]
@@ -159,6 +174,14 @@ def register_phase4(app, owner, intake, clock):
         current = await service(request, True)
         check(round_id, value.idempotency_key)
         try:
+            session = intake.dashboard_session(current.owner_id)
+            visible = intake.voting.current(
+                current.owner_id,
+                now=clock(),
+                after_rowid=session["round_after"],
+            )
+            if visible is None or visible["id"] != round_id:
+                raise ValueError("ROUND_NOT_IN_CURRENT_DEMO_SESSION")
             if operation == "start":
                 current.renderer.store.maintain()
                 with closing(current.renderer.store.connect()) as db:

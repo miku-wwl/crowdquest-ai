@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ReviewPanel } from "./review";
 import { VotingPanel, type VoteRound } from "./voting";
 import { OutcomeDisplay, VotingDisplay } from "./broadcast";
@@ -24,6 +24,12 @@ type Me = {
     ready: boolean;
     counters: { keepalives: number; notifications: number; accepted: number };
   } | null;
+};
+type DemoSession = {
+  generation: number;
+  candidate_after: number;
+  round_after: number;
+  cleared_at: number | null;
 };
 type Pairings = { pending: string[]; ready: number };
 type OverlayData = {
@@ -121,6 +127,8 @@ export function Dashboard() {
     connection: "checking",
   });
   const [candidates, setCandidates] = useState<Candidate[]>([]);
+  const [demoSession, setDemoSession] = useState<DemoSession | null>(null);
+  const acceptedDemoGeneration = useRef(0);
   const [pairings, setPairings] = useState<Pairings>({ pending: [], ready: 0 });
   const [selected, setSelected] = useState("");
   const [error, setError] = useState(
@@ -142,11 +150,21 @@ export function Dashboard() {
         setMe(identity);
         if (identity.authenticated) {
           const [items, overlays] = await Promise.all([
-            api<{ candidates: Candidate[] }>("/api/candidates"),
+            api<{ session: DemoSession; candidates: Candidate[] }>(
+              "/api/candidates",
+            ),
             api<Pairings>("/api/overlays"),
           ]);
           if (active) {
-            setCandidates(items.candidates);
+            if (items.session.generation >= acceptedDemoGeneration.current) {
+              acceptedDemoGeneration.current = items.session.generation;
+              setCandidates(items.candidates);
+              setDemoSession(
+                identity.features?.includes("crowd_voting")
+                  ? items.session
+                  : null,
+              );
+            }
             setPairings(overlays);
             setError((value) =>
               value === "Connection lost. Reconnect to the local application."
@@ -158,6 +176,8 @@ export function Dashboard() {
           setCandidates([]);
           setPairings({ pending: [], ready: 0 });
           setSelected("");
+          setDemoSession(null);
+          acceptedDemoGeneration.current = 0;
         }
       } catch (e) {
         if (active) {
@@ -165,6 +185,8 @@ export function Dashboard() {
           setCandidates([]);
           setMe({ authenticated: false, connection: "disconnected" });
           setSelected("");
+          setDemoSession(null);
+          acceptedDemoGeneration.current = 0;
         }
       } finally {
         working = false;
@@ -198,6 +220,38 @@ export function Dashboard() {
               ? "Overlay paired. Wait for Ready, then start a vote or review a challenge."
               : "Overlay paired. Wait for Ready, then choose a preview."
             : "Done.",
+      );
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function clearDemoHistory() {
+    const confirmation =
+      "Hide previous demo records and start a clean view? Historical audit records will be preserved.";
+    if (!window.confirm(confirmation)) return;
+    setBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      const result = await api<{ session: DemoSession }>(
+        "/api/demo/session/clear",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": me.csrf || "",
+          },
+          body: JSON.stringify({}),
+        },
+      );
+      acceptedDemoGeneration.current = result.session.generation;
+      setDemoSession(result.session);
+      setCandidates([]);
+      setSelected("");
+      setNotice(
+        "Previous demo records are hidden. New Twitch suggestions will appear here.",
       );
     } catch (e) {
       setError((e as Error).message);
@@ -313,6 +367,7 @@ export function Dashboard() {
           <>
             {me.features?.includes("crowd_voting") && (
               <VotingPanel
+                key={demoSession?.generation || 0}
                 candidates={candidates}
                 csrf={me.csrf || ""}
                 onReview={setSelected}
@@ -325,6 +380,15 @@ export function Dashboard() {
                     Audience inbox <span>{candidates.length}</span>
                   </h2>
                   <span>!quest &lt;suggestion&gt;</span>
+                  {demoSession && (
+                    <button
+                      className="quiet clear-demo-history"
+                      disabled={busy}
+                      onClick={() => void clearDemoHistory()}
+                    >
+                      Clear Demo History
+                    </button>
+                  )}
                 </div>
                 {candidates.length ? (
                   <CandidateList

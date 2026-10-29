@@ -42,9 +42,7 @@ def register_phase3(app, owner, intake):
 
     def candidate(current, candidate_id):
         identifier(candidate_id)
-        found = next(
-            (c for c in intake.candidates(current.owner_id) if c["id"] == candidate_id), None
-        )
+        found = intake.dashboard_candidate(current.owner_id, candidate_id)
         if found is None:
             raise HTTPException(404, "CANDIDATE_NOT_FOUND")
         return found

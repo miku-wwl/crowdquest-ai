@@ -45,7 +45,15 @@ function transport(authenticated = true) {
               connection: "connected",
             }
           : path === "/api/candidates"
-            ? { candidates }
+            ? {
+                session: {
+                  generation: 0,
+                  candidate_after: 0,
+                  round_after: 0,
+                  cleared_at: null,
+                },
+                candidates,
+              }
             : { pending: ["ABCDEF1234567890"], ready: 1 };
       return new Response(JSON.stringify(result));
     }),
@@ -95,6 +103,78 @@ it("offers only sign-in for unauthenticated state", async () => {
     await screen.findByRole("link", { name: "Connect Twitch →" }),
   ).toHaveAttribute("href", "/auth/twitch/start");
   expect(screen.queryByRole("radio")).toBeNull();
+});
+
+it("confirms a persistent demo-history reset and waits for new suggestions", async () => {
+  let generation = 0;
+  let visible = candidates;
+  const confirmation = vi.fn(() => true);
+  vi.stubGlobal("confirm", confirmation);
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(async (path: string, options?: RequestInit) => {
+      if (options?.method === "POST") {
+        posts.push({ path, body: options.body as string });
+        generation++;
+        visible = [];
+        return new Response(
+          JSON.stringify({
+            session: {
+              generation,
+              candidate_after: 1,
+              round_after: 0,
+              cleared_at: 1800000000,
+            },
+          }),
+        );
+      }
+      const result =
+        path === "/api/me"
+          ? {
+              authenticated: true,
+              login: "fixture_owner",
+              csrf: "synthetic-csrf",
+              connection: "connected",
+              workflow: "production",
+              features: ["crowd_voting"],
+            }
+          : path === "/api/candidates"
+            ? {
+                session: {
+                  generation,
+                  candidate_after: generation ? 1 : 0,
+                  round_after: generation ? 1 : 0,
+                  cleared_at: generation ? 1800000000 : null,
+                },
+                candidates: visible,
+              }
+            : path === "/api/phase4/voting"
+              ? { round: null }
+              : { pending: [], ready: 0 };
+      return new Response(JSON.stringify(result));
+    }),
+  );
+  render(<Dashboard />);
+  await screen.findByRole("radio");
+  fireEvent.click(screen.getByRole("button", { name: "Clear Demo History" }));
+  await waitFor(() => expect(screen.queryByRole("radio")).toBeNull());
+  expect(confirmation).toHaveBeenCalledWith(
+    "Hide previous demo records and start a clean view? Historical audit records will be preserved.",
+  );
+  expect(posts).toContainEqual({
+    path: "/api/demo/session/clear",
+    body: "{}",
+  });
+  expect(
+    await screen.findByText(
+      "Waiting for 2 new suggestions before a fresh vote can start.",
+    ),
+  ).toBeVisible();
+  expect(
+    screen.getByText(
+      "Previous demo records are hidden. New Twitch suggestions will appear here.",
+    ),
+  ).toBeVisible();
 });
 
 it("renders network errors without candidate controls", async () => {

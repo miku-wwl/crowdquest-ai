@@ -121,6 +121,74 @@ def main():
                 dashboard.goto(origin)
                 dashboard.get_by_role("link", name="Connect Twitch →").click()
                 expect(dashboard.get_by_text("@fixture_owner")).to_be_visible()
+                # Begin with legacy fixture suggestions and a Closed round, then
+                # prove the owner reset hides them across a full page reload.
+                panel = dashboard.get_by_role("region", name="Crowd voting")
+                old_shortlist = panel.get_by_role("checkbox")
+                old_shortlist.nth(0).check()
+                old_shortlist.nth(1).check()
+                panel.get_by_role("button", name="Create voting round").click()
+                panel.get_by_role("button", name="Start voting").click()
+                panel.get_by_role("button", name="Close voting now").click()
+                panel.get_by_role("button", name="Choose candidate 1 as winner").click()
+                panel.get_by_role("button", name="Generate winning Plan").click()
+                old_review = dashboard.get_by_role("region", name="Challenge review")
+                expect(old_review.get_by_text("SYNTHETIC_TEST", exact=False)).to_be_visible()
+                reset_prompt = "Hide previous demo records and start a clean view? Historical audit records will be preserved."
+
+                def accept_reset(dialog):
+                    assert dialog.message == reset_prompt
+                    dialog.accept()
+
+                dashboard.once("dialog", accept_reset)
+                dashboard.get_by_role("button", name="Clear Demo History").click()
+                expect(
+                    dashboard.get_by_text(
+                        "Waiting for 2 new suggestions before a fresh vote can start.", exact=True
+                    )
+                ).to_be_visible()
+                expect(dashboard.get_by_role("radio")).to_have_count(0)
+                expect(dashboard.get_by_text("NO ROUND YET", exact=True)).to_be_visible()
+                expect(
+                    dashboard.get_by_text("Select a suggestion to begin.", exact=True)
+                ).to_be_visible()
+                with closing(sqlite3.connect(directory / "intake.sqlite3")) as db:
+                    assert db.execute("SELECT count(*) FROM candidates").fetchone()[0] == 2
+                    assert (
+                        db.execute(
+                            "SELECT state FROM voting_rounds ORDER BY rowid DESC LIMIT 1"
+                        ).fetchone()[0]
+                        == "Closed"
+                    )
+                    assert (
+                        db.execute(
+                            "SELECT generation FROM dashboard_sessions WHERE channel='123'"
+                        ).fetchone()[0]
+                        == 1
+                    )
+                with closing(sqlite3.connect(directory / "phase3/product.sqlite3")) as db:
+                    assert db.execute("SELECT count(*) FROM proposals").fetchone()[0] == 1
+                dashboard.reload()
+                expect(
+                    dashboard.get_by_text(
+                        "Waiting for 2 new suggestions before a fresh vote can start.", exact=True
+                    )
+                ).to_be_visible()
+                expect(dashboard.get_by_role("radio")).to_have_count(0)
+                expect(dashboard.get_by_text("NO ROUND YET", exact=True)).to_be_visible()
+                deliver(
+                    directory,
+                    viewer=850,
+                    text="!quest New session idea one",
+                    expected="ACCEPTED",
+                )
+                deliver(
+                    directory,
+                    viewer=851,
+                    text="!quest New session idea two",
+                    expected="ACCEPTED",
+                )
+                expect(dashboard.get_by_role("radio")).to_have_count(2)
                 contexts = []
                 overlays = []
                 for _ in range(2):

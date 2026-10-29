@@ -70,6 +70,15 @@ header {
 .section-title h2 {
   font-size: 22px;
 }
+.clear-demo-history {
+  width: auto;
+  min-height: 34px;
+  margin-left: auto;
+  padding: 6px 10px;
+  border: 1px solid #4a4d5b;
+  border-radius: 7px;
+  white-space: nowrap;
+}
 .candidate {
   background: #191e29;
   border-color: #343949;

@@ -1,0 +1,21 @@
+{
+  "classification": "AGENT_VERIFIED_RECOVERED_PARTIAL_FILE_DECODE_AND_SAMPLED_FRAME",
+  "source_name": "crowdquest-phase454-20261029-03-voting.webm",
+  "bytes": 1223521,
+  "sha256": "b95d45c7bf75ca7bd89e664b65d0b0f84a1931b2d961608aa87485e5862e5934",
+  "archive_directory": "D:\\workshop\\oct\\crowdquest-ai-deliverables\\CrowdQuest-Phase454-recording03",
+  "width": 1920, "height": 1080, "codec_fourcc": "VP80",
+  "decoder": "OpenCV 5.0.0 FFMPEG backend", "decoded_frames": 132,
+  "last_pts_seconds": 4.767,
+  "duration_estimate_seconds": 4.801,
+  "average_fps_estimate": 27.49427202666111,
+  "client_reported_seconds": 4.7,
+  "client_status": "Interrupted / Recovered partial recording",
+  "interruption_trigger": "UNKNOWN",
+  "coverage": "PARTIAL_OPEN_VOTING_1_TO_0_COUNTDOWN",
+  "decoded_final_frame_observation": "1:0 tally with 45 seconds remaining",
+  "closed_winner_in_video": false,
+  "separate_user_screenshots": ["real-voting-open.png", "real-voting-closed.png", "recording03-interrupted.png"],
+  "original_preserved": true,
+  "round_restarted_for_footage": false
+}

@@ -1,0 +1,17 @@
+{
+  "classification": "EXPLICIT_HUMAN_PLAN_APPROVAL_CONSENT_WITH_READ_ONLY_REVALIDATION",
+  "observed_at_utc": "2026-10-28T15:17:53Z",
+  "user_reply": "APPROVE PLAN b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "run_id": "b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "reviewed_version": 4,
+  "verified_runtime_state": "AwaitingApproval",
+  "verified_current_proposal": true,
+  "persisted_plan_json_sha256": "f72b824d13ac5ab50983a893fecee962d94b3ca12d5eb8eb4c5489257f77b134",
+  "hash_unchanged": true,
+  "approval_decisions_before_ui_click": 0,
+  "actions_for_run": 0,
+  "permission": "Approve only this exact current Plan version",
+  "admission_authorized": false,
+  "action_authorization_granted": false,
+  "execution_authorized": false
+}

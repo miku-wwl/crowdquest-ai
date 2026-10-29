@@ -1,0 +1,18 @@
+{
+  "classification": "AGENT_VERIFIED_DURABLE_APPROVAL_WITH_PRIOR_EXPLICIT_HUMAN_CONSENT",
+  "observed_at_utc": "2026-10-28T15:21:59Z",
+  "run_id": "b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "state": "Approved",
+  "reviewed_version": 4,
+  "current_version": 5,
+  "persisted_plan_json_sha256": "f72b824d13ac5ab50983a893fecee962d94b3ca12d5eb8eb4c5489257f77b134",
+  "content_hash_unchanged": true,
+  "decision": {"decision_id": "617be856-e04a-41e4-a42a-9c06ac5d8852", "choice": "APPROVE", "actor_type": "LOCAL_USER", "run_version_before": 4, "run_version_after": 5},
+  "approval_binding": {"status": "BOUND_V1", "identity_revision": "approval-plan-v1", "approval_plan_digest": "6252e4b90d0c9e8ea634449728035147319b1503691266c0045221740da30a23"},
+  "consumer_review": {"version": 5, "decision": "APPROVE", "exact_plan_matches": true, "configured_owner_matches": true},
+  "actions_for_run": 0,
+  "screenshot": "plan-approved.png",
+  "admission_completed": false,
+  "action_authorization_completed": false,
+  "execution_completed": false
+}

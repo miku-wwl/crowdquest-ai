@@ -1,0 +1,28 @@
+{
+  "classification": "AGENT_VERIFIED_FILE_DECODE_AND_FRAME_INSPECTION_WITH_USER_PROVIDED_CLIENT_RESULT",
+  "observed_at_utc": "2026-10-28T14:39:30Z",
+  "source_name": "crowdquest-phase454-20261029-02-waiting.webm",
+  "bytes": 2794574,
+  "sha256": "8dedd0b89196af81829c904178cb3f0a99cf8c81f5201294ba353e0c718f25fe",
+  "archive_directory": "D:\\workshop\\oct\\crowdquest-ai-deliverables\\CrowdQuest-Phase454-recording02",
+  "original_bytes_preserved": true,
+  "decoder": "OpenCV 5.0.0 FFMPEG backend",
+  "codec_fourcc": "VP80",
+  "width": 1920,
+  "height": 1080,
+  "container_reported_fps": 30.0,
+  "decoded_frames": 394,
+  "first_frame_pts_seconds": 0.0,
+  "last_frame_pts_seconds": 13.435,
+  "estimated_encoded_duration_seconds": 13.468,
+  "average_decoded_fps_estimate": 29.254529254529256,
+  "sampled_visual_inspection": "Final decoded frame shows normal Waiting canvas",
+  "client_verifier_result": {"classification": "USER_PROVIDED_SCREENSHOT", "label": "Finalized · playback verified", "reported_seconds": 13.4},
+  "normal_player_agent_verification": "NOT_RUN",
+  "evidence_coverage": "WAITING_ONLY_NO_NEW_TWITCH_OR_ACTION_FLOW",
+  "studio_screenshot_sha256": {
+    "recording01-client-error.png": "b3ae48a3c897605e1f9ca8d232c5abeae395c7ae2ac16b87ae9417c5c1d4f3ab",
+    "recording01-unverified-card.png": "dc5904ca3c7355e88fd157a8f929f2e8ca36900af77caa9946fe9cc434eb729f",
+    "recording02-client-finalized.png": "0eeaf21b45b4e63d687fe0aabb9ae2bfe224d794b0d743cd0b2ed4e9ed98ed6f"
+  }
+}

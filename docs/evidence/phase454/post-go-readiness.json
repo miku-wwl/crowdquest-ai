@@ -1,0 +1,20 @@
+{
+  "phase": "4.5.4",
+  "classification": "AGENT_VERIFIED_POST_GO_READ_ONLY",
+  "observed_at_utc": "2026-10-28T14:10:10Z",
+  "user_go": "GO PHASE454",
+  "http": {"dashboard": 200, "studio": 200},
+  "sqlite_integrity": {"intake": "ok", "gate": "ok", "admission": "ok", "product": "ok", "render": "ok"},
+  "worker_lease_fresh": true,
+  "eventsub": {
+    "status": "connected", "ready": true, "stage": "receive", "socket_open": true, "waiting_for_message": true, "snapshot_age_seconds": 4.4,
+    "counters": {"welcomes": 2, "subscriptions": 2, "keepalives": 1321, "notifications": 0, "accepted": 0, "votes": 0, "failures": 1, "reconnects": 0}
+  },
+  "historical_counts": {"candidates": 5, "closed_voting_rounds": 1, "votes": 1, "succeeded_actions": 2, "action_attempts": 2, "jobs": 2, "proposals": 2, "expired_renders": 2, "ended_outcomes": 1},
+  "visible_browser_observations": {
+    "dashboard_owner": "miku_wwl", "dashboard_connection": "Connected",
+    "studio_backend": "Connected", "studio_eventsub": "Connected", "studio_worker": "Ready", "studio_presentation": "Waiting", "studio_recorder": "Idle",
+    "source": "Official built-in Browser, bounded read-only bindings of existing operator tabs"
+  },
+  "new_phase454_operations": {"messages": 0, "votes": 0, "rounds": 0, "plans": 0, "actions": 0, "recordings": 0}
+}

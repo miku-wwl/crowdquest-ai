@@ -1,0 +1,18 @@
+{
+  "classification": "EXPLICIT_USER_AUTHORIZATION_WITH_AGENT_VERIFIED_PREREQUISITES",
+  "observed_at_utc": "2026-10-28T14:53:34Z",
+  "user_reply": "允许修正投票草稿",
+  "cancel_only_round_id": "f7c1f773-82d5-46a8-bfe6-385671f71360",
+  "verified_state": "Draft",
+  "verified_version": 1,
+  "verified_opened": null,
+  "verified_votes": 0,
+  "eventsub_ready": true,
+  "replacement_drafts_allowed": 1,
+  "replacement_duration_seconds": 60,
+  "replacement_candidate_ids": ["ecb3f5d2-5aae-478b-8b36-eb61f25b8f1f", "c454b181-689a-4351-af58-a3516d894038"],
+  "max_new_opened_rounds": 1,
+  "max_new_actions": 1,
+  "cancellation_completed": false,
+  "replacement_created": false
+}

@@ -1,0 +1,24 @@
+{
+  "project": "CrowdQuest AI",
+  "phase": "4.5.3",
+  "classification": "AGENT_VERIFIED_POST_GO_READ_ONLY",
+  "observed_at_utc": "2026-10-28T13:35:22Z",
+  "user_go_received": true,
+  "browser": {
+    "inventory_listed_handoff_tabs": true,
+    "url_binding": "browser.user is unavailable",
+    "listed_tab_id_binding": "browser.user is unavailable",
+    "root_cause": "undetermined",
+    "live_operations_stopped": true
+  },
+  "http": {"root": 200, "studio": 200},
+  "eventsub": {
+    "status": "connected", "ready": true, "stage": "receive", "socket_open": true,
+    "waiting_for_message": true, "snapshot_age_seconds": 6.5,
+    "counters": {"welcomes": 1, "subscriptions": 1, "keepalives": 1114, "notifications": 0, "accepted": 0, "votes": 0, "failures": 0, "reconnects": 0}
+  },
+  "worker_lease_fresh": true,
+  "sqlite_integrity": {"intake": "ok", "gate": "ok", "admission": "ok", "product": "ok", "render": "ok"},
+  "historical_state": {"closed_voting_rounds": 1, "votes": 1, "succeeded_actions": 2, "action_attempts": 2, "jobs": 2, "expired_renders": 2, "ended_outcomes": 1},
+  "new_live_operations": {"messages": 0, "rounds": 0, "plans": 0, "actions": 0, "recordings": 0}
+}

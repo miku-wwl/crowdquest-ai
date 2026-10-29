@@ -1,0 +1,36 @@
+{
+  "phase": "4.5.4",
+  "checkpoint": "POST_EXPIRY_REFRESH_NO_REPLAY",
+  "observed_at_utc": "2026-10-28T15:54:36.078615+00:00",
+  "classification": {
+    "screenshot": "USER_PROVIDED_VISUAL_EVIDENCE",
+    "sqlite": "AGENT_VERIFIED_READ_ONLY"
+  },
+  "screenshot": {
+    "filename": "studio-after-refresh-no-replay.png",
+    "sha256": "83a66752fbb3bc9a95628fa3aaca7a0a57efe1bf69934d70a5c11a283bb72f5d",
+    "visible_url": "localhost:8000/broadcast-studio",
+    "visible_backend": "Connected",
+    "visible_eventsub": "Connected",
+    "visible_worker": "Ready",
+    "visible_challenge": "EXPIRED",
+    "visible_scene": "Waiting",
+    "active_presentation": "None",
+    "user_report": "refreshed; challenge did not reappear"
+  },
+  "target_effect": {
+    "action_id": "7b042814-ccfc-401d-8ce6-68d204668b15",
+    "render_count_after_refresh": 1,
+    "render_state": "EXPIRED",
+    "observation_count_after_refresh": 1,
+    "observation_state": "ACKNOWLEDGED",
+    "additional_render_or_observation_after_refresh": false,
+    "target_owner_outcome_count": 0
+  },
+  "global_outcome_display": {
+    "ui_text": "Last persisted outcome: Skipped - ENDED",
+    "applies_to_this_action": false,
+    "basis": "No challenge_outcomes row is keyed to this Action/effect; the displayed value is global historical state."
+  },
+  "no_replay": "PASS_USER_REFRESH_AND_SINGLE_DURABLE_RENDER"
+}

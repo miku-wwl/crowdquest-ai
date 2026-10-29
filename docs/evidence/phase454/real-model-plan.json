@@ -1,0 +1,27 @@
+{
+  "classification": "AGENT_VERIFIED_READ_ONLY_PERSISTED_REAL_MODEL_PLAN",
+  "observed_at_utc": "2026-10-28T15:12:39Z",
+  "run_id": "b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "review_plan_id_kind": "Runtime Run ID plus exact version; Plan schema has no separate plan_id",
+  "version": 4,
+  "state": "AwaitingApproval",
+  "candidate_id": "ecb3f5d2-5aae-478b-8b36-eb61f25b8f1f",
+  "voting_round_id": "9fce928c-dd1d-447c-a086-d7c6ac22ad5d",
+  "product_revision": 1,
+  "provenance": {"source": "REAL_MODEL", "provider": "ollama_local", "model": "phi4-mini:latest", "attempts": 1, "elapsed_ms": 8976, "reason": "MODEL_VALIDATED"},
+  "plan": {
+    "goal": "Display one owner-reviewed audience challenge",
+    "risk_class": "SIDE_EFFECT",
+    "steps": [{"arguments": {"description": "Survive 60 seconds without healing - Phase 4.5.4 acceptance", "difficulty": "Medium", "duration_seconds": 60, "title": "Survive 60 Seconds"}, "tool_name": "enqueue_overlay_challenge", "tool_version": "1"}],
+    "target": "twitch-channel-1592829151"
+  },
+  "persisted_risk_class": "SIDE_EFFECT",
+  "arguments_and_semantics_valid": true,
+  "trusted_tool_version_target_match": true,
+  "installed_aig_version": "0.3.0",
+  "persisted_plan_json_sha256": "f72b824d13ac5ab50983a893fecee962d94b3ca12d5eb8eb4c5489257f77b134",
+  "hash_kind": "Stored JSON bytes, not asserted to be canonical AIG approval digest",
+  "approval_decisions_for_run": 0,
+  "actions_for_run": 0,
+  "screenshot": "real-model-awaiting-approval.png"
+}

@@ -1,0 +1,23 @@
+{
+  "phase": "4.5.4",
+  "classification": "AGENT_VERIFIED_READ_ONLY_BACKEND_PREFLIGHT",
+  "observed_at_utc": "2026-10-28T14:01:29Z",
+  "source_commit": "68de50b63268b34f641478b436a0046e3f208684",
+  "http": {"dashboard": 200, "studio": 200},
+  "identified_crowdquest_listener": {"address": "127.0.0.1", "port": 8000, "pid": 49288},
+  "worker_lease_fresh": true,
+  "sqlite_integrity": {"intake": "ok", "gate": "ok", "admission": "ok", "product": "ok", "render": "ok"},
+  "historical_counts": {"deliveries": 6, "messages": 6, "candidates": 5, "closed_voting_rounds": 1, "votes": 1, "approved_runs": 2, "succeeded_actions": 2, "action_attempts": 2, "jobs": 2, "expired_renders": 2, "ended_outcomes": 1},
+  "eventsub": {
+    "status": "connected", "ready": true, "socket_open": true, "waiting_for_message": true, "stage": "receive", "snapshot_age_seconds": 2.8,
+    "counters": {"welcomes": 2, "subscriptions": 2, "keepalives": 1269, "notifications": 0, "accepted": 0, "votes": 0, "failures": 1, "reconnects": 0},
+    "last_failure": {"kind": "TimeoutError", "code": "CONNECTION_INTERRUPTED", "stage": "receive"},
+    "subsequent_recovery_journal": ["connect_started", "session_welcome", "subscription_response_202", "subscription_enabled"],
+    "later_keepalives": 1275
+  },
+  "configured_owner_login": "miku_wwl",
+  "provider": {"provider": "ollama_local", "model": "phi4-mini:latest", "reachable": true, "configured_model_loaded": true},
+  "browser": {"inventory_available": true, "current_tabs": 0, "new_session_created": false, "current_owner_session": "UNKNOWN"},
+  "github_ci": {"head": "68de50b63268b34f641478b436a0046e3f208684", "run": 40680040754, "conclusion": "success"},
+  "new_phase454_operations": {"messages": 0, "rounds": 0, "plans": 0, "actions": 0, "recordings": 0}
+}

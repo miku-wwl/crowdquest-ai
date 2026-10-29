@@ -1,0 +1,37 @@
+{
+  "classification": "AGENT_VERIFIED_REAL_EVENTSUB_TO_SQLITE_CORRELATION",
+  "observed_at_utc": "2026-10-28T14:43:31Z",
+  "operator_reply": "DONE 03",
+  "operator_reported_spacing_seconds": 32,
+  "event_spacing_seconds": 31.97593903541565,
+  "receipt_spacing_seconds": 31.975622177124023,
+  "implemented_rate_window_seconds": 30,
+  "suggestions": [
+    {
+      "candidate_id": "ecb3f5d2-5aae-478b-8b36-eb61f25b8f1f",
+      "chat_id": "e07da006-fcf0-46a8-afcd-0745d6547f35",
+      "delivery_id": "q4SQLHBG2N84zZwxU9DGJbtxUC2ZHRyG-J9Yj0eGm78=",
+      "text": "Survive 60 seconds without healing - Phase 4.5.4 acceptance",
+      "event_time_epoch": 1793198515.239496,
+      "received_epoch": 1793198516.3923829,
+      "source": "twitch_eventsub", "state": "candidate", "message_reason": "ACCEPTED",
+      "delivery_persisted": true, "channel_matches_eventsub_owner": true, "historical_voting_origin": false
+    },
+    {
+      "candidate_id": "c454b181-689a-4351-af58-a3516d894038",
+      "chat_id": "81b1d00a-c1fd-4a77-ac00-59226942ae4d",
+      "delivery_id": "x6tufcjRX4ZhXvig-8-HNFUKdwohZwmF7hmYjdt52aw=",
+      "text": "Survive 60 seconds using only basic attacks - Phase 4.5.4 acceptance",
+      "event_time_epoch": 1793198547.215435,
+      "received_epoch": 1793198548.368005,
+      "source": "twitch_eventsub", "state": "candidate", "message_reason": "ACCEPTED",
+      "delivery_persisted": true, "channel_matches_eventsub_owner": true, "historical_voting_origin": false
+    }
+  ],
+  "eventsub": {"ready": true, "status": "connected", "snapshot_age_seconds": 3.1, "notifications": 2, "accepted": 2, "votes": 0, "failures": 1, "welcomes": 2, "subscriptions": 2, "keepalives": 1520},
+  "candidate_count_before": 5,
+  "candidate_count_after": 7,
+  "active_rounds_before_create": 0,
+  "historical_succeeded_actions": 2,
+  "dashboard_screenshot": {"file": "real-intake-dashboard.png", "classification": "USER_PROVIDED_VISUAL_EVIDENCE", "sha256": "56a923d00de858779b01d5536a32253f7b144f2dca886be4b50180b511452d5c"}
+}

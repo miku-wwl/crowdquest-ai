@@ -1,0 +1,40 @@
+{
+  "phase": "4.5.4",
+  "checkpoint": "ACTION_AUTHORIZATION_PERSISTED",
+  "classification": "AGENT_VERIFIED_READ_ONLY_SQLITE",
+  "action_id": "7b042814-ccfc-401d-8ce6-68d204668b15",
+  "run_id": "b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "action_state": "Authorized",
+  "action_version": 2,
+  "plan_state": "Approved",
+  "approved_run_version": 5,
+  "tool": {
+    "name": "enqueue_overlay_challenge",
+    "version": "1",
+    "adapter": "crowdquest-overlay",
+    "binding_revision": "overlay-admission-v1",
+    "risk_class": "SIDE_EFFECT"
+  },
+  "arguments": {
+    "title": "Survive 60 Seconds",
+    "description": "Survive 60 seconds without healing - Phase 4.5.4 acceptance",
+    "duration_seconds": 60,
+    "difficulty": "Medium"
+  },
+  "plan_digest": "b5903670d311dd536a5099152218a4a62480e6ec8972f810e6da922182cee6fd",
+  "spec_digest": "bd7849a432fcfb40685d04cd6fc008a08203941ba58a216c86caccbb6f2c3f0e",
+  "authorization_record_count_for_action": 1,
+  "authorization_policy_revision": "crowdquest-owner-policy-v1",
+  "authorization_recorded_at_utc": "2026-10-28T15:34:20.575445Z",
+  "authorization_command_receipt": "PRESENT_VERSION_2",
+  "admission_command_receipt": "PRESENT_VERSION_1",
+  "execution_attempts_before_dispatch": 0,
+  "matching_consumer_jobs_before_dispatch": 0,
+  "matching_render_rows_before_dispatch": 0,
+  "result_present_before_dispatch": false,
+  "dashboard_http_localhost": 200,
+  "broadcast_studio_http_localhost": 200,
+  "user_provided_screenshot": "codex-clipboard-bfd1137e-3d33-42cf-806b-98375e457b91.png",
+  "screenshot_observation": "Dashboard visibly labels the Action Authorized and shows Execute authorized Action for Action version 2; not execution evidence.",
+  "execution": "NOT_RUN"
+}

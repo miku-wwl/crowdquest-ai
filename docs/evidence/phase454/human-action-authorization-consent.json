@@ -1,0 +1,20 @@
+{
+  "classification": "EXPLICIT_HUMAN_ACTION_AUTHORIZATION_CONSENT_WITH_READ_ONLY_REVALIDATION",
+  "observed_at_utc": "2026-10-28T15:31:16Z",
+  "user_authorization_command": "AUTHORIZE ACTION 7b042814-ccfc-401d-8ce6-68d204668b15",
+  "same_message_additional_questions": true,
+  "action_id": "7b042814-ccfc-401d-8ce6-68d204668b15",
+  "run_id": "b19d7239-894f-44ad-97d2-a8fafcae18ba",
+  "approved_run_version": 5,
+  "state_before_ui_authorization": "Pending",
+  "version_before_ui_authorization": 1,
+  "spec_digest": "bd7849a432fcfb40685d04cd6fc008a08203941ba58a216c86caccbb6f2c3f0e",
+  "arguments": {"title": "Survive 60 Seconds", "description": "Survive 60 seconds without healing - Phase 4.5.4 acceptance", "duration_seconds": 60, "difficulty": "Medium"},
+  "tool_name": "enqueue_overlay_challenge", "tool_version": "1", "target": "twitch-channel-1592829151",
+  "authorization_records_before_ui": 0,
+  "attempts": 0,
+  "consumer_jobs": 0,
+  "permission": "Authorize only this exact current admitted Action",
+  "execute_button_consent_or_click": "NOT_RUN",
+  "new_or_changed_actions_authorized": false
+}

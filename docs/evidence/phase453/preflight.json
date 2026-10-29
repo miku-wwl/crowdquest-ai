@@ -1,0 +1,33 @@
+{
+  "project": "CrowdQuest AI",
+  "phase": "4.5.3",
+  "classification": "AGENT_VERIFIED_PREFLIGHT",
+  "observed_at_utc": "2026-10-28T13:33:06Z",
+  "source_commit": "68de50b63268b34f641478b436a0046e3f208684",
+  "worktree_before_report": "clean",
+  "browser": {
+    "api": "official built-in Browser via cua",
+    "initial_iab_tabs": 0,
+    "studio_tab_created": true,
+    "consecutive_studio_bind_and_read_successes": 2,
+    "twitch_channel_loaded": true,
+    "dashboard_channel_owner": "miku_wwl",
+    "visible_twitch_account": "miku_wwl",
+    "prior_error": "browser.user is unavailable",
+    "prior_error_root_cause": "undetermined",
+    "stability_across_future_turns": "unverified"
+  },
+  "http": {"root": 200, "broadcast_studio": 200},
+  "service": {"loopback_port": 8000, "crowdquest_process_verified": true, "worker_lease_fresh": true},
+  "eventsub": {
+    "status": "connected", "stage": "receive", "ready": true,
+    "socket_open": true, "waiting_for_message": true,
+    "counters": {"welcomes": 1, "subscriptions": 1, "keepalives": 1101, "notifications": 0, "accepted": 0, "votes": 0, "failures": 0, "reconnects": 0}
+  },
+  "sqlite_integrity": {"intake": "ok", "gate": "ok", "admission": "ok", "product": "ok", "render": "ok"},
+  "historical_state": {"closed_voting_rounds": 1, "votes": 1, "succeeded_actions": 2, "action_attempts": 2, "jobs": 2, "expired_renders": 2, "ended_outcomes": 1},
+  "studio": {"presentation": "Waiting", "worker": "Ready", "recorder": "Idle", "challenge": "EXPIRED"},
+  "new_live_operations": {"messages": 0, "rounds": 0, "plans": 0, "actions": 0, "recordings": 0},
+  "new_go_required": true,
+  "github_ci": {"commit": "68de50b63268b34f641478b436a0046e3f208684", "conclusion": "success", "run": 40680040754}
+}

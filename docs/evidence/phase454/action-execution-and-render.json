@@ -1,0 +1,90 @@
+{
+  "phase": "4.5.4",
+  "checkpoint": "REAL_ACTION_EXECUTION_RENDER_AND_EXPIRY",
+  "observed_at_utc": "2026-10-28T15:48:53.598486+00:00",
+  "classification": {
+    "aig_and_sqlite": "AGENT_VERIFIED_READ_ONLY",
+    "video_frames": "AGENT_VERIFIED_OPENCV_AND_VISUAL_INSPECTION",
+    "studio_final_screenshot": "USER_PROVIDED_VISUAL_EVIDENCE"
+  },
+  "action": {
+    "id": "7b042814-ccfc-401d-8ce6-68d204668b15",
+    "state": "Succeeded",
+    "version": 4,
+    "attempt_count": 1,
+    "authorization_count": 1,
+    "command_receipts": [
+      "admit v1",
+      "authorize v2",
+      "execute v3"
+    ],
+    "result_present": true,
+    "result_reference_present": true
+  },
+  "consumer_job": {
+    "state": "ELIGIBLE",
+    "job_id": "fc0d3431-e3df-41d6-847d-c0cd78dfc7ff",
+    "admission_receipt_present": true,
+    "payload_digest_present": true
+  },
+  "worker_render": {
+    "state": "EXPIRED",
+    "render_id_present": true,
+    "receipt_present": true,
+    "expired_by_wall_clock": true,
+    "observation_count": 1,
+    "observation_status": "ACKNOWLEDGED"
+  },
+  "owner_reported_outcome": {
+    "count": 0,
+    "status": "PENDING_OWNER_SELF_REPORT",
+    "values": [
+      "Completed",
+      "Failed",
+      "Skipped"
+    ],
+    "gameplay_telemetry": "NOT_PRESENT"
+  },
+  "sqlite_integrity": {
+    "gate": "ok",
+    "overlay": "ok",
+    "render": "ok"
+  },
+  "studio_screenshot": {
+    "filename": "studio-action-expired.png",
+    "sha256": "0c9e99d0b6551a5d2679da280afc2f7844d6e39ab4cd223fbb575c8fec6fee43",
+    "visible_current_scene": "Waiting",
+    "visible_recording_card": "Finalized · playback verified, 45.2 seconds, 1920x1080; thumbnail shows the active challenge"
+  },
+  "recording": {
+    "filename": "crowdquest-20261029150939-dd8093b9.webm",
+    "original_path": "C:/Users/weila/Downloads/crowdquest-20261029150939-dd8093b9.webm",
+    "archive_path": "D:\\workshop\\oct\\crowdquest-ai-deliverables\\CrowdQuest-Phase454-recording04\\crowdquest-20261029150939-dd8093b9.webm",
+    "bytes": 10416696,
+    "sha256": "096b085afd5f2e4edffa53725915898527bb32c787dcd08f8a22150fb0244459",
+    "resolution": "1920x1080",
+    "reported_fps": 30.0,
+    "reported_frames": 1355,
+    "decoded_frames": 1343,
+    "last_decoded_timestamp_seconds": 45.172,
+    "duration_estimate_seconds": 45.205,
+    "visual_frames": {
+      "0.5s": "Challenge active; AIG Succeeded and Worker Delivered; 42 seconds left; exact title and description visible",
+      "20s": "Challenge active; 22 seconds left",
+      "44.8s": "Waiting / Challenge expired"
+    },
+    "ui_player_verification": "USER_PROVIDED_SCREENSHOT_FINALIZED_PLAYBACK_VERIFIED",
+    "full_local_decode": "PASS"
+  },
+  "previously_attached_waiting_clip": {
+    "filename": "crowdquest-phase454-20261029-02-waiting.webm",
+    "bytes": 2794574,
+    "sha256": "8dedd0b89196af81829c904178cb3f0a99cf8c81f5201294ba353e0c718f25fe",
+    "decoded_frames": 394,
+    "duration_estimate_seconds": 13.468,
+    "classification": "WAITING_ONLY; NOT THE CHALLENGE RECORDING"
+  },
+  "refresh_no_replay": "PASS_USER_REFRESH_AND_SINGLE_DURABLE_RENDER",
+  "new_actions_or_retries": 0,
+  "post_refresh_evidence": "refresh-no-replay.json"
+}

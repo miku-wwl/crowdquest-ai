@@ -13,6 +13,7 @@ from .challenges import Challenge
 from .outcomes import OutcomePresentation
 
 ACTIVE = ("CLAIMED", "SENT", "RENDERED")
+ACK_TIMEOUT_SECONDS = 5
 
 
 class RenderStore(OutcomePresentation):
@@ -78,8 +79,8 @@ class RenderStore(OutcomePresentation):
                 "ELSE 'UNKNOWN' END WHERE state IN ('CLAIMED','SENT','RENDERED')"
             )
         db.execute(
-            "UPDATE observations SET status='UNKNOWN' WHERE status='ISSUED' AND issued<?",
-            (now - 5,),
+            "UPDATE observations SET status='UNKNOWN' WHERE status='ISSUED' AND issued<=?",
+            (now - ACK_TIMEOUT_SECONDS,),
         )
         db.execute(
             "UPDATE renders SET state='UNKNOWN' WHERE state='SENT' AND "
@@ -204,14 +205,21 @@ class RenderStore(OutcomePresentation):
                 "outcome": self.outcome(effect_key),
             }
 
-    def current(self, overlay_key, view_id):
+    def current(self, overlay_key, view_id, *, consume=True, expected_id=None):
+        """Legacy overlays consume; Studio peeks then explicitly claims an exact ID.
+
+        ISSUED records a payload release, never proof of painting. A lost claim
+        response is uncertain and is never reissued, even to the same view.
+        """
         now = self.monotonic()
         with closing(self.connect()) as db:
             db.execute("BEGIN IMMEDIATE")
             self._maintain(db, now)
             row = db.execute("SELECT * FROM renders ORDER BY rowid DESC LIMIT 1").fetchone()
             if not row or row["state"] not in ("SENT", "RENDERED"):
-                result = self.current_outcome(db, overlay_key, view_id, now)
+                result = self.current_outcome(
+                    db, overlay_key, view_id, now, consume=consume, expected_id=expected_id
+                )
                 if result:
                     db.commit()
                     return result
@@ -226,6 +234,9 @@ class RenderStore(OutcomePresentation):
                     state = "waiting"
                 db.commit()
                 return {"mode": "production", "state": state}
+            if expected_id is not None and expected_id != row["render_id"]:
+                db.commit()
+                return {"mode": "production", "state": "waiting", "reason": "STALE_DELIVERY"}
             observation = db.execute(
                 "SELECT * FROM observations WHERE render_id=? AND overlay_key=?",
                 (row["render_id"], overlay_key),
@@ -238,7 +249,22 @@ class RenderStore(OutcomePresentation):
                     db.commit()
                     return {"mode": "production", "state": "waiting", "reason": "ACK_PENDING"}
                 delivery = observation["delivery_id"]
+                if not consume or expected_id is not None:
+                    db.commit()
+                    return {
+                        "mode": "production",
+                        "state": "claimed",
+                        "render_id": row["render_id"],
+                        "reason": "DELIVERY_ACKNOWLEDGED",
+                    }
             else:
+                if not consume:
+                    db.commit()
+                    return {
+                        "mode": "production",
+                        "state": "delivery_pending",
+                        "render_id": row["render_id"],
+                    }
                 delivery = str(uuid4())
                 db.execute(
                     "INSERT INTO observations VALUES(?,?,?,?,?,'ISSUED')",
@@ -275,6 +301,7 @@ class RenderStore(OutcomePresentation):
                 (render_id, overlay_key, view_id, delivery_id),
             ).fetchone()
             if not row or row[0] == "UNKNOWN" or row[1] not in ("SENT", "RENDERED"):
+                db.commit()  # Preserve deadline/recovery evidence even for a rejected ACK.
                 raise ValueError("RENDER_ACK_REJECTED")
             db.execute(
                 "UPDATE observations SET status='ACKNOWLEDGED' WHERE delivery_id=?", (delivery_id,)

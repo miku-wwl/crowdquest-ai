@@ -1,0 +1,24 @@
+{
+  "source_commit": "68de50b63268b34f641478b436a0046e3f208684",
+  "evidence": "SYNTHETIC_TEST_ONLY",
+  "backend_before_patch": {
+    "command": "uv run --no-sync pytest -q tests/test_studio.py::test_studio_peek_does_not_issue_a_delivery",
+    "exit_code": 1,
+    "failed": 1,
+    "expected_observations": 0,
+    "actual_observations": 1
+  },
+  "frontend_original_archive": {
+    "command": "npm run test",
+    "location": ".artifacts/phase455/baseline/frontend",
+    "exit_code": 1,
+    "passed": 52,
+    "failed": 7,
+    "snapshot_tests": 59,
+    "direct_mechanism_failures": [
+      "Hidden Studio issued one GET instead of zero",
+      "Transient poll failure produced two View IDs instead of one"
+    ],
+    "limitation": "Other failures also reflect the intentionally new claim API contract. Three tests were added after this comparison snapshot. Exact historical runtime trigger is not proven."
+  }
+}

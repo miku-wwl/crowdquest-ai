@@ -105,6 +105,13 @@ def test_vote_winner_plan_binding_and_four_independent_gates(tmp_path):
         assert response.json()["candidate_id"] == winner
         assert proposal["audience_selected"] and proposal["provenance"]["voting_round"] == row["id"]
         assert proposal["provenance"]["source"] == "SYNTHETIC_TEST"
+        # Verify the frozen winner's exact suggestion crossed the provider boundary.
+        assert (
+            json.loads(app.state.phase3_service.base.runtime.planning.provider.last_intent)[
+                "suggestion"
+            ]
+            == row["choices"][1]["text"]
+        )
         assert proposal["run"]["state"] == "AwaitingApproval" and proposal["action"] is None
         assert (
             client.post(

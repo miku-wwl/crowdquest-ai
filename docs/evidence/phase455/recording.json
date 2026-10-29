@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "evidence": "SYNTHETIC_TEST",
+  "actual_canvas_recording": true,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "wall_elapsed_seconds": 35.09,
+  "file": "synthetic-crowdquest-20261029042303-4d663109.webm",
+  "bytes": 8216788,
+  "sha256": "24788c3cd7575b521f0b7fa94a952e7cb0bdff21617fcd6f2db7aee2a112f0c8",
+  "playback": {
+    "width": 1920,
+    "height": 1080,
+    "duration": 32.4711,
+    "ready": 4,
+    "error": null
+  },
+  "preview_video_comparison": {
+    "mean_absolute_rgb_error": 2.4774173739711935,
+    "width": 1920,
+    "height": 1080
+  },
+  "real_twitch": "NOT_RUN",
+  "real_aig_actions": 0,
+  "synthetic_aig_actions": 1,
+  "obs_used": false,
+  "desktop_automation": false,
+  "decoded_duration_seconds": 32.53,
+  "decoded_frames": 960,
+  "average_fps": 29.51,
+  "ffmpeg_full_decode": "PASS"
+}

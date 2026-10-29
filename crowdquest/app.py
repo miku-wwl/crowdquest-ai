@@ -39,6 +39,11 @@ class RenderAck(BaseModel):
     delivery_id: str = Field(min_length=36, max_length=36)
 
 
+class StudioClaim(BaseModel):
+    model_config = ConfigDict(strict=True, extra="forbid")
+    presentation_id: str = Field(min_length=36, max_length=36)
+
+
 @dataclass
 class Session:
     generation: int
@@ -447,7 +452,9 @@ def create_app(
             raise HTTPException(422, "VIEW_ID") from None
         if phase3_factory is not None:
             try:
-                result = app.state.phase3_service.renderer.store.current(overlay_key, view)
+                result = app.state.phase3_service.renderer.store.current(
+                    overlay_key, view, consume=not studio
+                )
                 from .phase4_routes import voting_presentation
 
                 result = voting_presentation(
@@ -484,6 +491,26 @@ def create_app(
         from .phase4_routes import register_phase4
 
         register_phase4(app, owner, store, clock)
+
+        @app.post("/api/studio/claim")
+        async def studio_claim(request: Request, value: StudioClaim):
+            await owner(request, True)
+            prune_overlays()
+            key = digest(request.cookies.get("cq_studio", ""))
+            pairing = overlays.get(key)
+            if not pairing or not pairing["approved"] or not await auth.ensure():
+                raise HTTPException(401, "OVERLAY_PAIRING_REQUIRED")
+            view = request.headers.get("x-overlay-view", "")
+            from .admission import uuid4_string
+
+            if not all(uuid4_string(v) for v in (view, value.presentation_id)):
+                raise HTTPException(422, "RENDER_CLAIM_IDENTITY")
+            try:
+                return app.state.phase3_service.renderer.store.current(
+                    key, view, expected_id=value.presentation_id
+                )
+            except Exception:  # noqa: BLE001 -- no storage/credential errors at HTTP boundary
+                raise HTTPException(503, "RENDER_STATE_UNAVAILABLE") from None
 
         @app.post("/api/studio/ack")
         @app.post("/api/overlay/ack")

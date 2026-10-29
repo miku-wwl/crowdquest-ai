@@ -45,14 +45,18 @@ async function request(path: string, options: RequestInit = {}) {
   const response = await fetch(path, {
     credentials: "same-origin",
     cache: "no-store",
-    signal: AbortSignal.timeout(5000),
     ...options,
+    signal: options.signal
+      ? AbortSignal.any([options.signal, AbortSignal.timeout(5000)])
+      : AbortSignal.timeout(5000),
   });
   if (!response.ok)
     throw new Error(
       response.status === 401
         ? "OWNER_SIGN_IN_REQUIRED"
-        : "BROADCAST_CONNECTION_UNAVAILABLE",
+        : response.status === 409
+          ? "ACK_REJECTED"
+          : "BROADCAST_CONNECTION_UNAVAILABLE",
     );
   return response.json();
 }
@@ -71,6 +75,10 @@ export function BroadcastStudio() {
   const [outputName, setOutputName] = useState(filename);
   const [error, setError] = useState("");
   const [drawn, setDrawn] = useState(false);
+  const [deliveryStatus, setDeliveryStatus] = useState("Connecting");
+  // A document owns one identity. Errors, visibility and layout do not rotate it.
+  const [view] = useState(() => crypto.randomUUID());
+  const invalidateDelivery = useRef<() => void>(() => {});
   const [now, setNow] = useState(performance.now());
   const downloaded = useRef(new Set<string>());
   const supported = supportedCodec();
@@ -124,69 +132,248 @@ export function BroadcastStudio() {
 
   useEffect(() => {
     let active = true,
-      working = false;
-    let view = crypto.randomUUID();
+      working = false,
+      connected = false,
+      pageActive = true,
+      epoch = 0;
     let csrf = "";
-    const acknowledged = new Set<string>();
+    let acknowledgedRender = "";
+    let controller: AbortController | null = null;
+    let pendingAck: {
+      value: BroadcastState;
+      until: number;
+      attempts: number;
+    } | null = null;
+    const attempted = new Set<string>();
+    const eligible = () =>
+      active &&
+      pageActive &&
+      !document.hidden &&
+      layoutRef.current === "Live" &&
+      !!canvas.current;
+    const show = (value: BroadcastState) => {
+      live.current = value;
+      setPresentation(value);
+    };
+    const suspended = () =>
+      document.hidden
+        ? "Studio hidden — delivery paused"
+        : "Layout preview — delivery paused";
+    function invalidate() {
+      epoch++;
+      controller?.abort();
+      pendingAck = null;
+      acknowledgedRender = "";
+      show({ state: "waiting" });
+      setDeliveryStatus(suspended());
+    }
+    invalidateDelivery.current = invalidate;
+    async function painted(signal: AbortSignal) {
+      await new Promise<void>((resolve, reject) => {
+        let first = 0,
+          second = 0;
+        const abort = () => {
+          cancelAnimationFrame(first);
+          cancelAnimationFrame(second);
+          signal.removeEventListener("abort", abort);
+          reject(new Error("PRESENTATION_INTERRUPTED"));
+        };
+        if (signal.aborted) return abort();
+        signal.addEventListener("abort", abort, { once: true });
+        first = requestAnimationFrame(() => {
+          second = requestAnimationFrame(() => {
+            signal.removeEventListener("abort", abort);
+            resolve();
+          });
+        });
+      });
+    }
+    async function acknowledge(signal: AbortSignal, version: number) {
+      const pending = pendingAck;
+      if (!pending || !eligible() || epoch !== version) return;
+      if (performance.now() >= pending.until || pending.attempts >= 3) {
+        pendingAck = null;
+        show({ state: "unknown" });
+        setDeliveryStatus("ACK unconfirmed — no replay");
+        return;
+      }
+      pending.attempts++;
+      setDeliveryStatus("ACK pending");
+      await request("/api/studio/ack", {
+        method: "POST",
+        signal,
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrf,
+          "X-Overlay-View": view,
+        },
+        body: JSON.stringify({
+          render_id: pending.value.render_id,
+          delivery_id: pending.value.delivery_id,
+        }),
+      });
+      if (!eligible() || epoch !== version) return;
+      pendingAck = null;
+      acknowledgedRender = pending.value.render_id!;
+      setDeliveryStatus("Browser ACK verified");
+    }
     async function poll() {
-      if (working || !active) return;
+      if (working || !active || !connected) return;
       working = true;
-      const started = performance.now();
+      const version = epoch;
+      controller = new AbortController();
+      const signal = AbortSignal.any([
+        controller.signal,
+        AbortSignal.timeout(5000),
+      ]);
       try {
-        const [value, status]: [BroadcastState, SystemStatus] =
-          await Promise.all([
-            request("/api/studio/current", {
-              headers: { "X-Overlay-View": view },
-            }),
-            request("/api/studio/status"),
-          ]);
-        const anchored = anchorState(
-          { ...value, evidence: status.evidence },
-          started,
-        );
-        if (!active) return;
-        setPresentation(anchored);
+        const status: SystemStatus = await request("/api/studio/status", {
+          signal,
+        });
+        if (!active || epoch !== version) return;
         setSystem(status);
-        if (
-          value.state === "challenge" &&
-          value.delivery_id &&
-          !acknowledged.has(value.delivery_id)
-        ) {
-          if (
-            !canvas.current ||
-            layoutRef.current !== "Live" ||
-            document.hidden
-          )
-            throw new Error("DISPLAY_NOT_VISIBLE");
-          drawBroadcast(canvas.current, anchored, performance.now());
-          await new Promise<void>((resolve) =>
-            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
-          );
-          if (!active) return;
-          await request("/api/studio/ack", {
+        if (!eligible()) {
+          setDeliveryStatus(suspended());
+          return;
+        }
+        // Retrying this exact ACK confirms existing visible evidence. It does
+        // not fetch, repaint or execute a delivery again.
+        if (pendingAck) {
+          await acknowledge(signal, version);
+          return;
+        }
+        let started = performance.now();
+        let value: BroadcastState = await request("/api/studio/current", {
+          signal,
+          headers: { "X-Overlay-View": view },
+        });
+        if (!eligible() || epoch !== version) return;
+        if (["delivery_pending", "outcome_pending"].includes(value.state)) {
+          const id = value.render_id || value.presentation_id!;
+          if (attempted.has(id)) {
+            setDeliveryStatus("Delivery already claimed — no replay");
+            return;
+          }
+          // Mark BEFORE POST. A lost response must never trigger another claim.
+          attempted.add(id);
+          setDeliveryStatus("Delivery pending");
+          started = performance.now();
+          value = await request("/api/studio/claim", {
             method: "POST",
+            signal,
             headers: {
               "Content-Type": "application/json",
               "X-CSRF-Token": csrf,
               "X-Overlay-View": view,
             },
-            body: JSON.stringify({
-              render_id: value.render_id,
-              delivery_id: value.delivery_id,
-            }),
+            body: JSON.stringify({ presentation_id: id }),
           });
-          acknowledged.add(value.delivery_id);
+          if (!eligible() || epoch !== version) return;
+        } else if (["claimed", "outcome_claimed"].includes(value.state)) {
+          // Continuation is local only: a GET never redelivers the payload.
+          if (
+            (live.current.render_id || live.current.presentation_id) !==
+            (value.render_id || value.presentation_id)
+          ) {
+            show({ state: "waiting" });
+            setDeliveryStatus("Delivery already claimed — no replay");
+          } else if (value.state === "claimed")
+            setDeliveryStatus("Browser ACK verified");
+          return;
         }
-      } catch {
-        view = crypto.randomUUID();
-        if (active) {
-          setSystem(null);
-          setPresentation({ state: "disconnected" });
+        const anchored = anchorState(
+          { ...value, evidence: status.evidence },
+          started,
+        );
+        if (atTime(anchored, performance.now()).state !== anchored.state) {
+          show({ state: "expired" });
+          setDeliveryStatus("Expired render — no replay");
+          return;
+        }
+        if (value.state === "challenge") {
+          try {
+            drawBroadcast(canvas.current!, anchored, performance.now());
+          } catch {
+            throw new Error("RENDER_FAILED");
+          }
+          show(anchored);
+          await painted(signal);
+          if (
+            !eligible() ||
+            epoch !== version ||
+            atTime(anchored, performance.now()).state !== "challenge"
+          )
+            return;
+          pendingAck = {
+            value,
+            until: Math.min(started + 4500, anchored.deadline!),
+            attempts: 0,
+          };
+          await acknowledge(signal, version);
+        } else {
+          show(anchored);
+          setDeliveryStatus(
+            (value.reason === "NO_REPLAY"
+              ? "Delivery already claimed — no replay"
+              : value.reason === "ACK_PENDING"
+                ? "Delivery already claimed — ACK pending"
+                : value.reason) ||
+              (value.state === "unknown"
+                ? "Delivery unknown — no replay"
+                : value.state === "expired"
+                  ? "Expired render — no replay"
+                  : "Waiting for delivery"),
+          );
+        }
+      } catch (error) {
+        if (active && epoch === version) {
+          const reason = error instanceof Error ? error.message : "";
+          if (reason === "ACK_REJECTED") {
+            pendingAck = null;
+            show({ state: "unknown" });
+            setDeliveryStatus("ACK rejected — no replay");
+          } else if (reason === "RENDER_FAILED") {
+            pendingAck = null;
+            show({ state: "unknown" });
+            setDeliveryStatus("Rendering failed — no replay");
+          } else if (pendingAck) {
+            setDeliveryStatus("ACK unconfirmed — checking same receipt");
+          } else {
+            setSystem(null);
+            // An acknowledged, continuously visible local presentation can
+            // keep counting down through status outages. Never refetch it.
+            if (
+              !acknowledgedRender ||
+              live.current.render_id !== acknowledgedRender
+            )
+              show({ state: "disconnected" });
+            setDeliveryStatus(
+              "Backend unavailable; claimed deliveries are not retried",
+            );
+          }
         }
       } finally {
         working = false;
+        controller = null;
+        if (active && epoch !== version && eligible())
+          queueMicrotask(() => void poll());
       }
     }
+    const visibility = () => {
+      invalidate();
+      if (eligible()) void poll();
+    };
+    const pagehide = () => {
+      pageActive = false;
+      invalidate();
+    };
+    const pageshow = () => {
+      pageActive = true;
+      visibility();
+    };
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("pagehide", pagehide);
+    window.addEventListener("pageshow", pageshow);
     void (async () => {
       try {
         const identity: Me = await request("/api/me");
@@ -198,6 +385,8 @@ export function BroadcastStudio() {
           method: "POST",
           headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
         });
+        if (!active) return;
+        connected = true;
         await poll();
       } catch {
         if (active)
@@ -207,11 +396,16 @@ export function BroadcastStudio() {
       }
     })();
     const timer = setInterval(() => {
-      if (csrf) void poll();
+      if (connected) void poll();
     }, 1000);
     return () => {
       active = false;
+      controller?.abort();
       clearInterval(timer);
+      invalidateDelivery.current = () => {};
+      document.removeEventListener("visibilitychange", visibility);
+      window.removeEventListener("pagehide", pagehide);
+      window.removeEventListener("pageshow", pageshow);
     };
   }, []);
 
@@ -292,6 +486,9 @@ export function BroadcastStudio() {
           <>
             <div className="studio-status" aria-label="System status">
               <span>
+                Delivery <b role="status">{deliveryStatus}</b>
+              </span>
+              <span>
                 Backend <b>{system ? "Connected" : "Unavailable"}</b>
               </span>
               <span>
@@ -370,7 +567,11 @@ export function BroadcastStudio() {
                         key={item}
                         aria-pressed={layout === item}
                         disabled={active}
-                        onClick={() => setLayout(item)}
+                        onClick={() => {
+                          layoutRef.current = item;
+                          invalidateDelivery.current();
+                          setLayout(item);
+                        }}
                       >
                         {item === "Live" ? "Follow live state" : item}
                       </button>
@@ -399,7 +600,10 @@ export function BroadcastStudio() {
                     id="studio-resolution"
                     value={resolution}
                     disabled={active}
-                    onChange={(event) => setResolution(event.target.value)}
+                    onChange={(event) => {
+                      invalidateDelivery.current();
+                      setResolution(event.target.value);
+                    }}
                   >
                     <option value="1920x1080">1920 × 1080</option>
                     <option value="1280x720">1280 × 720</option>

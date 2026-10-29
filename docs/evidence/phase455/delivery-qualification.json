@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "evidence": "SYNTHETIC_TEST_ONLY",
+  "two_tabs": true,
+  "native_background_visibility": "PARTIAL",
+  "visibility_control": "explicit document.hidden fixture override",
+  "limitation": "Both Chromium tabs report visible in this run. Native background-tab behavior is not proven; visibility is controlled explicitly for the regression.",
+  "hidden_for_seconds": 6.2,
+  "hidden_observations": 0,
+  "visible_claims": 1,
+  "ack_http_statuses": [
+    200
+  ],
+  "durable_acknowledgements": 1,
+  "browser_ack": "BROWSER_ACK_VERIFIED",
+  "refresh_no_replay": "PASS",
+  "obs": "NOT_VERIFIED",
+  "synthetic_actions": 1,
+  "production_actions": 0,
+  "real_twitch_events": 0
+}

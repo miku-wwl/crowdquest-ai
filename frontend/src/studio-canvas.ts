@@ -10,6 +10,7 @@ export type BroadcastState = {
   deadline?: number;
   render_id?: string;
   delivery_id?: string;
+  presentation_id?: string;
   chosen_by_chat?: boolean;
   outcome?: string;
   challenge?: {

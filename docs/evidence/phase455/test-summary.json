@@ -1,0 +1,147 @@
+{
+  "source_commit": "68de50b63268b34f641478b436a0046e3f208684",
+  "date_timezone": "2026-10-29 Pacific/Auckland",
+  "session_id": "01a185d0-23c9-7c70-a4b4-f3a3bf8f6bd1",
+  "evidence": "SYNTHETIC_TEST_ONLY",
+  "local_checks": [
+    {
+      "command": "uv lock --check --offline",
+      "exit_code": 0
+    },
+    {
+      "command": "uv pip check",
+      "exit_code": 0,
+      "installed_packages": 45
+    },
+    {
+      "command": "uv run --no-sync python -I scripts/verify_baseline.py --output docs/evidence/phase455/dependency.json",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --no-sync ruff check crowdquest tests scripts",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --no-sync ruff format --check crowdquest tests scripts",
+      "exit_code": 0,
+      "files": 66
+    },
+    {
+      "command": "uv run --no-sync pytest -q",
+      "exit_code": 0,
+      "passed": 286,
+      "skipped": 0,
+      "warnings": [
+        "existing Starlette TestClient/httpx deprecation"
+      ]
+    },
+    {
+      "command": "uv run --no-sync pytest -q tests/test_studio.py tests/test_outcomes.py",
+      "exit_code": 0,
+      "passed": 14,
+      "skipped": 0,
+      "scope": "after final outcome continuation tightening"
+    },
+    {
+      "command": "npm run test",
+      "directory": "frontend",
+      "exit_code": 0,
+      "passed": 62,
+      "files": 6,
+      "skipped": 0
+    },
+    {
+      "command": "npm run build:studio",
+      "directory": "frontend",
+      "exit_code": 0,
+      "output": ".artifacts/phase45-browser/frontend",
+      "typecheck": true,
+      "live_frontend_dist_overwritten": false
+    },
+    {
+      "command": "npm run lint",
+      "directory": "frontend",
+      "exit_code": 0
+    },
+    {
+      "command": "npm run format:check",
+      "directory": "frontend",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --no-sync python -m tests.browser_e2e",
+      "exit_code": 0,
+      "evidence": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "command": "uv run --no-sync python -m tests.phase3_browser_e2e",
+      "exit_code": 0,
+      "evidence": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "command": "uv run --no-sync python -m tests.phase4_browser_e2e",
+      "exit_code": 0,
+      "evidence": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "command": "uv run --no-sync python -m tests.obs_browser_e2e",
+      "exit_code": 0,
+      "evidence": "SYNTHETIC_TEST_ONLY"
+    },
+    {
+      "command": "uv run --no-sync python -m tests.studio_browser_e2e --output-dir .artifacts/phase455/final-studio-verified --ffmpeg <existing-local-ffmpeg>",
+      "exit_code": 0,
+      "includes_two_tab_regression": true,
+      "actual_webm_and_full_decode": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "security_review": {
+    "status": "PASS",
+    "scope": "full backend suite and targeted new claim/view/ACK regressions",
+    "aig_pin_unchanged": true,
+    "default_adapter_seconds": 5,
+    "governance_stages_separate": true,
+    "no_replay": "PASS",
+    "new_claim_requires": [
+      "loopback peer",
+      "exact Host/Origin",
+      "authenticated owner",
+      "CSRF",
+      "approved Studio cookie",
+      "UUIDv4 view and exact presentation ID"
+    ],
+    "new_endpoint_can_authorize_aig": false,
+    "terminal_unknown_preserved": true
+  },
+  "gates": {
+    "G1": "PASS",
+    "G2": "PASS",
+    "G3": "PASS",
+    "G4": "PASS",
+    "G5": "PASS",
+    "G6": "PASS",
+    "G7": "PASS",
+    "G8": "PASS",
+    "G10": "PASS",
+    "G11": "PASS",
+    "G12": "PASS",
+    "G9": "PARTIAL",
+    "G13": "NOT_RUN"
+  },
+  "limitations": [
+    "Native Chromium background visibility unavailable in this host; deterministic override explicitly labeled",
+    "Historical runtime trigger not proven",
+    "P1 full semantic fidelity remains OWNER_REVIEW_REQUIRED",
+    "Production live activation/retest not authorized or performed",
+    "G13 is recorded after push in review-package delivery.json"
+  ],
+  "phase455_result": "PARTIAL",
+  "real_twitch_events_created": 0,
+  "production_actions_executed": 0,
+  "repair_initiated_production_database_writes": 0,
+  "obs_visually_verified": "NOT_VERIFIED"
+}

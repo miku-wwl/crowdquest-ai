@@ -19,6 +19,15 @@ def studio(client, headers):
     return {"X-Overlay-View": str(uuid4())}
 
 
+def claim(client, view, headers):
+    peek = client.get("/api/studio/current", headers=view).json()
+    return client.post(
+        "/api/studio/claim",
+        json={"presentation_id": peek.get("render_id") or peek["presentation_id"]},
+        headers=view | headers,
+    ).json()
+
+
 def test_startup_has_no_obs_import_credentials_or_service_dependency(tmp_path, monkeypatch):
     original = builtins.__import__
 
@@ -81,7 +90,7 @@ def test_studio_display_consumes_existing_worker_delivery_and_no_replay(tmp_path
         service = app.state.phase3_service
         service.renderer.tick(str(uuid4()), service.renderer.boot)
         assert client.get("/api/studio/status").json()["worker"] == "ready"
-        value = client.get("/api/studio/current", headers=view).json()
+        value = claim(client, view, headers)
         assert value["state"] == "challenge"
         ack = {"render_id": value["render_id"], "delivery_id": value["delivery_id"]}
         assert (
@@ -91,7 +100,7 @@ def test_studio_display_consumes_existing_worker_delivery_and_no_replay(tmp_path
             == 403
         )
         assert client.post("/api/studio/ack", json=ack, headers=view | headers).status_code == 200
-        assert client.get("/api/studio/current", headers=view).json()["state"] == "challenge"
+        assert client.get("/api/studio/current", headers=view).json()["state"] == "claimed"
         reloaded = {"X-Overlay-View": str(uuid4())}
         assert client.get("/api/studio/current", headers=reloaded).json()["reason"] == "NO_REPLAY"
         response = client.post(
@@ -104,8 +113,12 @@ def test_studio_display_consumes_existing_worker_delivery_and_no_replay(tmp_path
             headers=headers,
         )
         assert response.status_code == 200
-        result = client.get("/api/studio/current", headers=view).json()
+        assert client.get("/api/studio/current", headers=view).json()["state"] == "outcome_pending"
+        with closing(sqlite3.connect(directory / "render.sqlite3")) as db:
+            assert db.execute("SELECT count(*) FROM outcome_issues").fetchone()[0] == 0
+        result = claim(client, view, headers)
         assert result["state"] == "outcome" and result["outcome"] == "Skipped"
+        assert client.get("/api/studio/current", headers=view).json()["state"] == "outcome_claimed"
         assert client.get("/api/studio/status").json()["last_outcome"]["kind"] == "Skipped"
         assert client.get("/api/studio/current", headers=reloaded).json()["state"] == "waiting"
         with closing(sqlite3.connect(directory / "overlay.sqlite3")) as db:
@@ -123,3 +136,58 @@ def test_studio_voting_uses_authoritative_frozen_choices_and_totals(tmp_path):
         assert all("candidate_id" not in choice for choice in data["round"]["choices"])
         command(client, row, "close", headers)
         assert client.get("/api/studio/current", headers=view).json()["state"] == "winner"
+
+
+def test_studio_peek_does_not_issue_a_delivery(tmp_path):
+    with http_product(tmp_path) as (client, app, candidate, directory):
+        headers = login(client)
+        view = studio(client, headers)
+        full_action(client, candidate, headers)
+        service = app.state.phase3_service
+        service.renderer.tick(str(uuid4()), service.renderer.boot)
+        for _ in range(2):
+            client.get("/api/studio/current", headers=view)
+        with closing(sqlite3.connect(directory / "render.sqlite3")) as db:
+            assert db.execute("SELECT count(*) FROM observations").fetchone()[0] == 0
+            assert db.execute("SELECT state FROM renders").fetchone()[0] == "SENT"
+
+
+def test_studio_claim_requires_exact_identity_owner_origin_csrf(tmp_path):
+    with http_product(tmp_path) as (client, app, candidate, _):
+        headers = login(client)
+        view = studio(client, headers)
+        full_action(client, candidate, headers)
+        app.state.phase3_service.renderer.tick(str(uuid4()), app.state.phase3_service.renderer.boot)
+        peek = client.get("/api/studio/current", headers=view).json()
+        body = {"presentation_id": peek["render_id"]}
+        for invalid in (
+            view,
+            view | {"Origin": headers["Origin"]},
+            view | headers | {"Origin": "https://evil.invalid"},
+        ):
+            assert client.post("/api/studio/claim", json=body, headers=invalid).status_code == 403
+        assert client.post("/api/studio/claim", json=body, headers=headers).status_code == 422
+        assert (
+            client.post(
+                "/api/studio/claim", json={"presentation_id": str(uuid4())}, headers=view | headers
+            ).json()["reason"]
+            == "STALE_DELIVERY"
+        )
+        assert (
+            client.post(
+                "/api/studio/claim", json=body | {"authorize": True}, headers=view | headers
+            ).status_code
+            == 422
+        )
+        first = client.post("/api/studio/claim", json=body, headers=view | headers).json()
+        assert first["state"] == "challenge"
+        assert (
+            client.post("/api/studio/claim", json=body, headers=view | headers).json()["reason"]
+            == "ACK_PENDING"
+        )
+        assert (
+            client.post(
+                "/api/studio/claim", json=body, headers=headers | {"X-Overlay-View": str(uuid4())}
+            ).json()["reason"]
+            == "NO_REPLAY"
+        )

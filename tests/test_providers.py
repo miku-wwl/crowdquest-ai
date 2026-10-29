@@ -126,3 +126,50 @@ async def test_timeout_propagates_without_retry_and_manual_is_explicit():
         TRACE.reset(token)
     assert trace["source"] == "OFFLINE_MANUAL" and trace["attempts"] == 0 and len(calls) == 1
     assert json.loads(raw)["steps"][0]["arguments"] == CHALLENGE
+
+
+async def test_original_suggestion_is_sent_verbatim_and_duration_drift_rejected():
+    suggestion = "Explain CrowdQuest AI to the audience in 30 seconds"
+    calls = []
+
+    def handler(request):
+        calls.append(json.loads(request.content))
+        return httpx.Response(200, json=envelope(json.dumps(CHALLENGE | {"duration_seconds": 60})))
+
+    p = DomainProvider(binding_for("123", str(uuid4())), transport=httpx.MockTransport(handler))
+    trace = {}
+    token = TRACE.set(trace)
+    try:
+        with pytest.raises(ProviderRejected, match="MODEL_DURATION_MISMATCH"):
+            await p.generate_plan(
+                Intent(json.dumps({"suggestion": suggestion})), timeout_seconds=20
+            )
+    finally:
+        TRACE.reset(token)
+    assert len(calls) == 1
+    assert json.loads(calls[0]["messages"][1]["content"]) == {"untrusted_suggestion": suggestion}
+    assert trace["semantic_fidelity"] == "OWNER_REVIEW_REQUIRED"
+    assert trace["reason"] == "MODEL_DURATION_MISMATCH"
+
+
+async def test_matching_duration_does_not_claim_semantic_equivalence_or_rewrite_output():
+    drifted = CHALLENGE | {"title": "Generic quiz", "duration_seconds": 30}
+    p = DomainProvider(
+        binding_for("123", str(uuid4())),
+        transport=httpx.MockTransport(
+            lambda _: httpx.Response(200, json=envelope(json.dumps(drifted)))
+        ),
+    )
+    trace = {}
+    token = TRACE.set(trace)
+    try:
+        result = json.loads(
+            await p.generate_plan(
+                Intent('{"suggestion":"Explain CrowdQuest in 30 seconds"}'), timeout_seconds=20
+            )
+        )
+    finally:
+        TRACE.reset(token)
+    assert result["steps"][0]["arguments"] == drifted
+    assert trace["source"] == "REAL_MODEL"
+    assert trace["semantic_fidelity"] == "OWNER_REVIEW_REQUIRED"

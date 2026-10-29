@@ -98,7 +98,7 @@ class OutcomePresentation:
             db.commit()
             return {"kind": kind, "source": "OWNER_REPORTED", "recorded": now}
 
-    def current_outcome(self, db, overlay_key, view_id, now):
+    def current_outcome(self, db, overlay_key, view_id, now, *, consume=True, expected_id=None):
         db.execute(
             "UPDATE challenge_outcomes SET state='ENDED' WHERE state='PRESENTING' AND (deadline<=? OR boot!=?)",
             (now, self.boot),
@@ -108,13 +108,29 @@ class OutcomePresentation:
         ).fetchone()
         if row is None:
             return None
+        if expected_id is not None and expected_id != row["presentation_id"]:
+            return {"mode": "production", "state": "waiting", "reason": "STALE_DELIVERY"}
         issued = db.execute(
             "SELECT view_id FROM outcome_issues WHERE presentation_id=? AND overlay_key=?",
             (row["presentation_id"], overlay_key),
         ).fetchone()
         if issued and issued[0] != view_id:
             return None
+        if issued and expected_id is not None:
+            return {"mode": "production", "state": "waiting", "reason": "NO_REPLAY"}
+        if issued and not consume:
+            return {
+                "mode": "production",
+                "state": "outcome_claimed",
+                "presentation_id": row["presentation_id"],
+            }
         if not issued:
+            if not consume:
+                return {
+                    "mode": "production",
+                    "state": "outcome_pending",
+                    "presentation_id": row["presentation_id"],
+                }
             db.execute(
                 "INSERT INTO outcome_issues VALUES(?,?,?)",
                 (row["presentation_id"], overlay_key, view_id),
@@ -122,6 +138,7 @@ class OutcomePresentation:
         return {
             "mode": "production",
             "state": "outcome",
+            "presentation_id": row["presentation_id"],
             "outcome": row["kind"],
             "source": "OWNER_REPORTED",
             "remaining_seconds": max(0, row["deadline"] - now),

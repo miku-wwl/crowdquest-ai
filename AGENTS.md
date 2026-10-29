@@ -333,3 +333,15 @@ approval; retain independent Approval, Admission, Authorization and Execute gate
 Ask for the factual owner outcome when not observed; never fabricate completion.
 No historical replay, second uncertain Execute, extra scopes, streaming, upload,
 deployment, competition submission or automatic Phase 5 work is authorized.
+
+## Phase 4.5.5 delivery reliability repair — 2026-10-29
+
+The user authorizes the bounded Studio delivery/ACK repair, separate Plan-fidelity
+diagnostic, isolated synthetic tests, sanitized report/review package, scoped normal
+main commit/push and exact-commit CI. Preserve historical reports and private stores.
+No real Twitch events/votes, production Actions, service restart, credential changes,
+Computer Use or IAB are authorized. Playwright tests use owned temporary fixtures
+only; classify native visibility limitations separately from deterministic overrides.
+Keep independent AIG gates, its exact pin/default five-second budget, terminal Unknown
+and no replay. A new controlled real acceptance requires separate owner authorization;
+do not automatically proceed to Phase 5.

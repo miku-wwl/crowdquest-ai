@@ -1,0 +1,26 @@
+Input #0, matroska,webm, from 'synthetic-crowdquest-20261029042303-4d663109.webm':
+  Metadata:
+    encoder         : Chrome
+  Duration: 00:00:32.47, start: 0.000000, bitrate: 2024 kb/s
+  Stream #0:0(eng): Video: vp8, yuv420p(pc, bt709/bt709/iec61966-2-1, progressive), 1920x1080, SAR 1:1 DAR 16:9, 30 tbr, 1k tbn (default)
+    Metadata:
+      alpha_mode      : 1
+Stream mapping:
+  Stream #0:0 -> #0:0 (vp8 (native) -> wrapped_avframe (native))
+Press [q] to stop, [?] for help
+Output #0, null, to 'pipe:':
+  Metadata:
+    encoder         : Lavf62.3.101
+  Stream #0:0(eng): Video: wrapped_avframe, yuv420p(tv, bt470bg/bt709/iec61966-2-1, progressive), 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 30 fps, 30 tbn (default)
+    Metadata:
+      encoder         : Lavc62.11.100 wrapped_avframe
+      alpha_mode      : 1
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 30 >= 30
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 64 >= 64
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 104 >= 104
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 292 >= 292
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 728 >= 728
+frame=  860 fps=0.0 q=-0.0 size=N/A time=00:00:29.20 bitrate=N/A speed=57.6x elapsed=0:00:00.50
+[null @ 0000022111363180] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 935 >= 935
+[out#0/null @ 0000022111302380] video:390KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=  960 fps=0.0 q=-0.0 Lsize=N/A time=00:00:32.53 bitrate=N/A speed=57.4x elapsed=0:00:00.56

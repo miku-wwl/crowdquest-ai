@@ -1,0 +1,12 @@
+{
+  "status": "PARTIAL",
+  "snapshot_scope": "Read-only checkpoint during repair; not a pre-task database backup",
+  "files_checked": 48,
+  "byte_identical_files": 47,
+  "historical_evidence_and_live_dist_unchanged": true,
+  "only_changed_file_is_running_render_store": true,
+  "live_leader_heartbeat_advances": true,
+  "render_observation_outcome_fingerprints_stable_during_sample": true,
+  "repair_initiated_production_writes": 0,
+  "note": "Live service was preserved. Its normal heartbeat changes render.sqlite3 bytes; whole-interval byte identity is not claimed. No production content or private hashes are exported."
+}

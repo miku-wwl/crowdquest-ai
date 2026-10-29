@@ -40,6 +40,9 @@ def main():
         "--ffmpeg", default=os.environ.get("CROWDQUEST_FFMPEG") or shutil.which("ffmpeg")
     )
     args = parser.parse_args()
+    from tests.studio_delivery_browser_e2e import qualify_delivery
+
+    qualify_delivery(args.output_dir / "delivery")
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="crowdquest-studio-chromium-") as temporary:

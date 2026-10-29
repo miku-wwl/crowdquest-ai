@@ -17,6 +17,7 @@ class SyntheticProvider:
 
     async def generate_plan(self, intent, **kwargs):
         self.calls += 1
+        self.last_intent = intent.text
         data = json.loads(intent.text)
         trace = TRACE.get()
         if trace is not None:

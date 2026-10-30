@@ -137,7 +137,16 @@ export function Dashboard() {
       : "",
   );
   const [notice, setNotice] = useState("");
+  const [compactNotice, setCompactNotice] = useState(false);
   const [busy, setBusy] = useState(false);
+  const historyNoticeTimer = useRef<number | null>(null);
+  useEffect(
+    () => () => {
+      if (historyNoticeTimer.current !== null)
+        window.clearTimeout(historyNoticeTimer.current);
+    },
+    [],
+  );
   useEffect(() => {
     let active = true,
       working = false;
@@ -203,6 +212,11 @@ export function Dashboard() {
     setBusy(true);
     setError("");
     setNotice("");
+    setCompactNotice(false);
+    if (historyNoticeTimer.current !== null) {
+      window.clearTimeout(historyNoticeTimer.current);
+      historyNoticeTimer.current = null;
+    }
     try {
       await api(path, {
         method: "POST",
@@ -229,11 +243,16 @@ export function Dashboard() {
   }
   async function clearDemoHistory() {
     const confirmation =
-      "Hide previous demo records and start a clean view? Historical audit records will be preserved.";
+      "Hide earlier suggestions and voting rounds from this view? Historical records and audit evidence will be preserved.";
     if (!window.confirm(confirmation)) return;
     setBusy(true);
     setError("");
     setNotice("");
+    setCompactNotice(false);
+    if (historyNoticeTimer.current !== null) {
+      window.clearTimeout(historyNoticeTimer.current);
+      historyNoticeTimer.current = null;
+    }
     try {
       const result = await api<{ session: DemoSession }>(
         "/api/demo/session/clear",
@@ -251,8 +270,14 @@ export function Dashboard() {
       setCandidates([]);
       setSelected("");
       setNotice(
-        "Previous demo records are hidden. New Twitch suggestions will appear here.",
+        "Earlier activity is hidden. New suggestions will appear here.",
       );
+      setCompactNotice(true);
+      historyNoticeTimer.current = window.setTimeout(() => {
+        setNotice("");
+        setCompactNotice(false);
+        historyNoticeTimer.current = null;
+      }, 6000);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -268,16 +293,7 @@ export function Dashboard() {
           <span className="brand-ai">AI</span>
         </a>
         <span className="phase">
-          {me.features?.includes("crowd_voting")
-            ? "PHASE 04"
-            : me.workflow === "production"
-              ? "PHASE 03"
-              : "PHASE 01"}{" "}
-          <span>
-            {me.workflow === "production"
-              ? "Director studio"
-              : "Connectivity lab"}
-          </span>
+          DIRECTOR DASHBOARD <span>Broadcast Studio</span>
         </span>
         <span className={`connection ${me.eventsub?.ready ? "live" : ""}`}>
           <i />
@@ -330,7 +346,10 @@ export function Dashboard() {
           </div>
         )}
         {notice && (
-          <div role="status" className="notice">
+          <div
+            role="status"
+            className={`notice${compactNotice ? " notice-compact" : ""}`}
+          >
             {notice}
           </div>
         )}
@@ -340,7 +359,7 @@ export function Dashboard() {
             <h2>Connect your channel</h2>
             <p>
               Sign in with the configured broadcaster account to review
-              suggestions and control development previews.
+              suggestions and control local previews.
             </p>
             {me.reason === "TWITCH_AUTH_TEMPORARILY_UNAVAILABLE" ? (
               <p role="status">
@@ -386,7 +405,7 @@ export function Dashboard() {
                       disabled={busy}
                       onClick={() => void clearDemoHistory()}
                     >
-                      Clear Demo History
+                      Hide Earlier Activity
                     </button>
                   )}
                 </div>
@@ -420,7 +439,7 @@ export function Dashboard() {
                   />
                 ) : (
                   <section className="preview-panel">
-                    <p className="eyebrow">MANUAL DEVELOPMENT PREVIEW</p>
+                    <p className="eyebrow">MANUAL PREVIEW</p>
                     <h2>Your stream, your choice.</h2>
                     <div className="selected-preview">
                       {chosen ? (
@@ -467,7 +486,7 @@ export function Dashboard() {
                   <a href="/overlay" target="_blank" rel="noreferrer">
                     {me.workflow === "production"
                       ? "Open read-only overlay ↗"
-                      : "Open development overlay ↗"}
+                      : "Open preview overlay ↗"}
                   </a>
                   <code className="url">{window.location.origin}/overlay</code>
                   {pairings.pending.map((code) => (
@@ -497,7 +516,7 @@ export function Dashboard() {
           <span>
             {me.workflow === "production"
               ? "Separate review · authorization · rendering"
-              : "Phase 1 · No AI / No AIG execution"}
+              : "Local preview · No AI / No AIG execution"}
           </span>
         </footer>
       </main>
@@ -676,7 +695,7 @@ export function Overlay() {
           <span>
             {data.mode === "production"
               ? "CHAT → CHALLENGE"
-              : "LIVE PREVIEW LAB"}
+              : "BROWSER OVERLAY"}
           </span>
         </div>
         <div className="warning">
@@ -725,7 +744,7 @@ export function Overlay() {
             </p>
             <h1 className="overlay-text">{data.text}</h1>
             <p className="fine">
-              Temporary display preview · No challenge has been executed
+              Manual display preview · No challenge has been executed
             </p>
           </>
         ) : (
@@ -755,7 +774,7 @@ export function Overlay() {
           <span>
             {data.mode === "production"
               ? "YOUR CHAT. YOUR NEXT CHALLENGE."
-              : "PHASE 01"}
+              : "READ-ONLY DISPLAY"}
           </span>
         </div>
       </div>

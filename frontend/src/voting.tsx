@@ -204,7 +204,7 @@ export function VotingPanel({
         </div>
         <span className={`round-pill ${round?.state === "Open" ? "open" : ""}`}>
           {round?.state === "Open"
-            ? "VOTING LIVE"
+            ? "VOTING OPEN"
             : round?.state || "NO ROUND YET"}
         </span>
       </div>

@@ -134,14 +134,17 @@ def main():
                 panel.get_by_role("button", name="Generate winning Plan").click()
                 old_review = dashboard.get_by_role("region", name="Challenge review")
                 expect(old_review.get_by_text("SYNTHETIC_TEST", exact=False)).to_be_visible()
-                reset_prompt = "Hide previous demo records and start a clean view? Historical audit records will be preserved."
+                reset_prompt = (
+                    "Hide earlier suggestions and voting rounds from this view? "
+                    "Historical records and audit evidence will be preserved."
+                )
 
                 def accept_reset(dialog):
                     assert dialog.message == reset_prompt
                     dialog.accept()
 
                 dashboard.once("dialog", accept_reset)
-                dashboard.get_by_role("button", name="Clear Demo History").click()
+                dashboard.get_by_role("button", name="Hide Earlier Activity").click()
                 expect(
                     dashboard.get_by_text(
                         "Waiting for 2 new suggestions before a fresh vote can start.", exact=True

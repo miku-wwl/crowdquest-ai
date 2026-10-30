@@ -77,6 +77,9 @@ it("shows connection and manual preview without auto-publishing", async () => {
   render(<Dashboard />);
   await screen.findByText("@fixture_owner");
   expect(screen.getByText("connected")).toBeVisible();
+  expect(screen.getByText("DIRECTOR DASHBOARD")).toBeVisible();
+  expect(screen.getByText("Broadcast Studio")).toBeVisible();
+  expect(screen.getByText("MANUAL PREVIEW")).toBeVisible();
   await screen.findByRole("radio");
   const preview = screen.getByRole("button", { name: "Preview selected →" });
   expect(preview).toBeDisabled();
@@ -156,10 +159,12 @@ it("confirms a persistent demo-history reset and waits for new suggestions", asy
   );
   render(<Dashboard />);
   await screen.findByRole("radio");
-  fireEvent.click(screen.getByRole("button", { name: "Clear Demo History" }));
+  fireEvent.click(
+    screen.getByRole("button", { name: "Hide Earlier Activity" }),
+  );
   await waitFor(() => expect(screen.queryByRole("radio")).toBeNull());
   expect(confirmation).toHaveBeenCalledWith(
-    "Hide previous demo records and start a clean view? Historical audit records will be preserved.",
+    "Hide earlier suggestions and voting rounds from this view? Historical records and audit evidence will be preserved.",
   );
   expect(posts).toContainEqual({
     path: "/api/demo/session/clear",
@@ -172,9 +177,16 @@ it("confirms a persistent demo-history reset and waits for new suggestions", asy
   ).toBeVisible();
   expect(
     screen.getByText(
-      "Previous demo records are hidden. New Twitch suggestions will appear here.",
+      "Earlier activity is hidden. New suggestions will appear here.",
     ),
   ).toBeVisible();
+  expect(
+    screen
+      .getByText(
+        "Earlier activity is hidden. New suggestions will appear here.",
+      )
+      .closest('[role="status"]'),
+  ).toHaveClass("notice-compact");
 });
 
 it("renders network errors without candidate controls", async () => {

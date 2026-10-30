@@ -461,7 +461,7 @@ export function BroadcastStudio() {
             <p className="eyebrow">YOUR CHAT. ONE BROADCAST SURFACE.</p>
             <h1>Make the moment yours.</h1>
             <p className="lede">
-              Live scenes and local recording, right in your browser.
+              Follow current activity and record locally, right in your browser.
             </p>
           </div>
           <a href="/">Open director dashboard ↗</a>
@@ -509,7 +509,7 @@ export function BroadcastStudio() {
                 <div className="studio-stage-heading">
                   <span className="eyebrow">
                     {layout === "Live"
-                      ? "LIVE PRESENTATION"
+                      ? "CURRENT PRESENTATION"
                       : "LOCAL LAYOUT PREVIEW"}{" "}
                     · {layout === "Live" ? scene : layout}
                   </span>
@@ -573,14 +573,14 @@ export function BroadcastStudio() {
                           setLayout(item);
                         }}
                       >
-                        {item === "Live" ? "Follow live state" : item}
+                        {item === "Live" ? "Follow current state" : item}
                       </button>
                     ))}
                   </div>
                   <p>
                     Layout previews show matching current content only. They
-                    never create votes or challenges. Recording uses Follow live
-                    state.
+                    never create votes or challenges. Recording follows current
+                    activity.
                   </p>
                   {system?.last_outcome && (
                     <p>
@@ -654,8 +654,8 @@ export function BroadcastStudio() {
                   )}
                   {!supported && (
                     <p role="alert">
-                      This browser has no supported Canvas/WebM recorder. Live
-                      preview remains available.
+                      This browser has no supported Canvas/WebM recorder. The
+                      presentation remains available.
                     </p>
                   )}
                   <p>

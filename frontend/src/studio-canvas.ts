@@ -205,7 +205,7 @@ export function drawBroadcast(
   if (isLayout)
     text(
       ctx,
-      "LAYOUT PREVIEW • DOES NOT CHANGE LIVE STATE",
+      "LAYOUT PREVIEW • DOES NOT CHANGE CURRENT STATE",
       48,
       164,
       12,
@@ -330,7 +330,7 @@ export function drawBroadcast(
       ctx,
       challenge
         ? `${challenge.difficulty} • Display only; no gameplay automation`
-        : state.warning || "Development preview",
+        : state.warning || "DEVELOPMENT PREVIEW • NOT APPROVED / NOT EXECUTED",
       48,
       630,
       16,
@@ -371,9 +371,9 @@ export function drawBroadcast(
     wrapped(
       ctx,
       isLayout && scene !== "Waiting"
-        ? "No matching live content. This view cannot create votes, challenges or results."
+        ? "No current content matches. This view cannot create votes, challenges or results."
         : state.state === "disconnected"
-          ? "Live content has been cleared. Reconnect to the backend safely."
+          ? "The current presentation has ended. Reconnect to the backend safely."
           : "Chat proposes. The streamer chooses. Every action stays behind its safety gates.",
       48,
       410,

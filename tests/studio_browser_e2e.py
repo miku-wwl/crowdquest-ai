@@ -96,8 +96,15 @@ def main():
                     return result.json()
 
                 page.goto(origin + "/broadcast-studio")
+                expect(page).to_have_title("CrowdQuest AI · Broadcast Studio")
                 expect(page.get_by_text("Backend connected", exact=True)).to_be_visible()
                 expect(page.get_by_text("SYNTHETIC TEST DATA", exact=True)).to_be_visible()
+                expect(page.locator(".studio-stage-heading")).to_contain_text(
+                    "CURRENT PRESENTATION"
+                )
+                expect(
+                    page.get_by_role("button", name="Follow live state", exact=True)
+                ).to_have_count(0)
                 expect(
                     page.get_by_role("button", name="Start Recording", exact=True)
                 ).to_be_enabled()
@@ -108,7 +115,7 @@ def main():
                     expect(
                         page.get_by_role("button", name="Start Recording", exact=True)
                     ).to_be_disabled()
-                page.get_by_role("button", name="Follow live state", exact=True).click()
+                page.get_by_role("button", name="Follow current state", exact=True).click()
                 canvas_frame(page, output / "synthetic-waiting-preview.png")
                 started = time.monotonic()
                 page.get_by_role("button", name="Start Recording", exact=True).dblclick()

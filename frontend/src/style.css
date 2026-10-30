@@ -410,6 +410,12 @@ h3 {
   color: #9bdfc1;
   border: 1px solid #335e4d;
 }
+.notice-compact {
+  width: fit-content;
+  max-width: min(100%, 760px);
+  padding: 9px 12px;
+  margin-bottom: 12px;
+}
 footer {
   display: flex;
   justify-content: space-between;

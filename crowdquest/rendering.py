@@ -76,7 +76,9 @@ class RenderStore(OutcomePresentation):
         if leader["deadline"] <= now:
             db.execute(
                 "UPDATE renders SET state=CASE WHEN state='CLAIMED' THEN 'RENDER_FAILED' "
-                "ELSE 'UNKNOWN' END WHERE state IN ('CLAIMED','SENT','RENDERED')"
+                "WHEN EXISTS(SELECT 1 FROM observations o WHERE o.render_id=renders.render_id "
+                "AND o.status='ACKNOWLEDGED') THEN 'RENDERED' ELSE 'UNKNOWN' END "
+                "WHERE state IN ('CLAIMED','SENT','RENDERED')"
             )
         db.execute(
             "UPDATE observations SET status='UNKNOWN' WHERE status='ISSUED' AND issued<=?",

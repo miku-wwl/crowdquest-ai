@@ -1,5 +1,7 @@
 # Phase 4 real acceptance runbook
 
+**Historical Phase 4 procedure, prepared 2026-10-27.** Its OBS setup and observations are scoped to the earlier Phase 4 acceptance plan. The current primary presentation is OBS-free Broadcast Studio; use the Phase 5 runbook for a future, separately authorized demo. This historical runbook does not authorize live work.
+
 Prepared 2026-10-27 for ChatGPT Desktop Work and the channel owner.
 **NOT_RUN. A separate live-session authorization is required.** Current authorization
 covers local development, temporary fixtures and Git/CI only. Preserve the running

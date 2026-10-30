@@ -1,7 +1,11 @@
 # Twitch integration plan
 
-Status: implementation and synthetic validation complete. Real OAuth, subscriptions,
-chat events and OBS observation remain `NOT_RUN`. Official sources rechecked 2026-10-26.
+The authenticated read-only `user:read:chat` EventSub integration and prior real
+owner/chat intake evidence are recorded in Phase 1 reports. The Clear Demo History
+view is screenshot-evidenced and its watermarks are read-only database-verified; the
+login/click were not independently observed. A new post-clear real suggestion/vote-to-Studio retest remains NOT_RUN. OBS references in earlier acceptance reports describe
+those original sessions; Broadcast Studio is now the primary presentation. Recheck
+current Twitch documentation before changing scopes or running a live test.
 
 ## Authentication and transport
 

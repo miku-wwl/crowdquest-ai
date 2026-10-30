@@ -1,5 +1,8 @@
 # Phase 3 operator runbook
 
+**Historical/legacy OBS-based procedure.** The accepted Phase 3 session used OBS; the current primary display is Broadcast Studio. OBS setup below is optional compatibility for this Phase 3 workflow, not a requirement for current use or the Phase 5 demo.
+
+
 The original controlled activation and one genuine Phase 3 Action session completed
 PASS; see [session record](PHASE3-REAL-ACCEPTANCE.md). The procedure below remains the
 reference for a separately authorized future activation. Existing credentials, stores

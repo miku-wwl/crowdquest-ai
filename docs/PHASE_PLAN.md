@@ -1,27 +1,33 @@
 # Implementation phases and gates
 
-Current update 2026-10-27: genuine Phase 3 single-Action E2E PASS
-([record](PHASE3-REAL-ACCEPTANCE.md)). Phase 4 is the authorized competitive product
-upgrade; submission preparation is Phase 5. Earlier target dates and pre-activation
-statements below describe the historical plan, not current live status.
+Current status reviewed 2026-10-30. Phase 1–3 acceptance and the genuine Phase 3
+single-Action session remain recorded in their dated reports. Phase 4 implementation
+and CI qualify locally, while **PHASE4_OVERALL remains PARTIAL**. Phase 4.5.5
+reliability changes passed CI; genuine native background-tab reacceptance remains
+pending. Phase 4.5.6 Clear Demo History is deployed. A user-provided screenshot showed
+the clean view, and a separate read-only database check confirmed persistent rowid
+watermarks; the owner's login and click were not independently observed. New real
+post-clear Twitch-to-Studio E2E remains NOT_RUN. The OBS-free Broadcast Studio is the
+primary display; OBS is optional legacy compatibility.
 
-The subsequent user instruction authorizes Phase 1 implementation/tests and normal
-main delivery. The later final-acceptance instruction conditionally authorizes Phase 2
-after all mandatory Phase 1 gates pass; no deployment/submission is authorized.
-Historical Phase 0 scope remains recorded below.
+Phase 5 is documentation/demo/submission preparation only. This document pass grants
+no new live Twitch events, Action execution, recording, upload, organizer contact or
+submission. Historical authorization paragraphs in the phase records below describe
+their original scope and dates; they are not current authorization.
 
-Phase 1 engineering acceptance is **PASS**: real ingestion, persistence and recovery,
-loaded security hardening, user-observed post-start login/pairing, OBS rendering and
-preview expiry all pass. Formal raw-image archival remains PARTIAL under the user's
-accepted visual-evidence alternative. Final regression: 79 backend tests, 9 frontend
-tests and Chromium synthetic E2E; tested-commit GitHub CI also passed.
-See [PHASE1-FINAL-ACCEPTANCE.md](PHASE1-FINAL-ACCEPTANCE.md). The user's latest request
-authorizes automatic Phase 2 only after mandatory quality gates pass; do not bypass them.
-Phase 2 local single-action integration and remote commit-specific CI now pass; see
-[PHASE2-IMPLEMENTATION.md](PHASE2-IMPLEMENTATION.md). Live Phase 2 activation remains
-NOT_RUN. The later explicit Phase 3A–3D instruction authorizes local implementation,
-normal main delivery and CI; it does not authorize a live-service restart or Action.
-See [Phase 3 evidence](PHASE3-IMPLEMENTATION.md) and [runbook](PHASE3-RUNBOOK.md).
+## Phase 4.5 — current product acceptance
+
+- Phase 4.5.5 delivery/ACK repair: commit-specific CI passed; native background-tab
+  behavior remains PARTIAL until retested.
+- Phase 4.5.6 Dashboard history cleanup: implementation and synthetic/CI qualification
+  passed. A user screenshot showed the 2026-10-30 clean view; read-only SQLite
+  evidence confirmed retained old rows and persistent watermarks. The login/click was
+  not independently observed, and the new real Twitch suggestion/vote/Studio E2E has
+  not run.
+- Phase 5 guide set: [demo runbook](PHASE5-DEMO-RUNBOOK.md),
+  [storyboard](PHASE5-DEMO-STORYBOARD.md),
+  [submission checklist](PHASE5-SUBMISSION-CHECKLIST.md). Submission eligibility,
+  real Studio acceptance, video and final entry remain open.
 
 ## Phase 0 — Repository and architecture (2026-10-26)
 

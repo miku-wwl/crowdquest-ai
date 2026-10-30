@@ -1,67 +1,92 @@
 # Phase 5 — OBS-free demo runbook (prepared, not executed)
 
-This is preparation only. No new real Twitch messages, Plans, Actions, stream,
-upload, organizer contact or competition submission is authorized by this runbook.
-Historical Phase 4 overall acceptance remains PARTIAL. Competition/personal and
-pre-existing-runtime eligibility remain unverified; consult SUBMISSION_CHECKLIST.md.
+Prepared 2026-10-30. This document authorizes no new Twitch events, votes, Plans,
+Actions, livestream, recording, upload, organizer contact or competition submission.
+Historical Phase 4 overall acceptance remains PARTIAL. Phase 4.5.5 native
+background-tab retest and the post-clear real Twitch-to-Studio end-to-end retest
+remain pending. See the [Phase 4.5.5 report](PHASE455-STUDIO-DELIVERY-ACK-RELIABILITY.md),
+[Phase 4.5.6 status](PHASE456-DASHBOARD-HISTORY-CLEANUP.md) and
+[current submission checklist](PHASE5-SUBMISSION-CHECKLIST.md).
 
-## Before a separately authorized demo
+## Readiness record as of 2026-10-30
 
-1. Preserve existing real stores/evidence and verify no pending or ambiguous work
-   before any separately authorized restart. Use the existing private Phase 3 profile
-   and worker; never reset identities or historical Actions.
-2. Open `http://localhost:8000`, complete owner login personally if needed, then
-   `/broadcast-studio`. OAuth must remain user:read:chat. OBS is unnecessary.
-3. Verify Backend, EventSub and Worker separately. An authenticated Dashboard alone
-   is not EventSub subscription proof. On Unknown, version conflict or uncertain
-   execution stop; never repeat Execute.
-4. Keep Studio visible. Select 1920×1080 or 1280×720, Follow live state and a fresh safe
-   filename. Close sensitive tabs/panels before any separately authorized wider
-   capture. Studio's own recording captures only Canvas, silently.
+A user-provided screenshot showed the clean Clear Demo History view. Read-only SQLite
+state independently confirmed display generation 1, zero candidates/rounds above the
+watermarks, and nine candidate rows plus four voting rounds still stored. The screenshot
+does not independently verify the owner's login or click sequence. The evidence shows
+persistent display state, not a new Twitch suggestion, vote, Plan, Action or Studio
+challenge. EventSub showed listening with zero notifications/stored new events.
 
-## Proposed 90–150 second narrative
+Before any separately authorized capture:
 
-| Segment | Demonstration / narration |
-| --- | --- |
-| 0–15 s | Waiting scene. “Chat proposes; the streamer decides.” Start local recording explicitly. |
-| 15–40 s | After fresh permission, two new genuine suggestions and one bounded voting round. Show actual Open vote totals and winner. Never fabricate or reuse old votes. |
-| 40–65 s | Real local model proposes a bounded Plan. Read its exact version/content. Owner reviews and separately Approves, Admits, Authorizes and Executes once. Voting is not consent. |
-| 65–125 s | Distinguish AIG Succeeded/admission receipt from Worker delivery and actual Studio countdown. No gameplay automation. Observe natural expiry. |
-| 125–145 s | Owner reports the true result once. Show persisted result and expiry; refresh only after saving recording and confirm no replay. |
-| End | Stop, wait for verified finalization, download and independently play the exported video. |
+1. Recheck the current Git SHA/CI, local listener and Worker status. Do not treat this
+   dated note or an old process ID as current runtime proof.
+2. Preserve the existing private profile, history and credentials. Never reprovision
+   or clear databases. A service restart is outside this runbook; it requires separate
+   authorization and the verified-backup/no-active-work procedure in the operator guide.
+3. Sign in as the configured channel owner and verify only `user:read:chat`. Confirm
+   EventSub welcome, matching enabled channel chat subscription and fresh keepalives;
+   verify Worker readiness separately.
+4. Refresh the Dashboard. Confirm the “Previous demo records are hidden” notice,
+   zero old inbox entries, no old voting round and the waiting state. This is the
+   expected clean display; it does not mean history was deleted.
+5. Keep Broadcast Studio visible at `http://localhost:8000/broadcast-studio` and select
+   Follow live state. OBS is optional legacy compatibility, not a required runtime or
+   recording path.
 
-Do not compress or fake waiting periods to claim real-time acceptance. If a segment
-cannot be captured, label it honestly. Fixture footage must retain its SYNTHETIC TEST
-watermark and be presented as software demonstration, never genuine Twitch/model/
-human-consent evidence. Existing historical Actions may be inspected, never replayed.
+## Bounded real-flow plan (requires fresh, explicit owner authorization)
 
-## Export review
+- The real post-clear Twitch test is still **NOT_RUN**. Only after authorization, the
+  owner/viewers may send two distinct fresh `!quest` suggestions. Verify their new
+  candidate records and current Dashboard display; do not replay historical chat.
+- Shortlist those two candidates, create one bounded voting round, and record actual
+  vote totals. Evidence so far involved one real unique voter; do not claim
+  multi-viewer participation. A single viewer cannot count as several voters.
+- If separately authorized to continue beyond voting, generate one local-model Plan
+  for the closed round’s exact winner. Show the exact Plan/version and its provenance.
+  A failed inference is not a pass; no silent retry or manual draft may be called
+  real-model output.
+- Approval, Action admission, independent Authorization and Execute remain separate.
+  Execute a new real Action only after fresh, exact owner consent; at most once. Never
+  reset or replay an old `UNKNOWN`/`EXPIRED` record or substitute prior consent.
+- Report the external challenge outcome truthfully. CrowdQuest does not observe or
+  verify gameplay.
 
-Reserve 10–15 seconds of the under-three-minute edit for genuine Codex development
-evidence as well as genuine Twitch interaction. Studio records only its Canvas:
-it cannot capture chat, the review Dashboard or Codex's UI. Those complementary
-clips need a separately authorized supported browser-recording workflow in Phase 5.
-Use actual dated development/session evidence, redact credentials/private state,
-and never substitute a drawn Codex screen or a fixture chat for genuine footage.
-Native desktop capture is not authorized by the current OBS-free task. Narration,
-music/gameplay rights review and any editing/publication remain future work.
+## Capture the three-tab product flow
 
-- Retain original WebM, SHA256, resolution, duration, actual playback observation and
-  any frame-rate limitation. Preview screenshots alone do not prove recorded content.
-- Inspect recorded voting, challenge/countdown, result and expired frames. A browser
-  ACK is not proof of native OBS or gameplay completion.
-- Download before reload/close. Three recordings/180 seconds/64 MiB per file are the
-  current bounds. A hidden tab interrupts capture and yields partial coverage.
-- Optional local MP4 conversion requires a new file and separate playback/decode
-  verification. Do not overwrite original WebM or disguise its extension.
-- Phase 4.5's real IAB Waiting recording and isolated synthetic full-chain recording
-  are distinct artifacts. Neither resolves missing historical live voting evidence.
+Use **Windows Snipping Tool desktop-region recording** for the actual Twitch chat,
+Dashboard and Broadcast Studio sequence. Arrange readable views; close unrelated
+windows and redact personal or private content before capture. This is future recording
+instruction only; no desktop recording was made during this documentation pass.
 
-## Remaining gates
+Studio’s native WebM is an optional independent check. It records the Canvas only,
+with no chat, Dashboard, Codex UI, microphone or system audio. Keep that tab visible;
+background-tab transitions can interrupt the recording. Download the WebM before
+refresh/close and verify playback, dimensions, duration and any frame-rate limits.
+It cannot replace three-tab footage.
 
-Restore IAB tool access and repeat final-build Studio UI/recording/playback when
-available; current resumed session could not attach to its browser host. A fresh
-real Twitch-to-Studio demo requires new explicit permission and human gate consent.
-OBS uninstallation, narration, video editing/upload, public deployment and final
-submission remain separate actions. See PHASE45-BROADCAST-STUDIO-ACCEPTANCE.md for
-the measured evidence and limits before planning any publication.
+Target a **2:45 edited English demo**, with a hard limit below 3:00. Use the
+[storyboard](PHASE5-DEMO-STORYBOARD.md) as a timed shot plan, not proof that the shots
+exist. Show actual Twitch functionality and actual Codex development evidence. Label
+all fixture footage `SYNTHETIC TEST`; never present it as a real Twitch/model/consent
+result. The principal development thread recorded for this project is
+`01a172e3-9804-73d1-87d8-4e01f1f75043`.
+
+## Claims and export review
+
+Keep these separate in narration and captions:
+
+- **AIG `Succeeded` / admission receipt:** the consumer executor durably admitted the
+  overlay job; this alone does not show that a browser displayed it.
+- **Worker/render state:** separate delivery lifecycle and fencing evidence.
+- **Browser ACK:** a correlated browser acknowledgement; not proof of gameplay or a
+  human seeing the stream.
+- **Visible Canvas:** inspect the actual Studio Canvas in the captured footage.
+- **Owner outcome:** a truthful owner report, not automatic gameplay recognition.
+
+Record the actual challenge interval; label any measured time compression. Review the
+final file for legibility, English narration/subtitles, duration, third-party media
+permissions, redaction and correspondence to the actual take. Avoid third-party
+trademarks and copyrighted music/footage without permission. Upload and submission
+remain separate owner-authorized actions. Devpost’s [Official Rules](https://twitchcon-codex.devpost.com/rules)
+and [FAQ](https://twitchcon-codex.devpost.com/resources) are linked in the checklist.

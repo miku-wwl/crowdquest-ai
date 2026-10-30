@@ -1,13 +1,14 @@
 # Security and threat model
 
-Status: Phase 1 engineering acceptance PASS, including user-observed real Twitch/OBS.
-Phase 2/3 controls have actual temporary AIG/SQLite, fault/concurrency and Chromium
-fixture coverage. Three real local-model probes and the subsequent genuine Phase 3 single-Action
-human/Twitch/model/actual OBS session passed; see PHASE3-REAL-ACCEPTANCE.md. Phase 4
-live acceptance remains NOT_RUN. This is not a penetration
-test or production/multi-user security certification. Assets: exact consent, execution authority, channel identity,
-credentials, effect/receipt integrity, availability, viewer privacy and broadcast content.
+Current context reviewed 2026-10-30: the Phase 1/3 real Twitch/OBS reports remain
+historical and scoped; Phase 4 overall is PARTIAL. Clear Demo History advances only
+owner-scoped dashboard watermarks and preserves durable business/audit state. New
+post-clear real Twitch-to-Studio acceptance is NOT_RUN. OBS references below describe
+historical evidence or optional legacy compatibility, not a primary requirement. This
+is not a penetration test or production/multi-user security certification.
 
+Assets: exact consent, execution authority, channel identity, credentials,
+effect/receipt integrity, availability, viewer privacy and broadcast content.
 Trust boundaries: public chat → intake; model → validator; dashboard → authenticated
 backend; backend → AIG public API; executor → consumer queue; worker → read-only overlay.
 A trusted local operator/OS is assumed. AIG does not sandbox malicious host Python or

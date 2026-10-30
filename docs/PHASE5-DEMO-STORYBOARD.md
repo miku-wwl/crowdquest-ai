@@ -1,56 +1,54 @@
 # Championship demo storyboard
 
-Prepared 2026-10-27. Target **2:45**, hard stop **before 3:00**. English narration,
-English subtitles. This is a shot plan; no final recording/upload has been performed.
-Positioning: **CrowdQuest AI — Your Chat Becomes the Game Director.**
+Prepared 2026-10-30. Target **2:45**, hard stop **before 3:00**. English narration and
+English subtitles. OBS-free Broadcast Studio is the primary product presentation.
+This is a shot plan; the final real Twitch-to-Studio acceptance, recording and upload
+have not been completed. Do not present planned shots as existing evidence.
 
-| Time | Shot / composition | Exact English narration |
+| Time | Shot and evidence | English narration |
 | --- | --- | --- |
-| 0:00–0:15 | Open on gameplay/OBS canvas, Twitch chat at the side. Product name appears as a simple edit title. | “Your chat is no longer just watching. It is directing the next challenge. This is CrowdQuest AI.” |
-| 0:15–0:35 | Show two actual incoming !quest suggestions. Cut to the streamer selecting exactly two ideas. | “Viewers propose challenges in Twitch chat. I shortlist two ideas worth playing. Every suggestion is bounded, checked and treated as untrusted input.” |
-| 0:35–0:58 | Start one real vote. Hold actual OBS vote cards, instructions, changing totals and countdown. | “Chat chooses with vote one or vote two. One viewer, one vote. The server owns the deadline and saves the result, so refreshing a page cannot change the decision.” |
-| 0:58–1:22 | Winner card; Generate winning Plan; briefly show actual inference wait then full four-field Plan and REAL_MODEL badge. | “The winning idea becomes a structured Plan using a local language model: a title, description, duration and difficulty. This is real local inference. The model proposes the challenge; I review the exact result.” |
-| 1:22–1:48 | Show distinct Approve, Admit, Authorize, Execute operations with readable state changes. Keep the same candidate selected. | “Approval and execution authority are separate. I approve this Plan, admit its Action, independently authorize it, and execute it once. Chat votes and model output cannot silently grant that authority.” |
-| 1:48–2:10 | Actual OBS native window or output projector, then tight canvas cut. Show Chosen by Chat and decreasing countdown. | “The existing Agentic Intent Gate runtime records execution and a durable admission receipt. A separate worker delivers the challenge. Here it is in OBS, chosen by chat, with a countdown that keeps its original deadline.” |
-| 2:10–2:27 | Owner records one truthful outcome; show brief actual OBS result and waiting. Refresh and show no replay. | “I report how it went. That is my gameplay report, not automatic game recognition. The result ends, and refreshing OBS never executes or replays the challenge.” |
-| 2:27–2:39 | Codex development view with a reviewed diff, concise genuine test output and redacted receipt. No raw prompts/secrets. | “We built and tested the Twitch product with Codex, including concurrency, crash recovery and real Chromium tests. The pre-existing MIT runtime is reused and disclosed.” |
-| 2:39–2:45 | Return to clean product/OBS shot, readable logo and tagline. | “CrowdQuest AI. Your Chat Becomes the Game Director.” |
+| 0:00–0:12 | Open on readable Twitch, Dashboard and Studio regions captured with Windows Snipping Tool. Show the clean waiting state. | “Your chat can help shape the next challenge. CrowdQuest keeps the streamer in control.” |
+| 0:12–0:32 | After fresh authorization, show two genuinely new `!quest` suggestions arriving in Twitch and appearing in the Dashboard after Clear Demo History. | “Viewers suggest challenges in Twitch chat. Old demo records stay in the audit history, while this session shows new suggestions.” |
+| 0:32–0:55 | Shortlist the two real ideas, open one round and show actual voting state/totals. Disclose the actual unique voter count; current evidence supports one real voter, not a crowd. | “The server freezes two ideas and owns the vote deadline. Each viewer gets one vote. The result is saved independently of the browser.” |
+| 0:55–1:18 | Show the closed round’s exact winner and one actual local-model Plan, including version and all bounded fields. | “The local model proposes a structured challenge from the winning idea. The model proposes; I review the exact Plan.” |
+| 1:18–1:43 | Show the same current Plan through Approve, Admit, Authorize and Execute as separate operations. Execute only with fresh exact owner consent, once. | “Voting is not consent. I review and approve the Plan, admit its Action, authorize that Action separately, and execute it once.” |
+| 1:43–2:08 | Show separate AIG result/receipt and Worker state, then the Broadcast Studio Canvas with the chosen challenge and decreasing countdown. | “A successful Action and its admission receipt do not prove display. The Worker delivers separately; the Studio acknowledgement and visible Canvas are separate evidence.” |
+| 2:08–2:25 | Show the real Canvas result/expiry and the owner’s truthful Completed, Failed or Skipped report. Refresh only to demonstrate no replay. | “I report what happened. CrowdQuest does not detect gameplay. The presentation expires, and refresh does not replay an Action.” |
+| 2:25–2:40 | Show the real Codex development thread, reviewed source diff and genuine test output, with private details redacted. | “I used Codex to build and review the Twitch-specific application. The pre-existing MIT runtime is disclosed separately.” |
+| 2:40–2:45 | Return to the product title and tagline. | “CrowdQuest AI. Your Chat Becomes the Game Director.” |
 
-## Recording and editing plan
+## Capture and edit plan
 
-- Use 1920x1080 capture; OBS Browser Source remains 1280x720. Dashboard and actual OBS
-  occupy large readable panes; Twitch chat only needs its two suggestions and votes.
-  Never shrink four tiny windows into one unreadable shot. Cut between full detail views.
-- Record genuine participation only after separate live-session permission. A broadcast
-  is not inherently required for local OBS preview; starting a livestream needs separate
-  explicit owner consent. Never fabricate viewers, chat, model results or approved states.
-- Keep REAL_MODEL and the four independent controls legible. Inference wait may be cut
-  with a visible “local inference, elapsed …” label measured from the actual take; do not
-  imply instantaneous inference. Any synthetic fallback footage must visibly say
-  SYNTHETIC TEST and cannot serve as proof of working on Twitch.
-- Use native OBS footage for the render claim. Browser ACK is telemetry, not that shot.
-  Capture the chosen challenge and decreasing clock; observe terminal result/expiry
-  before editing. Never dispatch again solely for a better take without fresh consent.
-- Record the full real challenge interval before the result. Compress waiting time
-  only with an explicit, measured “later in the same take” edit label; the storyboard
-  timestamps are edited video time, not a claim that a 60-second challenge ended early.
-- Add a timed English SRT with 1–2 lines, around 42 characters per line, using the exact
-  narration above. Align subtitles with visible operations; do not cover vote commands,
-  Plan fields, authority buttons or the countdown. Proofread labels and pacing.
-- No copyrighted music/game footage/trademarks without permission. Prefer a licensed
-  or owner-created gameplay backdrop. Keep attribution and permissions in the checklist.
-- Capture a quiet, clean desktop: notifications off with owner consent, unrelated tabs
-  closed manually, no pairing codes, personal account data, tokens or private paths.
-- Review the encoded video in a normal player, measure duration, check English audio/
-  subtitles, legibility and correspondence to the real take before any upload request.
+- Capture the actual three-tab Twitch/Dashboard/Studio sequence with Windows Snipping Tool
+  desktop-region recording. Keep text readable; redact unrelated personal content.
+  Do not use OBS as the primary capture or display workflow.
+- Studio native WebM is an optional independent recording check. It captures the Studio
+  Canvas only, silently; it does not capture chat, Dashboard or Codex. Keep Studio
+  visible because background-tab transitions can interrupt capture.
+- The timeline is edited video time. Record the actual challenge interval; label and
+  measure any compression. Do not imply an instant Plan or early challenge completion.
+- Keep the four human operations legible. Approval does not authorize execution;
+  do not dispatch again solely to improve the take. Unknown and expired Actions are
+  never replayed.
+- Distinguish AIG `Succeeded` and admission receipt, Worker delivery, browser ACK,
+  visible Canvas and the owner’s external outcome. A browser ACK is not proof of
+  gameplay completion.
+- Use English narration/subtitles, licensed or owner-created media, and readable labels.
+  Do not claim multi-viewer interaction: evidence so far involved one real unique voter.
+  Mark any fixture footage `SYNTHETIC TEST`.
+- Include genuine Codex development evidence from the reviewed thread
+  `01a172e3-9804-73d1-87d8-4e01f1f75043`, such as a source diff and actual test output.
+  Redact tokens, prompts containing private data, account details and local private paths.
+- Confirm final duration is below 3:00, playback works, captions match narration and
+  footage matches the real run. Upload and final Devpost submission need separate
+  owner authorization.
 
-## Recording checklist
+## Recording gates
 
-- [ ] Phase 4 local gates and exact-commit CI complete.
-- [ ] Separate genuine Twitch/vote/model/OBS acceptance complete and evidence archived.
-- [ ] Genuine viewers available; actual number disclosed (no fabricated participation).
-- [ ] Owner grants precise Plan/Action consent for the take; no repeated Execute.
-- [ ] OBS shows the real source; refresh/no-replay captured after completion.
-- [ ] Codex evidence reviewed; principal session ID and new-versus-reused attribution verified.
-- [ ] English narration and SRT rehearsed to 2:45; final recording separately authorized.
-- [ ] Public YouTube upload separately authorized; project not submitted automatically.
+- [ ] Post-clear real Twitch suggestions and vote are separately authorized and verified.
+- [ ] Any real Plan and one-time Action flow has fresh owner consent and correlated evidence.
+- [ ] Phase 4.5.5 native background-tab retest is accepted or its limitation is shown honestly.
+- [ ] Real Studio Canvas, display ACK and truthful owner outcome are evidenced separately.
+- [ ] Codex thread and development footage are genuine and redacted.
+- [ ] English 2:45 edit reviewed, rights checked and remains under 3 minutes.
+- [ ] YouTube upload and Devpost submission separately authorized; Submitted confirmation observed.

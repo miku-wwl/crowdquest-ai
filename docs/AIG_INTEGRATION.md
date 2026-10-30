@@ -1,11 +1,12 @@
 # AIG integration contract
 
-Status: Phase 2 local integration and exact-commit remote CI PASS; see
-[implementation and evidence](PHASE2-IMPLEMENTATION.md). Phase 3 adds real local-model
-Plan probes and controlled worker/browser qualification; see
-[Phase 3 evidence](PHASE3-IMPLEMENTATION.md). The subsequent genuine single-Action human/Twitch/model/OBS session passed; see
-[real session evidence](PHASE3-REAL-ACCEPTANCE.md). Phase 4 has a separate pending live gate.
-
+Phase 2/3 installed-runtime integration and the genuine single Phase 3 Action session
+are recorded in their linked reports. Phase 4 retains a separate live acceptance gate;
+its overall result remains PARTIAL. Current product display is OBS-free Broadcast
+Studio. Phase 4.5.6 Clear Demo History changes only dashboard display watermarks and
+does not change AIG runs, approvals, Actions, receipts or terminal outcomes. New
+post-clear real Twitch-to-Studio acceptance remains NOT_RUN. OBS mentions in the
+historical Phase 3 session report describe its original display path.
 ## Immutable release and instructions
 
 ```toml

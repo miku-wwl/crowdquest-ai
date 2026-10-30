@@ -49,3 +49,16 @@ New Phase 4 live voting/outcome acceptance remains separate and NOT_RUN. Competi
 entrant-owned runtime reuse clarification still block submission readiness.
 No acceptance row authorizes future work. Product release
 or submission cannot be called PASS while its mandatory real evidence is missing.
+
+## Current Phase 4.5 status — reviewed 2026-10-30
+
+- **Phase 4.5.5:** delivery/ACK implementation and exact-commit CI are recorded in
+  [the reliability report](PHASE455-STUDIO-DELIVERY-ACK-RELIABILITY.md). A genuine
+  native background-tab retest remains pending; synthetic tests do not establish it.
+- **Phase 4.5.6:** implementation and CI are recorded in
+  [the dashboard history note](PHASE456-DASHBOARD-HISTORY-CLEANUP.md). A user-provided
+  screenshot shows the clean view; read-only SQLite evidence confirms persistent
+  watermarks and retained history. The owner's login/click was not independently
+  observed. New real post-clear Twitch-to-Studio acceptance is NOT_RUN.
+- Historical candidates, votes, Actions, receipts, render records and UNKNOWN outcomes
+  remain preserved. This display reset grants no authority to replay historical work.

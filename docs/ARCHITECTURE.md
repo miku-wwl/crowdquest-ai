@@ -1,25 +1,22 @@
 # Application architecture
 
-Stack: Python 3.13/FastAPI, React/TypeScript, SQLite and OBS Browser Source.
-Initial deployment is one local host, one streamer/channel and one active runtime owner.
+Primary display: OBS-free Broadcast Studio Canvas at `/broadcast-studio`. Optional
+legacy display compatibility is the read-only OBS Browser Source; the optional OBS
+Admin adapter is separate and disabled by default. The product is a local single-host,
+single-streamer/channel application, not hosted multi-user SaaS.
 
-Phase 1 OAuth, intake and a separate manual preview are implemented and accepted.
-Phase 2 adds opt-in installed AIG composition, exact review/Authorization routes and
-transactional queue/receipts, qualified with temporary stores and synthetic consent.
-Phase 3 adds the reviewed local ModelProvider, exact review UI, fenced separate worker,
-render ledger and bounded acknowledgements. Its genuine single-Action session passed;
-see [real acceptance](PHASE3-REAL-ACCEPTANCE.md). The preserved running instance remains
-that accepted Phase 3 source. Phase 4 adds consumer voting/outcome presentation and
-isolated local qualification; its new live gate is NOT_RUN. Phase 1 uses HTTP
-polling, in-memory owner/overlay sessions, Windows Credential Manager and private
-SQLite intake state. Default startup creates no gate, Plan, Action or grant; only
-explicit Phase 2 startup composition enables those APIs and private stores.
+The backend is Python 3.13/FastAPI with private SQLite stores; the Dashboard and
+Broadcast Studio use React/TypeScript. Phase 1 intake and EventSub, Phase 2/3 AIG
+composition, local model, authenticated owner review, and a separate fenced Worker
+are retained. The genuine Phase 3 single-Action session is historical OBS-based
+acceptance; Phase 4 remains overall PARTIAL. Phase 4.5.6 display reset is persisted;
+new post-clear real Twitch-to-Studio E2E remains NOT_RUN.
 
 ```mermaid
 flowchart LR
   V[Untrusted viewer chat] --> T[Twitch EventSub WebSocket]
   T --> I[Source checks / limits / durable dedup]
-  I --> C[Candidate store]
+  I --> C[Candidate store and demo-session watermarks]
   C --> P[Consumer ModelProvider / strict validation]
   P --> R[AIG persistent Run and exact Plan]
   R --> D[Authenticated streamer preview / Approve or Reject]
@@ -30,8 +27,10 @@ flowchart LR
   G --> F[Confirm matching successful admission]
   Q --> F
   F --> W[Separate overlay worker]
-  W --> O[Read-only OBS Browser Source]
-  O --> K[Rendering acknowledgement / outcome store]
+  W --> S[Primary Broadcast Studio Canvas]
+  W --> O[Optional legacy read-only OBS Browser Source]
+  S --> K[Browser acknowledgement / outcome store]
+  O --> K
 ```
 
 ## Components and trust boundaries
@@ -45,7 +44,7 @@ flowchart LR
 | AIG public runtime | Plan/Run/Approval, Action admission, Authorization, claim, result | Overlay rendering success |
 | Consumer executor | One atomic queue/effect/receipt admission | Human consent or external rendering |
 | Overlay worker | Eligible job ownership, delivery, separate rendering history | AIG execution/approval/authorization |
-| Browser Source | Escaped display text, countdown, correlated acknowledgement | Control-plane mutations |
+| Broadcast Studio / optional OBS Browser Source | Escaped display text, countdown, correlated acknowledgement | Control-plane mutations |
 
 The public browser and chat boundary terminates at application authentication and
 validation. AIG's local bearer capability is not Twitch login or production multi-user
@@ -71,8 +70,10 @@ overlay rendering occurs after execution in a separate worker.
 All stores are private and outside the checkout. Provision identity once, fail if it
 does not match, retain it on restart, and keep one process as runtime owner.
 
-- `application.sqlite3`: event delivery/message IDs, candidates, dashboard/audit
-  correlations and application session references. Never log full tokens or raw prompts.
+- `intake.sqlite3`: EventSub delivery/message IDs, candidates, votes, rounds,
+  dashboard/audit correlations and `dashboard_sessions` display watermarks. Watermarks
+  hide old rows from the current view; they do not delete business history. Never log
+  full tokens or raw prompts.
 - `gate.sqlite3`: exclusively managed by AIG through its public runtime.
 - `overlay.sqlite3`: consumer binding identity, effect key, payload digest, immutable
   admission receipt, job, worker ownership and rendering acknowledgements.

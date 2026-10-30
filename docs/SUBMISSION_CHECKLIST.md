@@ -1,7 +1,7 @@
 # Submission checklist
 
 Current operational checklist: [Phase 5 readiness](PHASE5-SUBMISSION-CHECKLIST.md),
-reviewed 2026-10-27. The original checklist below is retained as the earlier rules
+reviewed 2026-10-30. The original checklist below is retained as the earlier rules
 review; subsequent Phase 3 real acceptance and Phase 4 qualification are recorded
 separately rather than silently changing old evidence.
 
